@@ -8,6 +8,11 @@ namespace Signawel.Data.Repositories
     {
         private readonly SignawelDbContext _context;
 
+        public BaseRepository(SignawelDbContext context)
+        {
+            _context = context;
+        }
+
         public async Task<T> AddEntityAsync(T entity)
         {
             await _context.AddAsync(entity);

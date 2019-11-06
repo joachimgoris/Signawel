@@ -5,7 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Signawel.Business.Abstractions\Signawel.Business.Abstractions.csproj" />
+    <ProjectReference Include="..\Signawel.Data\Signawel.Data.csproj" />
+    <ProjectReference Include="..\Signawel.Domain\Signawel.Domain.csproj" />
   </ItemGroup>
 
 </Project>
