@@ -1,0 +1,12 @@
+/// Mixin to prefix several properties at once
+@mixin prefix($declarations, $prefixes: ())
+  @each $property, $value in $declarations
+    @each $prefix in $prefixes
+      #{'-' + $prefix + '-' + $property}: $value
+
+    #{$property}: $value
+
+// Make an element not selectable in the browser
+@mixin no-select
+  -webkit-touch-callout: none
+  @include prefix((user-select: none), webkit moz khtml ms)

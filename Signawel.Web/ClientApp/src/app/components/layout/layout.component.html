@@ -5,18 +5,18 @@
                 <h1>SIGNAwel</h1>
             </div>
             <ul class="nav-list">
-                <li class="nav-item active">
-                    <a href="#">Home</a>
+                <li class="nav-item">
+                    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">Determinatie schema</a>
+                    <a routerLink="/determination-graph" routerLinkActive="active">Determinatie grafiek</a>
                 </li>
             </ul>
         </div>
         <div id="side-bar-bottom">
             <ul class="nav-list">
                 <li class="nav-item accent">
-                    <a href="#">Logout</a>
+                    <a href="#">Uitloggen</a>
                 </li>
             </ul>
         </div>

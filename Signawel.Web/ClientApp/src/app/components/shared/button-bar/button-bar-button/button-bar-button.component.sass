@@ -1,0 +1,13 @@
+@import 'variables'
+@import 'mixins'
+
+.button
+  display: inline-block
+  background-color: $button-bg-color
+  color: $button-color
+  padding: 7px 15px
+  margin: 5px
+  cursor: pointer
+  font-weight: bold
+  text-transform: uppercase
+  @include no-select()

@@ -8,7 +8,7 @@
     #side-bar
         display: flex
         flex-direction: column
-        width: 300px
+        width: 240px
         background-color: $navbar-bg-color
 
         #side-bar-top
@@ -30,7 +30,7 @@
                 a
                     display: block
                     background-color: $navbar-nav-item-bg-color
-                    padding: 20px 25px
+                    padding: 10px 20px
                     color: white
                     text-decoration: none
                     font-size: 1.2rem
@@ -38,9 +38,8 @@
                     &:hover
                         background-color: $navbar-nav-item-bg-color-hover
 
-                &.active
-                    a
-                        background-color: $navbar-nav-item-bg-color-active
+                    &.active
+                            background-color: $navbar-nav-item-bg-color-active
 
                 &.accent
                     a
@@ -51,4 +50,5 @@
 
     #main-content
         flex: 1
-        padding: 40px 30px
+        padding: 20px 20px
+        overflow: auto
