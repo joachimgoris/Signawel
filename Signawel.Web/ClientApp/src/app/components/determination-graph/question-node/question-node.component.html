@@ -1,0 +1,34 @@
+<div class="question-node">
+  <div class="question node">
+    {{ model.question }}
+  </div>
+  <div class="answers">
+    <div class="answer" *ngFor="let answer of model.answers; last as isLast;">
+      <div class="answer-details">
+
+        <div class="border-div" style="width: 33.33%;">
+          <div class="border-div" style="flex: 1">
+          </div>
+          <div class="border-div vertical" style="flex: 1">
+            <div class="border-div left bottom" style="height: 30px;"></div>
+            <div class="border-div" style="flex: 1;" [ngClass]="{ 'left': !isLast }"></div>
+          </div>
+        </div>
+
+        <div class="border-div" style="flex: 1;">
+          <p style="text-align: center; width: 100%; padding-top: 4px;">{{ answer.answer }}</p>
+        </div>
+
+        <div class="border-div vertical" style="flex: 1; max-width: 15px;">
+          <div class="border-div bottom" style="height: 30px;"></div>
+          <div class="border-div" style="flex: 1;"></div>
+        </div>
+
+      </div>
+      <div class="next-node">
+        <graph-question-node [model]="answer.next" *ngIf="answer.next"></graph-question-node>
+        <div class="node end-point" *ngIf="answer.end">{{ answer.end.schemaId }}</div>
+      </div>
+    </div>
+  </div>
+</div>

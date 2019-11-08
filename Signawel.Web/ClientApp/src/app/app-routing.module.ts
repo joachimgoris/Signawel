@@ -1,18 +1,22 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { LayoutComponent } from './components/layout/layout.component';
-import { HomeComponent } from './components/home/home.component';
-
+import { NgModule } from "@angular/core";
+import { Routes, RouterModule } from "@angular/router";
+import { LayoutComponent } from "./components/layout/layout.component";
+import { HomeComponent } from "./components/home/home.component";
+import { DeterminationGraphComponent } from "./components/determination-graph/determination-graph/determination-graph.component";
 
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: LayoutComponent,
     children: [
       {
-        path: '',
-        pathMatch: 'full',
+        path: "",
+        pathMatch: "full",
         component: HomeComponent
+      },
+      {
+        path: "determination-graph",
+        component: DeterminationGraphComponent
       }
     ]
   }
@@ -22,4 +26,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

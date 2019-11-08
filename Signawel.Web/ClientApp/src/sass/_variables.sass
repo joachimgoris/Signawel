@@ -1,7 +1,12 @@
+$color-accent: darken(#2ba8fc, 15%)
+$color-success: darken(#2ecc71, 5%)
+$color-error: darken(#e74c3c, 5%)
+$color-warning: darken(#f39c12, 2%)
+
 $bg-color: #ecf0f1
 $bg-color-dark: #34495e
 $bg-color-light-dark: #2c3e50
-$bg-color-accent: #2ba8fc
+$bg-color-accent: $color-accent
 
 $page-title-color: #3b3b3b
 $page-title-border: 1px solid #6e6e6e
@@ -14,5 +19,9 @@ $navbar-nav-item-bg-color-active: darken($bg-color-light-dark, 2%)
 $navbar-nav-item-accent-bg-color: $bg-color-accent
 $navbar-nav-item-accent-bg-color-hover: darken($bg-color-accent, 5%)
 
-$button-bg-color: lighten($bg-color-accent, 5%)
+$btn-color-default: $color-accent
+$btn-color-success: $color-success
+$btn-color-error: $color-error
+$btn-color-warning: $color-warning
+
 $button-color: white

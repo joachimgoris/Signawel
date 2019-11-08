@@ -1,0 +1,11 @@
+<h1 class="page-title">Determinatie grafiek</h1>
+
+<bbar>
+  <bbar-button bbar-start text="Wijzigen" (click)="editClicked()"></bbar-button>
+
+  <bbar-button bbar-end text="Opslaan" color="success"></bbar-button>
+</bbar>
+
+<div class="graph" *ngIf="determinationGraph">
+  <graph-question-node [model]="determinationGraph.start"></graph-question-node>
+</div>
