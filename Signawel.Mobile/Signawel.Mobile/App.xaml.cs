@@ -1,4 +1,6 @@
 ﻿using System;
+using Signawel.Mobile.ViewModels;
+using Signawel.Mobile.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,7 +12,10 @@ namespace Signawel.Mobile
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new InteractiveSketchView
+            {
+                BindingContext = new InteractiveSketchViewModel()
+            };
         }
 
         protected override void OnStart()
