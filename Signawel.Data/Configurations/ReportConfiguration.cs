@@ -4,16 +4,15 @@ using Signawel.Domain;
 
 namespace Signawel.Data.Configurations
 {
-    public class ReportConfiguration : IEntityTypeConfiguration<Report>
+    internal class ReportConfiguration : IEntityTypeConfiguration<Report>
     {
         public void Configure(EntityTypeBuilder<Report> builder)
         {
             builder.ToTable("reports");
 
             builder.HasKey(e => e.Id);
-            builder.Property(e => e.Id)
-                .HasColumnName("report_id");
 
+            builder.Property(e => e.Id).HasColumnName("id");
             builder.Property(e => e.UserEmail)
                 .IsUnicode()
                 .HasColumnName("user_email")
@@ -24,7 +23,8 @@ namespace Signawel.Data.Configurations
                 .HasColumnName("custom_message");
 
             builder.Property(e => e.Priority)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("priority");
         }
     }
 }

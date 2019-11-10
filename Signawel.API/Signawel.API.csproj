@@ -10,11 +10,13 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Signawel.Business\Signawel.Business.csproj" />
     <ProjectReference Include="..\Signawel.Data\Signawel.Data.csproj" />
+    <ProjectReference Include="..\Signawel.Dto\Signawel.Dto.csproj" />
   </ItemGroup>
 
 </Project>

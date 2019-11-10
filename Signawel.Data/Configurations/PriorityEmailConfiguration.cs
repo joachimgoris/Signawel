@@ -4,7 +4,7 @@ using Signawel.Domain;
 
 namespace Signawel.Data.Configurations
 {
-    public class PriorityEmailConfiguration : IEntityTypeConfiguration<PriorityEmail>
+    internal class PriorityEmailConfiguration : IEntityTypeConfiguration<PriorityEmail>
     {
         public void Configure(EntityTypeBuilder<PriorityEmail> builder)
         {
@@ -12,9 +12,11 @@ namespace Signawel.Data.Configurations
 
             builder.HasKey(e => e.Id);
 
+            builder.Property(e => e.Id).HasColumnName("id");
             builder.Property(e => e.EmailSuffix)
                 .IsUnicode()
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("email_suffix");
         }
     }
 }

@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Signawel.Data.Configurations;
 using Signawel.Domain;
 
 namespace Signawel.Data
 {
-    public class SignawelDbContext : DbContext
+    public class SignawelDbContext : IdentityDbContext<User, Role, string>
     {
         public SignawelDbContext(DbContextOptions options) : base(options) { }
 
@@ -22,7 +23,9 @@ namespace Signawel.Data
             builder.ApplyConfiguration(new ReportIssueConfiguration());
             builder.ApplyConfiguration(new DefaultIssueConfiguration());
             builder.ApplyConfiguration(new PriorityEmailConfiguration());
-            builder.ApplyConfiguration(new ReportIssueConfiguration());
+            builder.ApplyConfiguration(new ReportImageConfiguration());
+            builder.ApplyConfiguration(new LoginRecordsConfiguration());
+            builder.ApplyConfiguration(new RefreshTokenConfiguration());
         }
 
         #endregion
@@ -34,6 +37,10 @@ namespace Signawel.Data
         public DbSet<Report> Reports { get; set; }
         public DbSet<ReportImage> ReportImages { get; set; }
         public DbSet<ReportIssue> ReportIssues { get; set; }
+
+        // Authentiction
+        public DbSet<LoginRecord> LoginRecords { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         #endregion
     }

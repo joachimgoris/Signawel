@@ -4,10 +4,14 @@ using Signawel.Domain;
 
 namespace Signawel.Data.Configurations
 {
-    public class ReportIssueConfiguration : IEntityTypeConfiguration<ReportIssue>
+    internal class ReportIssueConfiguration : IEntityTypeConfiguration<ReportIssue>
     {
         public void Configure(EntityTypeBuilder<ReportIssue> builder)
         {
+            builder.ToTable("report_issues");
+
+            builder.HasKey(e => new { e.ReportId, e.IssueId });
+
             builder.HasOne(e => e.Report)
                 .WithMany(e => e.IssueLink)
                 .HasForeignKey(e => e.ReportId);

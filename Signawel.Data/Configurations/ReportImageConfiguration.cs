@@ -4,7 +4,7 @@ using Signawel.Domain;
 
 namespace Signawel.Data.Configurations
 {
-    public class ReportImageConfiguration : IEntityTypeConfiguration<ReportImage>
+    internal class ReportImageConfiguration : IEntityTypeConfiguration<ReportImage>
     {
         public void Configure(EntityTypeBuilder<ReportImage> builder)
         {
@@ -12,8 +12,12 @@ namespace Signawel.Data.Configurations
 
             builder.HasKey(e => e.Id);
 
+            builder.Property(e => e.Id).HasColumnName("id");
             builder.Property(e => e.ImagePath)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("image_path");
+            builder.Property(e => e.ReportId)
+                .HasColumnName("report_id");
 
             builder.HasOne(e => e.Report)
                 .WithMany(e => e.Images)

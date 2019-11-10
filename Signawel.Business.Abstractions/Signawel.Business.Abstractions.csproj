@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Signawel.Domain\Signawel.Domain.csproj" />
+    <ProjectReference Include="..\Signawel.Dto\Signawel.Dto.csproj" />
   </ItemGroup>
 
 </Project>

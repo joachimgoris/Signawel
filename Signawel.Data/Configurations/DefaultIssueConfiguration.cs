@@ -4,7 +4,7 @@ using Signawel.Domain;
 
 namespace Signawel.Data.Configurations
 {
-    public class DefaultIssueConfiguration : IEntityTypeConfiguration<DefaultIssue>
+    internal class DefaultIssueConfiguration : IEntityTypeConfiguration<DefaultIssue>
     {
         public void Configure(EntityTypeBuilder<DefaultIssue> builder)
         {
@@ -12,9 +12,12 @@ namespace Signawel.Data.Configurations
 
             builder.HasKey(e => e.Id);
 
+            builder.Property(e => e.Id).HasColumnName("id");
+            builder.Property(e => e.Type).HasColumnName("type");
             builder.Property(e => e.Name)
                 .IsUnicode()
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("name");
         }
     }
 }
