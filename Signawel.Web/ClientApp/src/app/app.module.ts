@@ -10,6 +10,7 @@ import { DeterminationGraphComponent } from "./components/determination-graph/de
 import { QuestionNodeComponent } from "./components/determination-graph/question-node/question-node.component";
 import { ButtonBarComponent } from "./components/shared/button-bar/button-bar/button-bar.component";
 import { ButtonBarButtonComponent } from "./components/shared/button-bar/button-bar-button/button-bar-button.component";
+import { DeterminationEndpointDetailComponent } from './components/determination-graph/determination-endpoint/determination-endpoint-detail/determination-endpoint-detail.component';
 
 @NgModule({
   declarations: [
@@ -19,9 +20,14 @@ import { ButtonBarButtonComponent } from "./components/shared/button-bar/button-
     DeterminationGraphComponent,
     QuestionNodeComponent,
     ButtonBarComponent,
-    ButtonBarButtonComponent
+    ButtonBarButtonComponent,
+    DeterminationEndpointDetailComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
