@@ -1,22 +1,5 @@
 @import 'variables'
 @import 'mixins'
 
-.button
-  display: inline-block
-  background-color: $btn-color-default
-  color: $button-color
-  padding: 7px 15px
-  margin: 5px
-  cursor: pointer
-  font-weight: bold
+button
   text-transform: uppercase
-  @include no-select()
-
-  &.success
-    background-color: $btn-color-success
-
-  &.error
-    background-color: $btn-color-error
-
-  &.warning
-    background-color: $btn-color-warning

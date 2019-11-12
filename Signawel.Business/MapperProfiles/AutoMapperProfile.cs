@@ -10,6 +10,10 @@ namespace Signawel.Business.MapperProfiles
             new DeterminationGraphProfile();
             new DeterminationNodeProfile();
             new DeterminationAnswerProfile();
+            new ImageProfile();
+            new RoadworkSchemaProfile();
+            new BBoxProfile();
+            new BBoxPointProfile();
         }
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Signawel.Data;
 
 namespace Signawel.Data.Migrations
 {
     [DbContext(typeof(SignawelDbContext))]
-    partial class SignawelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191111201643_Add_ImagesAndRoadworkSchemas")]
+    partial class Add_ImagesAndRoadworkSchemas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,71 +165,6 @@ namespace Signawel.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("default_issues");
-                });
-
-            modelBuilder.Entity("Signawel.Domain.DeterminationAnswer", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("answer_id");
-
-                    b.Property<string>("Answer")
-                        .IsRequired()
-                        .HasColumnName("answer");
-
-                    b.Property<string>("NodeId")
-                        .HasColumnName("node_id");
-
-                    b.Property<string>("ParentNodeId")
-                        .HasColumnName("parent_node_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NodeId")
-                        .IsUnique()
-                        .HasFilter("[node_id] IS NOT NULL");
-
-                    b.HasIndex("ParentNodeId");
-
-                    b.ToTable("determination_graph_answers");
-                });
-
-            modelBuilder.Entity("Signawel.Domain.DeterminationGraph", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("determination_graph_id");
-
-                    b.Property<string>("StartId")
-                        .HasColumnName("start_node_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StartId")
-                        .IsUnique()
-                        .HasFilter("[start_node_id] IS NOT NULL");
-
-                    b.ToTable("determination_graphs");
-                });
-
-            modelBuilder.Entity("Signawel.Domain.DeterminationNode", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("node_id");
-
-                    b.Property<string>("Question")
-                        .HasColumnName("question");
-
-                    b.Property<string>("SchemaId")
-                        .HasColumnName("schema_id");
-
-                    b.Property<byte>("Type")
-                        .HasColumnName("type");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("determination_graph_nodes");
                 });
 
             modelBuilder.Entity("Signawel.Domain.Image", b =>
@@ -518,24 +455,6 @@ namespace Signawel.Data.Migrations
                     b.HasOne("Signawel.Domain.BBox", "BBox")
                         .WithMany("Points")
                         .HasForeignKey("BBoxId");
-                });
-
-            modelBuilder.Entity("Signawel.Domain.DeterminationAnswer", b =>
-                {
-                    b.HasOne("Signawel.Domain.DeterminationNode", "Node")
-                        .WithOne()
-                        .HasForeignKey("Signawel.Domain.DeterminationAnswer", "NodeId");
-
-                    b.HasOne("Signawel.Domain.DeterminationNode", "ParentNode")
-                        .WithMany("Answers")
-                        .HasForeignKey("ParentNodeId");
-                });
-
-            modelBuilder.Entity("Signawel.Domain.DeterminationGraph", b =>
-                {
-                    b.HasOne("Signawel.Domain.DeterminationNode", "Start")
-                        .WithOne()
-                        .HasForeignKey("Signawel.Domain.DeterminationGraph", "StartId");
                 });
 
             modelBuilder.Entity("Signawel.Domain.LoginRecord", b =>

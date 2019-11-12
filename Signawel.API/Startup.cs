@@ -47,7 +47,7 @@ namespace Signawel.API
 
             services.AddDbContext<SignawelDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SignawelDb")))
                 .AddSignawelAuthentication(Configuration)
-                .AddSignawelDeterminationGraph();
+                .AddSignawelServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +62,7 @@ namespace Signawel.API
                 {
                     s.SwaggerEndpoint("/swagger/v0.1/swagger.json", "SignawelApi v0.1");
                 });
+                app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             }
             else
             {

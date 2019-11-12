@@ -29,6 +29,10 @@ namespace Signawel.Data
             builder.ApplyConfiguration(new DeterminationGraphConfiguration());
             builder.ApplyConfiguration(new DeterminationNodeConfiguration());
             builder.ApplyConfiguration(new DeterminationAnswerConfiguration());
+            builder.ApplyConfiguration(new BBoxConfiguration());
+            builder.ApplyConfiguration(new BBoxPointConfiguration());
+            builder.ApplyConfiguration(new RoadworkSchemaConfiguration());
+            builder.ApplyConfiguration(new ImageConfiguration());
         }
 
         #endregion
@@ -43,10 +47,12 @@ namespace Signawel.Data
         public DbSet<DeterminationGraph> DeterminationGraphs { get; set; }
         public DbSet<DeterminationNode> DeterminationNodes { get; set; }
         public DbSet<DeterminationAnswer> DeterminationAnswers { get; set; }
-
-        // Authentiction
         public DbSet<LoginRecord> LoginRecords { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<BBox> BoundingBox { get; set; }
+        public DbSet<BBoxPoint> BoundingBoxPoint { get; set; }
+        public DbSet<RoadworkSchema> RoadworkSchemas { get; set; }
+        public DbSet<Image> Images { get; set;}
 
         #endregion
     }

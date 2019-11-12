@@ -99,10 +99,12 @@ namespace Signawel.API.Extensions
             return services;
         }
 
-        public static IServiceCollection AddSignawelDeterminationGraph(this IServiceCollection services)
+        public static IServiceCollection AddSignawelServices(this IServiceCollection services)
         {
             services.AddScoped<IDeterminationRepository, DeterminationGraphRepository>();
             services.AddScoped<IDeterminationService, DeterminationService>();
+            services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IRoadworkSchemaService, RoadworkSchemaService>();
 
             return services;
         }
