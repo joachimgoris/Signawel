@@ -1,0 +1,54 @@
+blade-modal
+  display: none
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+
+  .blade-modal
+    display: none
+    z-index: 105
+    overflow: auto
+    position: absolute
+    top: 0
+    right: 0
+    bottom: 0
+    min-width: 800px
+    max-width: 50%
+
+    .blade-modal-body
+      padding: 20px
+      background: white
+      height: 100%
+      width: 100%
+
+      .blade-modal-header
+        display: flex
+        margin-bottom: 15px
+
+        .blade-modal-title
+          flex: 1
+          font-weight: bold
+          font-size: 1.3em
+          padding-top: 1px
+
+        .blade-modal-close
+          width: 24px
+          cursor: pointer
+
+.blade-modal-background
+    position: absolute
+    top: 0
+    right: 0
+    bottom: 0
+    left: 0
+    background-color: #000
+    opacity: 0.75
+    z-index: 100
+
+body.blade-modal-open
+    overflow: hidden
+
+    .blade-modal
+      display: block

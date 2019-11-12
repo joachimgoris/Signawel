@@ -1,8 +1,16 @@
-<div class="question-node">
-  <div class="question node">
-    {{ model.question }}
+<div class="question-node" *ngIf="model">
+
+  <div class="node" [ngClass]="model.type">
+    <span *ngIf="model.type == 'Question'">{{ model.question }}</span>
+    <span *ngIf="model.type == 'EndPoint'">{{ model.schemaId }}</span>
+    <span *ngIf="model.type != 'Question' && model.type != 'EndPoint'">???</span>
+
+    <div class="edit" *ngIf="editing" (click)="edit()">
+      <span class="material-icons">create</span>
+    </div>
   </div>
-  <div class="answers">
+
+  <div class="answers" *ngIf="model.type == 'Question'">
     <div class="answer" *ngFor="let answer of model.answers; last as isLast;">
       <div class="answer-details">
 
@@ -26,9 +34,57 @@
 
       </div>
       <div class="next-node">
-        <graph-question-node [model]="answer.next" *ngIf="answer.next"></graph-question-node>
-        <div class="node end-point" *ngIf="answer.end">{{ answer.end.schemaId }}</div>
+        <graph-question-node [model]="answer.node" *ngIf="answer.node" [editing]="editing"></graph-question-node>
       </div>
     </div>
   </div>
 </div>
+
+<blade-modal [id]="modalId" modalTitle="Bewerk determinatie node" [closeButton]="true"
+  (modalClose)="onModalClose($event)">
+
+  <div class="edit-form">
+    <div class="form-group">
+      <label for="type">Node type: </label>
+      <select name="type" id="typeSelect" [(ngModel)]="model.type">
+        <option value="Question">Vraag</option>
+        <option value="EndPoint">Eind punt</option>
+      </select>
+    </div>
+
+    <div class="form-divider"></div>
+
+    <div class="question-node-form" *ngIf="model.type == 'Question'">
+      <div class="form-group">
+        <label for="question">Vraag:</label>
+        <input name="question" type="text" [(ngModel)]="model.question">
+      </div>
+      <div class="modal-answers">
+        <div class="modal-answer" *ngFor="let answer of model.answers; let index = index">
+          <div class="index">
+            #{{ index + 1 }}
+          </div>
+          <div class="text">
+            <input type="text" [(ngModel)]="answer.answer">
+          </div>
+          <div class="delete" (click)="modalDeleteAnswerClicked(index)">
+            <span class="material-icons">close</span>
+          </div>
+        </div>
+        <div class="modal-answer" style="cursor: pointer" (click)="modalAddAnswerClicked()">
+          <div class="index">
+            <span class="material-icons">add</span>
+          </div>
+          <div class="text">
+            Antwoord toevoegen
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="end-point-node-form" *ngIf="model.type == 'EndPoint'">
+      end point
+    </div>
+  </div>
+
+</blade-modal>

@@ -9,9 +9,19 @@ import { Observable } from "rxjs";
 export class DeterminationGraphService {
   constructor(private http: HttpClient) {}
 
-  getSchema(): Observable<DeterminationGraphModel> {
+  getGraph(): Observable<DeterminationGraphModel> {
+    // return this.http.get<DeterminationGraphModel>("../../assets/determination-test2.json");
     return this.http.get<DeterminationGraphModel>(
-      "../../assets/determination-test.json"
+      "https://localhost:5001/api/determination-graph"
+    );
+  }
+
+  setGraph(
+    model: DeterminationGraphModel
+  ): Observable<DeterminationGraphModel> {
+    return this.http.post<DeterminationGraphModel>(
+      "https://localhost:5001/api/determination-graph",
+      model
     );
   }
 }

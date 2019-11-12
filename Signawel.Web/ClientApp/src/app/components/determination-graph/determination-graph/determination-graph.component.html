@@ -1,11 +1,14 @@
 <h1 class="page-title">Determinatie grafiek</h1>
 
 <bbar>
-  <bbar-button bbar-start text="Wijzigen" (click)="editClicked()"></bbar-button>
+  <bbar-button bbar-start text="Wijzigen" (click)="onEdit()" *ngIf="!editing"></bbar-button>
 
-  <bbar-button bbar-end text="Opslaan" color="success"></bbar-button>
+  <bbar-button bbar-end text="Annuleren" (click)="onCancel()" *ngIf="editing" color="warning"></bbar-button>
+  <bbar-button bbar-end text="Opslaan" (click)="onSave()" *ngIf="editing" color="success"></bbar-button>
 </bbar>
 
 <div class="graph" *ngIf="determinationGraph">
-  <graph-question-node [model]="determinationGraph.start"></graph-question-node>
+  <graph-question-node [model]="determinationGraph.start" [editing]="editing"></graph-question-node>
 </div>
+
+<app-loader [active]="loading"></app-loader>

@@ -7,6 +7,9 @@ namespace Signawel.Business.MapperProfiles
         public AutoMapperProfile()
         {
             new UserProfile();
+            new DeterminationGraphProfile();
+            new DeterminationNodeProfile();
+            new DeterminationAnswerProfile();
         }
     }
 }

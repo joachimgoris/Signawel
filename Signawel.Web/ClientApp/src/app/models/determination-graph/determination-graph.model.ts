@@ -1,6 +1,6 @@
-import { DeterminationQuestionModel } from "./determination-question.model.ts";
+import { DeterminationNodeModel } from "./determination-node.model";
 
 export class DeterminationGraphModel {
   public iteration: number;
-  public start: DeterminationQuestionModel;
+  public start: DeterminationNodeModel;
 }

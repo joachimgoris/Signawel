@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { DeterminationGraphService } from "src/app/services/determination-graph/determination-graph.service";
 import { DeterminationGraphModel } from "src/app/models/determination-graph/determination-graph.model";
+import { DeterminationAnswerModel } from "src/app/models/determination-graph/determination-answer.model";
 
 @Component({
   selector: "app-determination-graph",
@@ -9,16 +10,46 @@ import { DeterminationGraphModel } from "src/app/models/determination-graph/dete
 })
 export class DeterminationGraphComponent implements OnInit {
   private determinationGraph: DeterminationGraphModel;
+  private savedDeterminationGraph: DeterminationGraphModel;
+
+  public editing: boolean = false;
+  public loading: boolean = true;
 
   constructor(private determinationGraphService: DeterminationGraphService) {}
 
   ngOnInit() {
-    this.determinationGraphService
-      .getSchema()
-      .subscribe(result => (this.determinationGraph = result));
+    this.loading = true;
+    this.determinationGraphService.getGraph().subscribe(result => {
+      this.savedDeterminationGraph = result;
+      this.determinationGraph = JSON.parse(
+        JSON.stringify(this.savedDeterminationGraph)
+      ); // easy deep copy
+
+      this.loading = false;
+    });
   }
 
-  editClicked() {
-    console.log("edit clicked");
+  onEdit() {
+    this.editing = true;
+  }
+
+  onSave() {
+    this.editing = false;
+    this.loading = true;
+    this.determinationGraphService
+      .setGraph(this.determinationGraph)
+      .subscribe(result => {
+        this.savedDeterminationGraph = result;
+        this.determinationGraph = JSON.parse(
+          JSON.stringify(this.savedDeterminationGraph)
+        ); // easy deep copy
+
+        this.loading = false;
+      });
+  }
+
+  onCancel() {
+    this.editing = false;
+    this.determinationGraph = this.savedDeterminationGraph;
   }
 }

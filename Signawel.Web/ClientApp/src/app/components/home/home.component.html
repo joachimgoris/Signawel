@@ -1,1 +1,9 @@
 <h1 class="page-title">Home</h1>
+
+<button (click)="openModal('blade-modal-1')">Open</button>
+
+<blade-modal id="blade-modal-1" modalTitle="Test modal" (modalClose)="onClose($event)">
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis amet molestias facilis laudantium, ullam
+    voluptatibus fuga et voluptate dicta debitis. Nisi laborum obcaecati commodi laudantium consequatur, amet beatae
+    animi delectus.</p>
+</blade-modal>

@@ -1,0 +1,78 @@
+{
+  "start": {
+    "type": "question",
+    "question": "Zijn de werken van een mobiele aard?",
+    "answers": [
+      {
+        "type": "end-point",
+        "answer": "Ja",
+        "node": {
+          "type": "end-point",
+          "schemaId": "Cat6"
+        }
+      },
+      {
+        "answer": "Nee",
+        "node": {
+          "type": "question",
+          "question": "Bevinden de werken zich op de rijbaan?",
+          "answers": [
+            {
+              "answer": "Ja",
+              "node": {
+                "type": "question",
+                "question": "Worden de werken uitgevoerd tussen het aanbreken van de dag en het vallen van de avond?",
+                "answers": [
+                  {
+                    "answer": "Ja",
+                    "node": {
+                      "type": "end-point",
+                      "schemaId": "Cat5"
+                    }
+                  },
+                  {
+                    "answer": "Nee",
+                    "node": {
+                      "type": "question",
+                      "question": "Wat is de maximum toegelaten snelheid?",
+                      "answers": [
+                        {
+                          "answer": "90 KM/h",
+                          "node": {
+                            "type": "end-point",
+                            "schemaId": "Cat1"
+                          }
+                        },
+                        {
+                          "answer": "70 KM/h",
+                          "node": {
+                            "type": "end-point",
+                            "schemaId": "Cat2"
+                          }
+                        },
+                        {
+                          "answer": "50 KM/h",
+                          "node": {
+                            "type": "end-point",
+                            "schemaId": "Cat3"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "answer": "Nee",
+              "node": {
+                "type": "end-point",
+                "schemaId": "Cat4"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

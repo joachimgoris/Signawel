@@ -26,6 +26,9 @@ namespace Signawel.Data
             builder.ApplyConfiguration(new ReportImageConfiguration());
             builder.ApplyConfiguration(new LoginRecordsConfiguration());
             builder.ApplyConfiguration(new RefreshTokenConfiguration());
+            builder.ApplyConfiguration(new DeterminationGraphConfiguration());
+            builder.ApplyConfiguration(new DeterminationNodeConfiguration());
+            builder.ApplyConfiguration(new DeterminationAnswerConfiguration());
         }
 
         #endregion
@@ -37,6 +40,9 @@ namespace Signawel.Data
         public DbSet<Report> Reports { get; set; }
         public DbSet<ReportImage> ReportImages { get; set; }
         public DbSet<ReportIssue> ReportIssues { get; set; }
+        public DbSet<DeterminationGraph> DeterminationGraphs { get; set; }
+        public DbSet<DeterminationNode> DeterminationNodes { get; set; }
+        public DbSet<DeterminationAnswer> DeterminationAnswers { get; set; }
 
         // Authentiction
         public DbSet<LoginRecord> LoginRecords { get; set; }
@@ -45,3 +51,4 @@ namespace Signawel.Data
         #endregion
     }
 }
+ 

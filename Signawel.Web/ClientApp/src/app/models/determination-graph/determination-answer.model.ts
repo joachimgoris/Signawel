@@ -1,8 +1,6 @@
-import { DeterminationQuestionModel } from "./determination-question.model.ts";
-import { DeterminationEndModel } from "./determination-end.model";
+import { DeterminationNodeModel } from "./determination-node.model";
 
 export class DeterminationAnswerModel {
   public answer: string;
-  public next: DeterminationQuestionModel;
-  public end: DeterminationEndModel;
+  public node: DeterminationNodeModel;
 }

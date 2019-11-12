@@ -1,68 +1,71 @@
 {
   "iteration": 1,
   "start": {
-    "question": "Zijn de werken van een mobiele aard?",
-    "answers": [
-      {
-        "answer": "Ja",
-        "end": {
-          "schemaId": "Cat6"
-        }
-      },
-      {
-        "answer": "Nee",
-        "next": {
-          "question": "Bevinden de werken zich op de rijbaan?",
-          "answers": [
-            {
-              "answer": "Ja",
-              "next": {
-                "question": "Worden de werken uitgevoerd tussen het aanbreken van de dag en het vallen van de avond?",
-                "answers": [
-                  {
-                    "answer": "Ja",
-                    "end": {
-                      "schemaId": "Cat5"
+    "answer": "",
+    "next": {
+      "question": "Zijn de werken van een mobiele aard?",
+      "answers": [
+        {
+          "answer": "Ja",
+          "end": {
+            "schemaId": "Cat6"
+          }
+        },
+        {
+          "answer": "Nee",
+          "next": {
+            "question": "Bevinden de werken zich op de rijbaan?",
+            "answers": [
+              {
+                "answer": "Ja",
+                "next": {
+                  "question": "Worden de werken uitgevoerd tussen het aanbreken van de dag en het vallen van de avond?",
+                  "answers": [
+                    {
+                      "answer": "Ja",
+                      "end": {
+                        "schemaId": "Cat5"
+                      }
+                    },
+                    {
+                      "answer": "Nee",
+                      "next": {
+                        "question": "Wat is de maximum toegelaten snelheid?",
+                        "answers": [
+                          {
+                            "answer": "90 KM/h",
+                            "end": {
+                              "schemaId": "Cat1"
+                            }
+                          },
+                          {
+                            "answer": "70 KM/h",
+                            "end": {
+                              "schemaId": "Cat2"
+                            }
+                          },
+                          {
+                            "answer": "50 KM/h",
+                            "end": {
+                              "schemaId": "Cat3"
+                            }
+                          }
+                        ]
+                      }
                     }
-                  },
-                  {
-                    "answer": "Nee",
-                    "next": {
-                      "question": "Wat is de maximum toegelaten snelheid?",
-                      "answers": [
-                        {
-                          "answer": "90 KM/h",
-                          "end": {
-                            "schemaId": "Cat1"
-                          }
-                        },
-                        {
-                          "answer": "70 KM/h",
-                          "end": {
-                            "schemaId": "Cat2"
-                          }
-                        },
-                        {
-                          "answer": "50 KM/h",
-                          "end": {
-                            "schemaId": "Cat3"
-                          }
-                        }
-                      ]
-                    }
-                  }
-                ]
+                  ]
+                }
+              },
+              {
+                "answer": "Nee",
+                "end": {
+                  "schemaId": "Cat4"
+                }
               }
-            },
-            {
-              "answer": "Nee",
-              "end": {
-                "schemaId": "Cat4"
-              }
-            }
-          ]
+            ]
+          }
         }
-      }
-    ]
+      ]
+    }
   }
 }

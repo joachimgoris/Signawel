@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Converters;
 using Signawel.API.Extensions;
 using Signawel.Business.MapperProfiles;
 using Signawel.Data;
+using Signawel.Data.Abstractions.Repositories;
 
 namespace Signawel.API
 {
@@ -23,7 +25,14 @@ namespace Signawel.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services
+                .AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddSwaggerGen(s =>
             {
                 s.SwaggerDoc("v0.1", new Swashbuckle.AspNetCore.Swagger.Info
@@ -37,8 +46,8 @@ namespace Signawel.API
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
             services.AddDbContext<SignawelDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SignawelDb")))
-                .AddSignawelAuthentication(Configuration);
-
+                .AddSignawelAuthentication(Configuration)
+                .AddSignawelDeterminationGraph();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +57,7 @@ namespace Signawel.API
             {
                 app.UseDeveloperExceptionJsonResponse();
                 app.UseSwagger();
+                app.UseCors(o => o.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
                 app.UseSwaggerUI(s =>
                 {
                     s.SwaggerEndpoint("/swagger/v0.1/swagger.json", "SignawelApi v0.1");

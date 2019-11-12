@@ -1,10 +1,11 @@
 $node-width: 150px
-$node-max-width: 250px
+$node-max-width: 350px
 $node-height: 60px
 $answer-width: 120px
 
 $question-node-color: darken(#ecf0f1, 5%)
 $end-point-node-color: darken($question-node-color, 10%)
+$na-node-color: #c0392b
 
 .question-node
   width: fit-content
@@ -15,20 +16,53 @@ $end-point-node-color: darken($question-node-color, 10%)
   margin: 5px 0
   border-radius: 6px
   border: 4px solid
+  position: relative
+  display: flex
+  align-items: center
 
-  &.end-point
+  &.EndPoint
     background-color: $end-point-node-color
     border-color: darken($end-point-node-color, 4%)
 
-  &.question
+    span
+      width: 100%
+      text-align: center
+
+  &.na
+    background-color: $na-node-color
+    border-color: darken($na-node-color, 4%)
+
+    span
+      width: 100%
+      text-align: center
+
+  &.Question
     width: fit-content
     max-width: $node-max-width
     background-color: $question-node-color
     border-color: darken($question-node-color, 4%)
     padding: 5px 10px
     text-align: center
-    display: flex
-    align-items: center
+
+  &:hover
+    .edit
+      display: flex
+
+  .edit
+    display: none
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    background-color: rgba(0, 0, 0, 0.5)
+    color: rgba(255, 255, 255, 0.9)
+
+    span
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translateX(-50%) translateY(-50%)
 
 .answers
 
@@ -51,6 +85,39 @@ $end-point-node-color: darken($question-node-color, 10%)
         &.bottom
           border-bottom: 1px solid black
 
-
     .next-node
       width: $node-width
+
+.edit-actions
+  display: flex
+
+.modal-answers
+  padding: 0 20px
+  margin-top: 25px
+
+  .modal-answer
+    display: flex
+    background-color: rgba(0, 0, 0, 0.2)
+    margin: 5px 0
+    padding: 2px 8px
+    border-radius: 5px
+
+    .index
+      width: 35px
+      text-align: center
+      display: flex
+      align-items: center
+
+    .text
+      flex: 1
+      display: flex
+      align-items: center
+
+      input
+        width: 100%
+
+    .delete
+      width: fit-content
+      display: flex
+      align-items: center
+      cursor: pointer
