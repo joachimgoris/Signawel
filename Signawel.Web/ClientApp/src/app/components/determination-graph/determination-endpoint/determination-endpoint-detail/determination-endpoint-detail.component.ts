@@ -76,9 +76,20 @@ export class DeterminationEndpointDetailComponent implements OnInit {
 
     if (finished) {
       const firstPoint = boundingbox.getPoints()[0];
+      this.drawNumber(firstPoint.xCoord, firstPoint.yCoord, this.finishedBoundingBoxes.indexOf(boundingbox));
       const lastPoint = boundingbox.getPoints()[boundingbox.getPoints().length - 1];
       this.drawLine(firstPoint, lastPoint);
     }
+  }
+
+  drawNumber(xCoord: number, yCoord: number, index: number) {
+    const numberParagraph = this.renderer.createElement('p');
+    this.renderer.addClass(numberParagraph, 'number');
+    this.renderer.setProperty(numberParagraph, 'innerHTML', `Box ${index + 1}`)
+    this.renderer.setStyle(numberParagraph, 'left', `${xCoord}px`);
+    this.renderer.setStyle(numberParagraph, 'top', `${yCoord - 30}px`);
+
+    this.renderer.appendChild(this.pointOutput.nativeElement, numberParagraph);
   }
 
   drawPoint(point: Point) {
@@ -193,5 +204,10 @@ export class DeterminationEndpointDetailComponent implements OnInit {
     });
 
     return finishedBoundingBoxes;
+  }
+
+  removeBoundingBox(event) {
+    this.finishedBoundingBoxes.splice(event, 1);
+    this.render();
   }
 }

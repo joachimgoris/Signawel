@@ -31,6 +31,7 @@ import { DeterminationEndpointDetailComponent } from "./components/determination
 import { DeterminationEndpointListComponent } from "./components/determination-graph/determination-endpoint/determination-endpoint-list/determination-endpoint-list.component";
 import { LoaderComponent } from "./components/shared/loader/loader.component";
 import { BladeModalComponent } from "./components/shared/blade-modal/blade-modal.component";
+import { BoundingboxListComponent } from './components/determination-graph/determination-endpoint/determination-endpoint-detail/boundingbox-list/boundingbox-list.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { BladeModalComponent } from "./components/shared/blade-modal/blade-modal
     DeterminationEndpointDetailComponent,
     DeterminationEndpointListComponent,
     BladeModalComponent,
-    LoaderComponent
+    LoaderComponent,
+    BoundingboxListComponent
   ],
   imports: [
     BrowserModule,

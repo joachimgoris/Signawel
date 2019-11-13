@@ -1,0 +1,7 @@
+<div class="listcolumn">
+    <ul>
+        <li *ngFor="let box of finishedBoundingBoxes; let i = index;" class="list-item">
+            {{ !box.name ? 'Box ' + (i + 1) :  box.name }} <button class="remove" (click)="onRemove(i)">X</button>
+        </li>
+    </ul>
+</div>

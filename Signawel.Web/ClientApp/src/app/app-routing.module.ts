@@ -17,6 +17,11 @@ const routes: Routes = [
         component: HomeComponent
       },
       {
+        path: 'determination-graph/determination-endpoint/determination-endpoint-detail',
+        pathMatch: 'full',
+        component: DeterminationEndpointDetailComponent
+      },
+      {
         path: "determination-graph",
         component: DeterminationGraphComponent
       },
