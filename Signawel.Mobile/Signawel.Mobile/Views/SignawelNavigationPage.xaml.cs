@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+namespace Signawel.Mobile.Views
+{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class SignawelNavigationPage : NavigationPage
+    {
+        public SignawelNavigationPage()
+        {
+            InitializeComponent();
+        }
+
+        public SignawelNavigationPage(Page root) : base(root)
+        {
+            InitializeComponent();
+        }
+    }
+}

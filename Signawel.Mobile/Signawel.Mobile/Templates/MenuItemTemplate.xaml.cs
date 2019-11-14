@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace Signawel.Mobile
+namespace Signawel.Mobile.Templates
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainView : ContentPage
+    public partial class MenuItemTemplate : ContentView
     {
-        public MainView()
+        public MenuItemTemplate()
         {
             InitializeComponent();
         }
-
     }
 }

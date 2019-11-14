@@ -21,7 +21,6 @@ namespace Signawel.Mobile.ViewModels
             {
                 if(_points == value) return;
                 _points = value;
-                OnPropertyChanged();
             }
         }
 
@@ -32,7 +31,6 @@ namespace Signawel.Mobile.ViewModels
             {
                 if (_imageUrlBytes == value) return;
                 _imageUrlBytes = value;
-                OnPropertyChanged();
             }
         }
 

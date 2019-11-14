@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Signawel.Mobile.Bootstrap;
+using Signawel.Mobile.Bootstrap.Abstract;
 using Signawel.Mobile.ViewModels;
 using Signawel.Mobile.Views;
 using Xamarin.Forms;
@@ -8,14 +11,20 @@ namespace Signawel.Mobile
 {
     public partial class App : Application
     {
+        private readonly IDependencyResolver _dependencyResolver;
+
         public App()
         {
-            InitializeComponent();
+            _dependencyResolver = AppContainer.Instance;
 
-            MainPage = new InteractiveSketchView
-            {
-                BindingContext = new InteractiveSketchViewModel()
-            };
+            InitializeComponent();
+            InitializeNavigation();
+        }
+
+        private async Task InitializeNavigation()
+        {
+            var navigationService = _dependencyResolver.Resolve<INavigationService>();
+            await navigationService.InitializeAsync();
         }
 
         protected override void OnStart()
