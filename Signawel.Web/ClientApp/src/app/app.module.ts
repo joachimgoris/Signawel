@@ -13,7 +13,10 @@ import {
   MatButtonModule,
   MatSidenavModule,
   MatIconModule,
-  MatListModule
+  MatListModule,
+  MatFormFieldModule,
+  MatSelectModule,
+  MatAutocompleteModule
 } from "@angular/material";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { LayoutModule } from "@angular/cdk/layout";
@@ -67,7 +70,10 @@ import { BoundingboxListComponent } from './components/determination-graph/deter
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    LayoutModule
+    LayoutModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]

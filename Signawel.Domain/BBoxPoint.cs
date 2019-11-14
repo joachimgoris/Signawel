@@ -11,5 +11,7 @@
 
         public BBox BBox { get; set; }
 
+        public int Order { get; set; }
+
     }
 }

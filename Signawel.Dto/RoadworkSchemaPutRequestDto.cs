@@ -4,14 +4,15 @@ using System.Text;
 
 namespace Signawel.Dto
 {
-    public class RoadworkSchemaCreationRequestDto
+    public class RoadworkSchemaPutRequestDto
     {
+        public string Id { get; set; }
 
         public string Name { get; set; }
 
         public string ImageId { get; set; }
 
-        public ICollection<BBoxCreationRequestDto> BoundingBoxes { get; set; }
+        public ICollection<BBoxPutRequestDto> BoundingBoxes { get; set; }
 
     }
 }

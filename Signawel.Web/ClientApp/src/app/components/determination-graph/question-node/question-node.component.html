@@ -1,8 +1,8 @@
-<div class="question-node" *ngIf="model">
+<div class="question-node" *ngIf="model && roadworkSchemas">
 
   <div class="node" [ngClass]="model.type">
     <span *ngIf="model.type == 'Question'">{{ model.question }}</span>
-    <span *ngIf="model.type == 'EndPoint'">{{ model.schemaId }}</span>
+    <span *ngIf="model.type == 'EndPoint'">{{ displayRoadworkSchemaName(model.schemaId) }}</span>
     <span *ngIf="model.type != 'Question' && model.type != 'EndPoint'">???</span>
 
     <div class="edit" *ngIf="editing" (click)="edit()">
@@ -34,7 +34,8 @@
 
       </div>
       <div class="next-node">
-        <graph-question-node [model]="answer.node" *ngIf="answer.node" [editing]="editing"></graph-question-node>
+        <graph-question-node [model]="answer.node" *ngIf="answer.node" [editing]="editing"
+          [roadworkSchemas]="roadworkSchemas"></graph-question-node>
       </div>
     </div>
   </div>
@@ -44,28 +45,33 @@
   (modalClose)="onModalClose($event)">
 
   <div class="edit-form">
-    <div class="form-group">
-      <label for="type">Node type: </label>
-      <select name="type" id="typeSelect" [(ngModel)]="model.type">
-        <option value="Question">Vraag</option>
-        <option value="EndPoint">Eind punt</option>
-      </select>
-    </div>
-
-    <div class="form-divider"></div>
+    <mat-form-field style="width: 100%">
+      <mat-select placeholder="Type node" [(ngModel)]="model.type">
+        <mat-option value="Question">Vraag</mat-option>
+        <mat-option value="EndPoint">Eind punt</mat-option>
+      </mat-select>
+    </mat-form-field>
 
     <div class="question-node-form" *ngIf="model.type == 'Question'">
-      <div class="form-group">
-        <label for="question">Vraag:</label>
-        <input name="question" type="text" [(ngModel)]="model.question">
-      </div>
+      <mat-form-field style="width: 100%">
+        <input matInput placeholder="Vraag" name="question" type="text" [(ngModel)]="model.question">
+      </mat-form-field>
+
+      <mat-form-field style="width: 100%">
+        <!--<input matInput placeholder="Extra info" name="question" type="text" [(ngModel)]="model.question"> -->
+        <textarea matInput placeholder="Extra info" name="question" type="text"
+          [(ngModel)]="model.questionDescription"></textarea>
+      </mat-form-field>
+
       <div class="modal-answers">
         <div class="modal-answer" *ngFor="let answer of model.answers; let index = index">
           <div class="index">
             #{{ index + 1 }}
           </div>
           <div class="text">
-            <input type="text" [(ngModel)]="answer.answer">
+            <mat-form-field style="width: 100%">
+              <input matInput placeholder="Antwoord" type="text" [(ngModel)]="answer.answer">
+            </mat-form-field>
           </div>
           <div class="delete" (click)="modalDeleteAnswerClicked(index)">
             <span class="material-icons">close</span>
@@ -83,7 +89,30 @@
     </div>
 
     <div class="end-point-node-form" *ngIf="model.type == 'EndPoint'">
-      end point
+      <mat-form-field style="width: 100%">
+        <mat-select placeholder="Werk schema" [(ngModel)]="model.schemaId">
+          <mat-option *ngFor="let schema of roadworkSchemas" [value]="schema.id">{{ schema.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!--
+      <form [formGroup]="roadworkSchemaForm">
+        <mat-form-field style="width:  100%;">
+          <input matInput placeholder="Werk schema" [matAutocomplete]="auto" [(ngModel)]="model.schemaId">
+        </mat-form-field>
+        
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayRoadworkSchemaName">
+          <mat-option *ngIf="isLoading" class="is-loading">
+            <mat-spinner diameter="50"></mat-spinner>
+          </mat-option>
+          <ng-container *ngIf="!isLoading">
+            <mat-option *ngFor="let rws of filteredRoadworkSchemas" [value]="rws">
+              <span>{{ rws.name }}</span>
+            </mat-option>
+          </ng-container>
+        </mat-autocomplete>
+      </form>
+        -->
     </div>
   </div>
 

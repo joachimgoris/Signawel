@@ -23,12 +23,16 @@ namespace Signawel.Data.Configurations
             builder.Property(e => e.Y)
                 .HasColumnName("y");
 
+            builder.Property(e => e.Order)
+                .HasColumnName("order");
+
             builder.Property(e => e.BBoxId)
                 .HasColumnName("bbox_id");
 
             builder.HasOne(e => e.BBox)
                 .WithMany(e => e.Points)
-                .HasForeignKey(e => e.BBoxId);
+                .HasForeignKey(e => e.BBoxId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

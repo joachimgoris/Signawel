@@ -1,14 +1,16 @@
-<div class="blade-modal-background"></div>
-<div class="blade-modal">
-  <div class="blade-modal-body">
-    <div class="blade-modal-header">
-      <div class="blade-modal-title">
-        {{ modalTitle }}
+<div class="blade-modal-container">
+  <div class="blade-modal-background"></div>
+  <div class="blade-modal">
+    <div class="blade-modal-body">
+      <div class="blade-modal-header">
+        <div class="blade-modal-title">
+          {{ modalTitle }}
+        </div>
+        <div class="blade-modal-close" *ngIf="closeButton">
+          <span class="material-icons" (click)="close('button')">close</span>
+        </div>
       </div>
-      <div class="blade-modal-close" *ngIf="closeButton">
-        <span class="material-icons" (click)="close('button')">close</span>
-      </div>
+      <ng-content></ng-content>
     </div>
-    <ng-content></ng-content>
   </div>
 </div>

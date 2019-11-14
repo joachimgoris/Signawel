@@ -14,6 +14,7 @@ namespace Signawel.Business.MapperProfiles
         {
             CreateMap<RoadworkSchema, RoadworkSchemaResponseDto>();
             CreateMap<RoadworkSchemaCreationRequestDto, RoadworkSchema>();
+            CreateMap<RoadworkSchemaPutRequestDto, RoadworkSchema>();
         }
 
     }

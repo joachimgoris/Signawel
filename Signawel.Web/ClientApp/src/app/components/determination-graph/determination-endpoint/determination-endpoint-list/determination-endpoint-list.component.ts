@@ -12,6 +12,8 @@ import { tap, debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { merge, fromEvent } from "rxjs";
 import { RoadworkSchemaModel } from "src/app/models/RoadworkSchema.model";
 import { SelectionModel } from "@angular/cdk/collections";
+import { BladeModalService } from "src/app/services/shared/blade-modal.service";
+import { ModalCloseEvent } from "src/app/components/shared/blade-modal/modal-close-event";
 
 @Component({
   selector: "app-determination-endpoint-list",
@@ -22,6 +24,7 @@ export class DeterminationEndpointListComponent
   implements OnInit, AfterViewInit {
   listData: RoadworkSchemasDataSource;
   totalCount: number = 50; // TODO load from api
+  selectedRoadworkSchema: RoadworkSchemaModel;
 
   displayedColumns: string[] = ["select", "name", "actions"];
   selection = new SelectionModel<RoadworkSchemaModel>(true, []);
@@ -30,7 +33,10 @@ export class DeterminationEndpointListComponent
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild("searchInput", { static: false }) searchInput: ElementRef;
 
-  constructor(private service: RoadworkSchemasService) {}
+  constructor(
+    private service: RoadworkSchemasService,
+    private modalService: BladeModalService
+  ) {}
 
   ngOnInit() {
     this.listData = new RoadworkSchemasDataSource(this.service);
@@ -89,5 +95,56 @@ export class DeterminationEndpointListComponent
 
   onNewClicked() {
     console.log(this.selection.selected);
+  }
+
+  doEdit(schema: RoadworkSchemaModel) {
+    console.log(schema);
+    this.selectedRoadworkSchema = JSON.parse(JSON.stringify(schema));
+    this.modalService.open("schemaEditor");
+  }
+
+  onModalClose(event: ModalCloseEvent) {
+    if (event.reason == "background") {
+      event.preventDefault();
+      return;
+    }
+
+    this.selectedRoadworkSchema = null;
+  }
+
+  onSchemaEditorCancel() {
+    this.selectedRoadworkSchema = null;
+    this.modalService.close("schemaEditor");
+  }
+
+  onSchemaEditorSave() {
+    if (!this.selectedRoadworkSchema.id) {
+      this.service
+        .createRoadworkSchema(this.selectedRoadworkSchema)
+        .subscribe(res => {
+          this.selectedRoadworkSchema = null;
+          this.modalService.close("schemaEditor");
+          this.loadWorkroadSchemas();
+        });
+    } else {
+      this.service
+        .updateRoadworkSchema(this.selectedRoadworkSchema)
+        .subscribe(res => {
+          this.selectedRoadworkSchema = null;
+          this.modalService.close("schemaEditor");
+          this.loadWorkroadSchemas();
+        });
+    }
+  }
+
+  createNew() {
+    this.selectedRoadworkSchema = new RoadworkSchemaModel();
+    this.modalService.open("schemaEditor");
+  }
+
+  delete(id: string) {
+    this.service.deleteRoadworkSchema(id).subscribe(res => {
+      this.loadWorkroadSchemas();
+    });
   }
 }

@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  ViewChild,
-  ElementRef,
-  Renderer2
-} from "@angular/core";
+import { Component, OnInit, Input, Renderer2 } from "@angular/core";
 
 @Component({
   selector: "bbar-button",
@@ -14,7 +7,7 @@ import {
 })
 export class ButtonBarButtonComponent implements OnInit {
   @Input() text: string;
-  @Input() color: string;
+  @Input() color: string = "primary";
 
   constructor(private renderer: Renderer2) {}
 

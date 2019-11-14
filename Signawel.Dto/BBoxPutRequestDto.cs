@@ -2,13 +2,14 @@
 
 namespace Signawel.Dto
 {
-    public class BBoxResponseDto
+    public class BBoxPutRequestDto
     {
+
         public string Id { get; set; }
 
         public string Name { get; set; }
 
-        public ICollection<BBoxPointResponseDto> Points { get; set; }
+        public ICollection<BBoxPointPutRequestDto> Points { get; set; }
 
     }
 }

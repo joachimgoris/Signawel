@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using Signawel.Business.Abstractions.Services;
 using Signawel.Data;
 using Signawel.Domain;
@@ -32,6 +33,18 @@ namespace Signawel.Business.Services
             return _mapper.Map<RoadworkSchemaResponseDto>(schema);
         }
 
+        public async Task<bool> DeleteRoadworkSchema(string id)
+        {
+            var data = await _context.RoadworkSchemas.FindAsync(id);
+
+            if (data == null)
+                return false;
+
+            _context.RoadworkSchemas.Remove(data);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public IQueryable<RoadworkSchemaResponseDto> GetAllRoadworkSchemas()
         {
             return _mapper.ProjectTo<RoadworkSchemaResponseDto>(_context.RoadworkSchemas);
@@ -47,9 +60,11 @@ namespace Signawel.Business.Services
             return _mapper.Map<RoadworkSchemaResponseDto>(data);
         }
 
-        public async Task<RoadworkSchemaResponseDto> PutRoadworkSchema(string id, RoadworkSchemaCreationRequestDto dto)
+        public async Task<RoadworkSchemaResponseDto> PutRoadworkSchema(string id, RoadworkSchemaPutRequestDto dto)
         {
-            var currentSchema = await _context.RoadworkSchemas.FindAsync(id);
+            var currentSchema = await _context.RoadworkSchemas
+                .Include(rs => rs.BoundingBoxes).ThenInclude(bb => bb.Points)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if(currentSchema == null)
                 return null;
@@ -58,6 +73,7 @@ namespace Signawel.Business.Services
             newSchema.Id = id;
 
             _context.RoadworkSchemas.Remove(currentSchema);
+            await _context.SaveChangesAsync();
             await _context.RoadworkSchemas.AddAsync(newSchema);
             await _context.SaveChangesAsync();
 

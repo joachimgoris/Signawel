@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Signawel.Data;
 
 namespace Signawel.Data.Migrations
 {
     [DbContext(typeof(SignawelDbContext))]
-    partial class SignawelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191112230038_Added_DescriptionToDeterminationQuestion")]
+    partial class Added_DescriptionToDeterminationQuestion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,9 +134,6 @@ namespace Signawel.Data.Migrations
 
                     b.Property<string>("BBoxId")
                         .HasColumnName("bbox_id");
-
-                    b.Property<int>("Order")
-                        .HasColumnName("order");
 
                     b.Property<double>("X")
                         .HasColumnName("x");
@@ -515,16 +514,14 @@ namespace Signawel.Data.Migrations
                 {
                     b.HasOne("Signawel.Domain.RoadworkSchema", "Schema")
                         .WithMany("BoundingBoxes")
-                        .HasForeignKey("SchemaId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("SchemaId");
                 });
 
             modelBuilder.Entity("Signawel.Domain.BBoxPoint", b =>
                 {
                     b.HasOne("Signawel.Domain.BBox", "BBox")
                         .WithMany("Points")
-                        .HasForeignKey("BBoxId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("BBoxId");
                 });
 
             modelBuilder.Entity("Signawel.Domain.DeterminationAnswer", b =>
@@ -586,8 +583,7 @@ namespace Signawel.Data.Migrations
                 {
                     b.HasOne("Signawel.Domain.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ImageId");
                 });
 #pragma warning restore 612, 618
         }

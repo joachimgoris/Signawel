@@ -1,25 +1,45 @@
-import { Component, OnInit, Renderer2, ViewChild, ElementRef } from '@angular/core';
-import { BoundingBox } from './models/boundingbox.model';
-import { Point } from './models/point.model';
+import {
+  Component,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  ElementRef,
+  Input,
+  AfterViewInit
+} from "@angular/core";
+import { BoundingBox } from "./models/boundingbox.model";
+import { Point } from "./models/point.model";
+import { RoadworkSchemasService } from "src/app/services/roadwork-schemas/roadwork-schemas.service";
+import { RoadworkSchemaModel } from "src/app/models/RoadworkSchema.model";
+import { ImageService } from "src/app/services/image/image.service";
 
 @Component({
-  selector: 'app-determination-endpoint-detail',
-  templateUrl: './determination-endpoint-detail.component.html',
-  styleUrls: ['./determination-endpoint-detail.component.sass'],
+  selector: "app-determination-endpoint-detail",
+  templateUrl: "./determination-endpoint-detail.component.html",
+  styleUrls: ["./determination-endpoint-detail.component.sass"],
   providers: []
 })
-export class DeterminationEndpointDetailComponent implements OnInit {
+export class DeterminationEndpointDetailComponent
+  implements OnInit, AfterViewInit {
   @ViewChild("pointOutput", { static: true }) pointOutput: ElementRef;
   @ViewChild("linesOutput", { static: true }) linesOutput: ElementRef;
   @ViewChild("schema", { static: true }) schema: ElementRef;
+
+  @Input() roadworkSchema: RoadworkSchemaModel;
+
   private currentBoundingBox: BoundingBox;
-  private finishedBoundingBoxes: Array<BoundingBox> = new Array<BoundingBox>();
   private currentSelectedPoint: Point;
   private dragPointListener: () => void;
 
-  constructor(private renderer: Renderer2) { }
+  constructor(
+    private renderer: Renderer2,
+    private imageService: ImageService
+  ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ngAfterViewInit(): void {
+    this.render();
   }
 
   clicked(event: MouseEvent) {
@@ -31,19 +51,34 @@ export class DeterminationEndpointDetailComponent implements OnInit {
       this.currentBoundingBox = new BoundingBox();
     }
 
-    this.currentBoundingBox.addPoint(new Point(xCoord, yCoord));
+    let order =
+      this.currentBoundingBox.points.length == 0
+        ? 0
+        : this.getPointsOrdened(this.currentBoundingBox)[
+            this.currentBoundingBox.points.length - 1
+          ].order + 1;
+
+    this.currentBoundingBox.points.push(
+      new Point(
+        this.getPercentageXCord(xCoord),
+        this.getPercentageYCord(yCoord),
+        order
+      )
+    );
     this.render();
 
-    console.log(`new point -> x: ${xCoord}, y: ${yCoord}`);
+    console.log(`new point -> x: ${xCoord}, y: ${yCoord}, order: ${order}`);
   }
 
   render() {
     this.clear();
 
-    this.finishedBoundingBoxes.forEach(boundingBox => this.renderBoundingBox(boundingBox));
+    this.roadworkSchema.boundingBoxes.forEach(boundingBox =>
+      this.renderBoundingBox(boundingBox)
+    );
 
     if (this.currentBoundingBox) {
-      this.renderBoundingBox(this.currentBoundingBox, false)
+      this.renderBoundingBox(this.currentBoundingBox, false);
     }
   }
 
@@ -64,7 +99,7 @@ export class DeterminationEndpointDetailComponent implements OnInit {
   renderBoundingBox(boundingbox: BoundingBox, finished: Boolean = true) {
     let previousPoint: Point = null;
 
-    boundingbox.getPoints().forEach(point => {
+    this.getPointsOrdened(boundingbox).forEach(point => {
       this.drawPoint(point);
 
       if (previousPoint) {
@@ -75,28 +110,34 @@ export class DeterminationEndpointDetailComponent implements OnInit {
     });
 
     if (finished) {
-      const firstPoint = boundingbox.getPoints()[0];
-      this.drawNumber(firstPoint.xCoord, firstPoint.yCoord, this.finishedBoundingBoxes.indexOf(boundingbox));
-      const lastPoint = boundingbox.getPoints()[boundingbox.getPoints().length - 1];
+      const firstPoint = this.getPointsOrdened(boundingbox)[0];
+      this.drawNumber(
+        this.getXCord(firstPoint.x),
+        this.getYCord(firstPoint.y),
+        this.roadworkSchema.boundingBoxes.indexOf(boundingbox)
+      );
+      const lastPoint = this.getPointsOrdened(boundingbox)[
+        boundingbox.points.length - 1
+      ];
       this.drawLine(firstPoint, lastPoint);
     }
   }
 
   drawNumber(xCoord: number, yCoord: number, index: number) {
-    const numberParagraph = this.renderer.createElement('p');
-    this.renderer.addClass(numberParagraph, 'number');
-    this.renderer.setProperty(numberParagraph, 'innerHTML', `Box ${index + 1}`)
-    this.renderer.setStyle(numberParagraph, 'left', `${xCoord}px`);
-    this.renderer.setStyle(numberParagraph, 'top', `${yCoord - 30}px`);
+    const numberParagraph = this.renderer.createElement("p");
+    this.renderer.addClass(numberParagraph, "number");
+    this.renderer.setProperty(numberParagraph, "innerHTML", `Box ${index + 1}`);
+    this.renderer.setStyle(numberParagraph, "left", `${xCoord}px`);
+    this.renderer.setStyle(numberParagraph, "top", `${yCoord - 30}px`);
 
     this.renderer.appendChild(this.pointOutput.nativeElement, numberParagraph);
   }
 
   drawPoint(point: Point) {
     const pointDiv = this.renderer.createElement("div");
-    this.renderer.addClass(pointDiv, 'point');
-    this.renderer.setStyle(pointDiv, 'left', `${point.xCoord}px`);
-    this.renderer.setStyle(pointDiv, 'top', `${point.yCoord}px`);
+    this.renderer.addClass(pointDiv, "point");
+    this.renderer.setStyle(pointDiv, "left", `${this.getXCord(point.x)}px`);
+    this.renderer.setStyle(pointDiv, "top", `${this.getYCord(point.y)}px`);
 
     this.addPointsListeners(pointDiv, point);
 
@@ -104,22 +145,30 @@ export class DeterminationEndpointDetailComponent implements OnInit {
   }
 
   addPointsListeners(pointDiv: ElementRef, point: Point) {
-    this.renderer.listen(pointDiv, 'click', event => this.pointClick(event));
-    this.renderer.listen(pointDiv, 'mousedown', event => this.pointMouseDown(event, point));
+    this.renderer.listen(pointDiv, "click", event => this.pointClick(event));
+    this.renderer.listen(pointDiv, "mousedown", event =>
+      this.pointMouseDown(event, point)
+    );
   }
 
   pointClick(event) {
     event.stopPropagation();
+
     if (this.currentBoundingBox) {
-      var startPoint = this.currentBoundingBox.getPoints()[0];
-      if (startPoint.xCoord == parseFloat(event.target.style.left) &&
-        startPoint.yCoord == parseFloat(event.target.style.top) &&
-        this.currentBoundingBox.getPoints().length > 1) {
-        this.finishedBoundingBoxes.push(this.currentBoundingBox);
+      var startPoint = this.getPointsOrdened(this.currentBoundingBox)[0];
+
+      if (
+        this.getXCord(startPoint.x).toFixed(3) ==
+          parseFloat(event.target.style.left).toFixed(3) &&
+        this.getYCord(startPoint.y).toFixed(3) ==
+          parseFloat(event.target.style.top).toFixed(3) &&
+        this.currentBoundingBox.points.length > 2
+      ) {
+        this.roadworkSchema.boundingBoxes.push(this.currentBoundingBox);
         this.currentBoundingBox = null;
         this.render();
         this.unregisterCurrentSelectedPoint(startPoint);
-        console.log('bounding box finished');
+        console.log("bounding box finished");
       }
     }
   }
@@ -127,12 +176,12 @@ export class DeterminationEndpointDetailComponent implements OnInit {
   pointMouseDown(event: MouseEvent, point: Point) {
     switch (event.which) {
       case 1:
-        if(this.currentSelectedPoint) {
+        if (this.currentSelectedPoint) {
           this.unregisterCurrentSelectedPoint(point);
-          console.log('unregistered selected point to start dragging');
+          console.log("unregistered selected point to start dragging");
         } else {
           this.registerCurrentSelectedPoint(point, event);
-          console.log('registered selected point to start dragging');
+          console.log("registered selected point to start dragging");
         }
         break;
       case 3:
@@ -143,14 +192,18 @@ export class DeterminationEndpointDetailComponent implements OnInit {
 
   onMouseMove(event: MouseEvent, point: Point) {
     var rectangle = (<HTMLImageElement>event.target).getBoundingClientRect();
-    point.xCoord = event.clientX - rectangle.left;
-    point.yCoord = event.clientY - rectangle.top;
+    point.x = this.getPercentageXCord(event.clientX - rectangle.left);
+    point.y = this.getPercentageYCord(event.clientY - rectangle.top);
     this.render();
   }
 
   registerCurrentSelectedPoint(point: Point, event: MouseEvent) {
     this.currentSelectedPoint = point;
-    this.dragPointListener = this.renderer.listen(this.linesOutput.nativeElement, 'mousemove', event => this.onMouseMove(event, point));
+    this.dragPointListener = this.renderer.listen(
+      this.linesOutput.nativeElement,
+      "mousemove",
+      event => this.onMouseMove(event, point)
+    );
   }
 
   unregisterCurrentSelectedPoint(point: Point) {
@@ -160,16 +213,27 @@ export class DeterminationEndpointDetailComponent implements OnInit {
 
   removePoint(point: Point) {
     if (this.currentBoundingBox != null) {
-      this.currentBoundingBox.removePoint(point);
-      if (this.currentBoundingBox.getPoints().length <= 0) {
+      let index = this.getPointsOrdened(this.currentBoundingBox).indexOf(point);
+      if (index != -1) {
+        this.getPointsOrdened(this.currentBoundingBox).splice(index, 1);
+      }
+
+      if (this.currentBoundingBox.points.length <= 0) {
         this.currentBoundingBox = null;
       }
     } else {
-      this.finishedBoundingBoxes.forEach(boundingBox => {
-        if (boundingBox.getPoints().includes(point)) {
+      this.roadworkSchema.boundingBoxes.forEach(boundingBox => {
+        if (boundingBox.points.includes(point)) {
           this.currentBoundingBox = boundingBox;
-          this.finishedBoundingBoxes.splice(this.finishedBoundingBoxes.indexOf(boundingBox), 1);
-          boundingBox.removePoint(point);
+          this.roadworkSchema.boundingBoxes.splice(
+            this.roadworkSchema.boundingBoxes.indexOf(boundingBox),
+            1
+          );
+
+          let index = boundingBox.points.indexOf(point);
+          if (index != -1) {
+            boundingBox.points.splice(index, 1);
+          }
         }
       });
     }
@@ -177,37 +241,74 @@ export class DeterminationEndpointDetailComponent implements OnInit {
   }
 
   drawLine(firstPoint: Point, secondPoint: Point) {
-    let line = this.renderer.createElement('line', 'http://www.w3.org/2000/svg');
+    let line = this.renderer.createElement(
+      "line",
+      "http://www.w3.org/2000/svg"
+    );
 
-    this.renderer.setAttribute(line, 'stroke', 'red');
-    this.renderer.setAttribute(line, 'style', 'width: 3px')
-    this.renderer.setAttribute(line, 'x1', `${firstPoint.xCoord}`);
-    this.renderer.setAttribute(line, 'y1', `${firstPoint.yCoord}`);
-    this.renderer.setAttribute(line, 'x2', `${secondPoint.xCoord}`);
-    this.renderer.setAttribute(line, 'y2', `${secondPoint.yCoord}`);
+    this.renderer.setAttribute(line, "stroke", "red");
+    this.renderer.setAttribute(line, "style", "width: 3px");
+    this.renderer.setAttribute(line, "x1", `${this.getXCord(firstPoint.x)}`);
+    this.renderer.setAttribute(line, "y1", `${this.getYCord(firstPoint.y)}`);
+    this.renderer.setAttribute(line, "x2", `${this.getXCord(secondPoint.x)}`);
+    this.renderer.setAttribute(line, "y2", `${this.getYCord(secondPoint.y)}`);
 
     this.renderer.appendChild(this.linesOutput.nativeElement, line);
   }
 
+  /*
   onSave() {
     const boundingBoxesWithPointPercentages = this.convertBoundingBoxPointstoPercentages();
   }
 
-  convertBoundingBoxPointstoPercentages() : Array<BoundingBox> {
-    let finishedBoundingBoxes  = this.finishedBoundingBoxes.slice();
+  convertBoundingBoxPointstoPercentages(): Array<BoundingBox> {
+    let finishedBoundingBoxes = this.roadworkSchema.boundingBoxes.slice();
 
     finishedBoundingBoxes.forEach(boundingBox => {
-      boundingBox.getPoints().slice().forEach(point => {
-        point.xCoord = point.xCoord / this.schema.nativeElement.clientWidth;
-        point.yCoord = point.yCoord / this.schema.nativeElement.clientHeight;
+      boundingBox.points.slice().forEach(point => {
+        point.x = point.x / this.schema.nativeElement.clientWidth;
+        point.y = point.y / this.schema.nativeElement.clientHeight;
       });
     });
 
     return finishedBoundingBoxes;
   }
+  */
 
   removeBoundingBox(event) {
-    this.finishedBoundingBoxes.splice(event, 1);
+    this.roadworkSchema.boundingBoxes.splice(event, 1);
     this.render();
+  }
+
+  getPointsOrdened(bbox: BoundingBox): Point[] {
+    return bbox.points.sort((a, b) => a.order - b.order);
+  }
+
+  imageChanged(event) {
+    var file = event.target.files[0] as File;
+
+    this.imageService.postImage(file).subscribe(res => {
+      this.roadworkSchema.imageId = res.id;
+    });
+  }
+
+  getImageUrl(id: string) {
+    return `https://localhost:5001/api/images/${id}`;
+  }
+
+  getXCord(percentage: number) {
+    return percentage * this.schema.nativeElement.clientWidth;
+  }
+
+  getYCord(percentage: number) {
+    return percentage * this.schema.nativeElement.clientHeight;
+  }
+
+  getPercentageXCord(x: number) {
+    return x / this.schema.nativeElement.clientWidth;
+  }
+
+  getPercentageYCord(y: number) {
+    return y / this.schema.nativeElement.clientHeight;
   }
 }

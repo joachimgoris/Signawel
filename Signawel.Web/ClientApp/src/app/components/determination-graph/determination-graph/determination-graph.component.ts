@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { DeterminationGraphService } from "src/app/services/determination-graph/determination-graph.service";
 import { DeterminationGraphModel } from "src/app/models/determination-graph/determination-graph.model";
 import { DeterminationAnswerModel } from "src/app/models/determination-graph/determination-answer.model";
+import { RoadworkSchemasService } from "src/app/services/roadwork-schemas/roadwork-schemas.service";
+import { RoadworkSchemaModel } from "src/app/models/RoadworkSchema.model";
 
 @Component({
   selector: "app-determination-graph",
@@ -14,8 +16,12 @@ export class DeterminationGraphComponent implements OnInit {
 
   public editing: boolean = false;
   public loading: boolean = true;
+  roadworkSchemas: RoadworkSchemaModel[];
 
-  constructor(private determinationGraphService: DeterminationGraphService) {}
+  constructor(
+    private determinationGraphService: DeterminationGraphService,
+    private roadworkSchemaService: RoadworkSchemasService
+  ) {}
 
   ngOnInit() {
     this.loading = true;
@@ -25,7 +31,12 @@ export class DeterminationGraphComponent implements OnInit {
         JSON.stringify(this.savedDeterminationGraph)
       ); // easy deep copy
 
-      this.loading = false;
+      this.roadworkSchemaService
+        .searchRoadworkSchemas("", "", 0, 0)
+        .subscribe(result => {
+          this.roadworkSchemas = result.schemas;
+          this.loading = false;
+        });
     });
   }
 

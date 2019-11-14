@@ -25,11 +25,13 @@ namespace Signawel.Data.Configurations
 
             builder.HasMany(e => e.Points)
                 .WithOne(e => e.BBox)
-                .HasForeignKey(e => e.BBoxId);
+                .HasForeignKey(e => e.BBoxId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(e => e.Schema)
                 .WithMany(e => e.BoundingBoxes)
-                .HasForeignKey(e => e.SchemaId);
+                .HasForeignKey(e => e.SchemaId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

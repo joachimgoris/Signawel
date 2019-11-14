@@ -11,6 +11,8 @@ namespace Signawel.Domain
 
         public string Question { get; set; }
 
+        public string QuestionDescription { get; set; }
+
         public string SchemaId { get; set; }
 
         public IList<DeterminationAnswer> Answers { get; set; }

@@ -14,6 +14,7 @@ namespace Signawel.Business.MapperProfiles
         {
             CreateMap<BBoxPoint, BBoxPointResponseDto>();
             CreateMap<BBoxPointCreationRequestDto, BBoxPoint>();
+            CreateMap<BBoxPointPutRequestDto, BBoxPoint>();
         }
 
     }

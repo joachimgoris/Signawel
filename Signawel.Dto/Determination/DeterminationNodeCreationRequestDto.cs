@@ -9,6 +9,8 @@ namespace Signawel.Dto.Determination
         public DeterminationNodeType Type { get; set; }
 
         public string Question { get; set; }
+        
+        public string QuestionDescription { get; set; }
 
         public string SchemaId { get; set; }
 

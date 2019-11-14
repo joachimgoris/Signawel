@@ -56,19 +56,15 @@ namespace Signawel.API.Controllers
                 page = 0;
             }
 
-            if(limit < 0)
+            if(limit <= 0)
             {
-                limit = 15;
+                limit = -1;
             }
 
-            if(limit > 50)
-            {
-                limit = 50;
-            }
+            var schemaResult = schemas.Skip(page * limit);
 
-            var schemaResult = schemas
-                .Skip(page * limit)
-                .Take(limit);
+            if(limit != -1)
+                schemaResult = schemaResult.Take(limit);
 
             if(!string.IsNullOrEmpty(search))
                 schemaResult = schemaResult.Where(x => x.Name.Contains(search));
@@ -96,7 +92,7 @@ namespace Signawel.API.Controllers
         [SwaggerOperation("putUpdateRoadworkSchema")]
         [SwaggerResponse(StatusCodes.Status200OK, "The updated roadwork schema", typeof(RoadworkSchemaResponseDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Something whent wrong")]
-        public async Task<IActionResult> PutRoadworkSchema(string id, [FromBody] RoadworkSchemaCreationRequestDto dto)
+        public async Task<IActionResult> PutRoadworkSchema(string id, [FromBody] RoadworkSchemaPutRequestDto dto)
         {
             var updated = await _schemaService.PutRoadworkSchema(id, dto);
 
@@ -106,6 +102,19 @@ namespace Signawel.API.Controllers
             return Ok(updated);
         }
 
+        [HttpDelete("{id}")]
+        [SwaggerOperation("deleteRoadworkSchema")]
+        [SwaggerResponse(StatusCodes.Status204NoContent, "Deleted roadwork schema successfully")]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Something whent wrong")]
+        public async Task<IActionResult> DeleteRoadworkSchema(string id)
+        {
+            var result = await _schemaService.DeleteRoadworkSchema(id);
+
+            if (!result)
+                return BadRequest();
+
+            return NoContent();
+        }
 
     }
 }

@@ -1,6 +1,23 @@
-<div class="output left" (click)="clicked($event)" oncontextmenu="return false;">
-    <img #schema src="https://www.w3schools.com/w3css/img_lights.jpg">
-    <div #pointOutput></div>
-    <svg #linesOutput class="line-output"></svg>
+<mat-form-field>
+    <input matInput placeholder="Naam" [(ngModel)]="roadworkSchema.name">
+</mat-form-field>
+
+<div>
+    <input #fileUpload type="file" (change)="imageChanged($event)" style="display: none;" />
+    <button mat-flat-button (click)="fileUpload.click()" [color]="roadworkSchema.imageId ? '' : 'primary'">Kies een<span
+            *ngIf="roadworkSchema.imageId"> andere</span>
+        afbeelding</button>
 </div>
-<app-boundingbox-list class="right" (onRemoved)="removeBoundingBox($event)" [finishedBoundingBoxes]="finishedBoundingBoxes"></app-boundingbox-list>
+
+<div [ngStyle]="{'display': roadworkSchema.imageId ? 'block' : 'none'}">
+
+    <div class="output" (click)="clicked($event)" oncontextmenu="return false;">
+        <img #schema [src]="getImageUrl(roadworkSchema.imageId)">
+        <div #pointOutput></div>
+        <svg #linesOutput class="line-output"></svg>
+    </div>
+
+    <app-boundingbox-list (onRemoved)="removeBoundingBox($event)"
+        [finishedBoundingBoxes]="roadworkSchema.boundingBoxes">
+    </app-boundingbox-list>
+</div>

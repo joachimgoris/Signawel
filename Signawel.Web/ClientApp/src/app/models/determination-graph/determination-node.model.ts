@@ -4,6 +4,7 @@ export class DeterminationNodeModel {
   public type: string = "na";
 
   public question: string;
+  public questionDescription: string;
   public answers: Array<DeterminationAnswerModel>;
   public schemaId: string;
 }

@@ -13,6 +13,9 @@ namespace Signawel.Dto.Determination
         [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
         public string Question { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string QuestionDescription { get; set; }
+
         [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
         public string SchemaId { get; set; }
 

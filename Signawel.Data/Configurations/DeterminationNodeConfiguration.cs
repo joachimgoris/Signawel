@@ -29,7 +29,7 @@ namespace Signawel.Data.Configurations
             builder.HasMany(e => e.Answers)
                 .WithOne(e => e.ParentNode)
                 .HasForeignKey(e => e.ParentNodeId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

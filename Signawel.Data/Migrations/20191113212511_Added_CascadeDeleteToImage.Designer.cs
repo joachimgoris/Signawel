@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Signawel.Data;
 
 namespace Signawel.Data.Migrations
 {
     [DbContext(typeof(SignawelDbContext))]
-    partial class SignawelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191113212511_Added_CascadeDeleteToImage")]
+    partial class Added_CascadeDeleteToImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -523,8 +525,7 @@ namespace Signawel.Data.Migrations
                 {
                     b.HasOne("Signawel.Domain.BBox", "BBox")
                         .WithMany("Points")
-                        .HasForeignKey("BBoxId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("BBoxId");
                 });
 
             modelBuilder.Entity("Signawel.Domain.DeterminationAnswer", b =>

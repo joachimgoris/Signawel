@@ -14,9 +14,11 @@ namespace Signawel.Business.Abstractions.Services
 
         Task<RoadworkSchemaResponseDto> CreateRoadworkSchema(RoadworkSchemaCreationRequestDto dto);
 
-        Task<RoadworkSchemaResponseDto> PutRoadworkSchema(string id, RoadworkSchemaCreationRequestDto dto);
+        Task<RoadworkSchemaResponseDto> PutRoadworkSchema(string id, RoadworkSchemaPutRequestDto dto);
 
         IQueryable<RoadworkSchemaResponseDto> GetAllRoadworkSchemas();
+
+        Task<bool> DeleteRoadworkSchema(string id);
 
     }
 }

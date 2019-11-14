@@ -25,11 +25,13 @@ namespace Signawel.Data.Configurations
 
             builder.HasOne(e => e.Image)
                 .WithMany()
-                .HasForeignKey(e => e.ImageId);
+                .HasForeignKey(e => e.ImageId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(e => e.BoundingBoxes)
                 .WithOne(e => e.Schema)
-                .HasForeignKey(e => e.SchemaId);
+                .HasForeignKey(e => e.SchemaId)
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
     }
