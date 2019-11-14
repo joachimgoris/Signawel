@@ -1,7 +1,9 @@
-﻿namespace Signawel.Dto
+﻿namespace Signawel.Dto.BBox
 {
-    public class BBoxPointCreationRequestDto
+    public class BBoxPointResponseDto
     {
+        public string Id { get; set; }
+
         public double X { get; set; }
 
         public double Y { get; set; }

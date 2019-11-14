@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Signawel.Domain
+﻿namespace Signawel.Domain.Determination
 {
     public class DeterminationGraph : Entity
     {

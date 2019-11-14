@@ -4,6 +4,7 @@ using Signawel.Dto.Determination;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Signawel.Domain.Determination;
 
 namespace Signawel.Business.MapperProfiles
 {

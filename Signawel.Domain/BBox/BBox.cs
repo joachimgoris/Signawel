@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Signawel.Domain
+namespace Signawel.Domain.BBox
 {
     public class BBox : Entity
     {

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Signawel.Dto
+namespace Signawel.Dto.RoadworkSchema
 {
     public class RoadworkSchemaPaginationResponseDto
     {

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using Signawel.Dto.BBox;
 
-namespace Signawel.Dto
+namespace Signawel.Dto.RoadworkSchema
 {
     public class RoadworkSchemaCreationRequestDto
     {

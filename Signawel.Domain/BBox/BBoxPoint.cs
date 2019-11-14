@@ -1,4 +1,4 @@
-﻿namespace Signawel.Domain
+﻿namespace Signawel.Domain.BBox
 {
     public class BBoxPoint : Entity
     {

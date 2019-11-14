@@ -1,8 +1,7 @@
-﻿using Signawel.Domain.Enums;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Signawel.Domain.Enums;
 
-namespace Signawel.Domain
+namespace Signawel.Domain.Determination
 {
     public class DeterminationNode : Entity
     {

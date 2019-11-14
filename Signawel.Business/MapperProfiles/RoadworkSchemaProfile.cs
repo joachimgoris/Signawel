@@ -4,6 +4,7 @@ using Signawel.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Signawel.Dto.RoadworkSchema;
 
 namespace Signawel.Business.MapperProfiles
 {

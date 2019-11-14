@@ -1,4 +1,4 @@
-﻿namespace Signawel.Domain
+﻿namespace Signawel.Domain.Determination
 {
     public class DeterminationAnswer : Entity
     {

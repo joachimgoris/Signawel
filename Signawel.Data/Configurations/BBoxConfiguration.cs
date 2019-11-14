@@ -4,6 +4,7 @@ using Signawel.Domain;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Signawel.Domain.BBox;
 
 namespace Signawel.Data.Configurations
 {

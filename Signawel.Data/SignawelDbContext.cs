@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Signawel.Data.Configurations;
 using Signawel.Domain;
+using Signawel.Domain.BBox;
+using Signawel.Domain.Determination;
 
 namespace Signawel.Data
 {

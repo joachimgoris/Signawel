@@ -27,7 +27,7 @@ namespace Signawel.API.Controllers
         [HttpPost("login")]
         [AllowAnonymous]
         [SwaggerOperation("login")]
-        [SwaggerResponse(StatusCodes.Status200OK, "User succesfully logged in.", typeof(TokenResponseDto))]
+        [SwaggerResponse(StatusCodes.Status200OK, "User successfully logged in.", typeof(TokenResponseDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "An error occurred while attempting to login the user.")]
         public async Task<ActionResult> Login([FromBody] LoginRequestDto model)
         {

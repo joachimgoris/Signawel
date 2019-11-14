@@ -13,7 +13,7 @@ namespace Signawel.Domain
 
         public Image Image { get; set; }
 
-        public ICollection<BBox> BoundingBoxes { get; set; }
+        public ICollection<BBox.BBox> BoundingBoxes { get; set; }
 
     }
 }
