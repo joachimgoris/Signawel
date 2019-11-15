@@ -10,7 +10,12 @@
           <span class="material-icons" (click)="close('button')">close</span>
         </div>
       </div>
-      <ng-content></ng-content>
+      <div class="blade-modal-content">
+        <ng-content></ng-content>
+      </div>
+      <div class="blade-modal-footer">
+        <ng-content select="[blade-modal-footer]"></ng-content>
+      </div>
     </div>
   </div>
 </div>

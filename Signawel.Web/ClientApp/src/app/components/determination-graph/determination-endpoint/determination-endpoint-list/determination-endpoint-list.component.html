@@ -66,7 +66,7 @@
   <app-determination-endpoint-detail [roadworkSchema]="selectedRoadworkSchema" *ngIf="selectedRoadworkSchema">
   </app-determination-endpoint-detail>
 
-  <div style="position:absolute; bottom:20px;left:20px;right:20px;">
+  <div blade-modal-footer>
     <bbar>
       <bbar-button bbar-end text="Annuleren" (click)="onSchemaEditorCancel()" color="secondary"></bbar-button>
       <bbar-button bbar-end text="Opslaan" (click)="onSchemaEditorSave()" color="secondary"></bbar-button>

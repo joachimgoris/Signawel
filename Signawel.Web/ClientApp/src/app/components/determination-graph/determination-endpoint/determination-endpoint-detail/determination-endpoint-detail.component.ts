@@ -256,25 +256,6 @@ export class DeterminationEndpointDetailComponent
     this.renderer.appendChild(this.linesOutput.nativeElement, line);
   }
 
-  /*
-  onSave() {
-    const boundingBoxesWithPointPercentages = this.convertBoundingBoxPointstoPercentages();
-  }
-
-  convertBoundingBoxPointstoPercentages(): Array<BoundingBox> {
-    let finishedBoundingBoxes = this.roadworkSchema.boundingBoxes.slice();
-
-    finishedBoundingBoxes.forEach(boundingBox => {
-      boundingBox.points.slice().forEach(point => {
-        point.x = point.x / this.schema.nativeElement.clientWidth;
-        point.y = point.y / this.schema.nativeElement.clientHeight;
-      });
-    });
-
-    return finishedBoundingBoxes;
-  }
-  */
-
   removeBoundingBox(event) {
     this.roadworkSchema.boundingBoxes.splice(event, 1);
     this.render();
@@ -289,6 +270,7 @@ export class DeterminationEndpointDetailComponent
 
     this.imageService.postImage(file).subscribe(res => {
       this.roadworkSchema.imageId = res.id;
+      this.render();
     });
   }
 

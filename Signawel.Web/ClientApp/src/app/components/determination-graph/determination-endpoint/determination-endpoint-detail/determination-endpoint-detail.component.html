@@ -12,7 +12,7 @@
 <div [ngStyle]="{'display': roadworkSchema.imageId ? 'block' : 'none'}">
 
     <div class="output" (click)="clicked($event)" oncontextmenu="return false;">
-        <img #schema [src]="getImageUrl(roadworkSchema.imageId)">
+        <img #schema [src]="getImageUrl(roadworkSchema.imageId)" (load)="render()">
         <div #pointOutput></div>
         <svg #linesOutput class="line-output"></svg>
     </div>
