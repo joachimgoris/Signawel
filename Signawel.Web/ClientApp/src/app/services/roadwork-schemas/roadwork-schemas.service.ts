@@ -5,6 +5,7 @@ import { RoadworkSchemaModel } from "src/app/models/RoadworkSchema.model";
 import { RoadworkSchemaResult } from "src/app/models/roadwork-schema-result.model";
 import { registerLocaleData } from "@angular/common";
 import { map } from "rxjs/operators";
+import { ROADWORK_SCHEMAS } from "src/app/constants/api.constants";
 
 @Injectable({
   providedIn: "root"
@@ -18,8 +19,7 @@ export class RoadworkSchemasService {
     pageIndex: number,
     pageLimit: number
   ): Observable<RoadworkSchemaResult> {
-    let url = "https://localhost:5001/api/roadwork-schemas";
-    return this.http.get<RoadworkSchemaResult>(url, {
+    return this.http.get<RoadworkSchemaResult>(ROADWORK_SCHEMAS, {
       params: new HttpParams()
         .set("search", search)
         .set("sort", sort)
@@ -29,26 +29,25 @@ export class RoadworkSchemasService {
   }
 
   public getRoadworkSchema(id: string): Observable<RoadworkSchemaModel> {
-    let url = "https://localhost:5001/api/roadwork-schemas/" + id;
-    return this.http.get<RoadworkSchemaModel>(url);
+    return this.http.get<RoadworkSchemaModel>(ROADWORK_SCHEMAS + `/${id}`);
   }
 
   public updateRoadworkSchema(
     model: RoadworkSchemaModel
   ): Observable<RoadworkSchemaModel> {
-    let url = "https://localhost:5001/api/roadwork-schemas/" + model.id;
-    return this.http.put<RoadworkSchemaModel>(url, model);
+    return this.http.put<RoadworkSchemaModel>(
+      ROADWORK_SCHEMAS + `/${model.id}`,
+      model
+    );
   }
 
   public createRoadworkSchema(
     model: RoadworkSchemaModel
   ): Observable<RoadworkSchemaModel> {
-    let url = "https://localhost:5001/api/roadwork-schemas";
-    return this.http.post<RoadworkSchemaModel>(url, model);
+    return this.http.post<RoadworkSchemaModel>(ROADWORK_SCHEMAS, model);
   }
 
   public deleteRoadworkSchema(id: string) {
-    let url = "https://localhost:5001/api/roadwork-schemas/" + id;
-    return this.http.delete<RoadworkSchemaModel>(url);
+    return this.http.delete<RoadworkSchemaModel>(ROADWORK_SCHEMAS + `/${id}`);
   }
 }

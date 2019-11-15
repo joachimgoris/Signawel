@@ -23,7 +23,6 @@ import { ModalCloseEvent } from "src/app/components/shared/blade-modal/modal-clo
 export class DeterminationEndpointListComponent
   implements OnInit, AfterViewInit {
   listData: RoadworkSchemasDataSource;
-  totalCount: number = 50; // TODO load from api
   selectedRoadworkSchema: RoadworkSchemaModel;
 
   displayedColumns: string[] = ["select", "name", "actions"];

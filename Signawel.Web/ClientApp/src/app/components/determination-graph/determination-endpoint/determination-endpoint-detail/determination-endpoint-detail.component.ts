@@ -12,6 +12,7 @@ import { Point } from "./models/point.model";
 import { RoadworkSchemasService } from "src/app/services/roadwork-schemas/roadwork-schemas.service";
 import { RoadworkSchemaModel } from "src/app/models/RoadworkSchema.model";
 import { ImageService } from "src/app/services/image/image.service";
+import { IMAGES } from "src/app/constants/api.constants";
 
 @Component({
   selector: "app-determination-endpoint-detail",
@@ -275,7 +276,7 @@ export class DeterminationEndpointDetailComponent
   }
 
   getImageUrl(id: string) {
-    return `https://localhost:5001/api/images/${id}`;
+    return IMAGES + `/${id}`;
   }
 
   getXCord(percentage: number) {
