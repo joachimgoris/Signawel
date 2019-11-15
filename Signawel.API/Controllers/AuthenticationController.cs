@@ -59,5 +59,19 @@ namespace Signawel.API.Controllers
         }
 
         #endregion
+
+        [HttpPost("refresh")]
+        [AllowAnonymous]
+        [SwaggerOperation("refresh")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Token was refreshed.", typeof(TokenResponseDto))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "An error has occurred while attempting to refresh the token")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshRequestDto model)
+        {
+            var result = await _authenticationService.RefreshJwtTokenAsync(model.JwtToken, model.RefreshToken);
+
+            if (result == null) return BadRequest();
+
+            return Ok(result);
+        }
     }
 }

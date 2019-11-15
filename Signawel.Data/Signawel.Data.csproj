@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20191112225634_Added_DescriptionToDeterminationQuestion.cs" />
     <Compile Remove="Migrations\20191112225634_Added_DescriptionToDeterminationQuestion.Designer.cs" />
+    <Compile Remove="Migrations\20191114083220_InitialLogin.cs" />
+    <Compile Remove="Migrations\20191114083220_InitialLogin.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

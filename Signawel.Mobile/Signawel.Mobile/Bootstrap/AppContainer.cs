@@ -27,9 +27,12 @@ namespace Signawel.Mobile.Bootstrap
             services.AddScoped<MenuViewModel>();
             services.AddScoped<HomeViewModel>();
             services.AddScoped<InteractiveSketchViewModel>();
+            services.AddScoped<LoginViewModel>();
 
             // General
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<IHttpService, HttpService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddSingleton<IDependencyResolver>(c => Instance);
 
             _serviceProvider = services.BuildServiceProvider();

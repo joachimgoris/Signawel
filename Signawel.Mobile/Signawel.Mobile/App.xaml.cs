@@ -1,11 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
 using Signawel.Mobile.Bootstrap;
 using Signawel.Mobile.Bootstrap.Abstract;
-using Signawel.Mobile.ViewModels;
-using Signawel.Mobile.Views;
+using System.Threading.Tasks;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Signawel.Mobile
 {

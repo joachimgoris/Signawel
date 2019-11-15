@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -7,7 +6,8 @@
              xmlns:templates="clr-namespace:Signawel.Mobile.Templates"
              mc:Ignorable="d"
              x:Class="Signawel.Mobile.Views.MenuView"
-             Title=" ">
+             Title=" "
+             Visual="Material">
     <Grid RowSpacing="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />

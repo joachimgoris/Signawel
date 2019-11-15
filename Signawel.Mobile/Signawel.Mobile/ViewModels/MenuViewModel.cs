@@ -48,6 +48,12 @@ namespace Signawel.Mobile.ViewModels
                 MenuText = "Temp-Interactive",
                 ViewModelType = typeof(InteractiveSketchViewModel)
             });
+
+            MenuItems.Add(new MainMenuItem
+            {
+                MenuText = "Login",
+                ViewModelType = typeof(LoginViewModel)
+            });
         }
 
     }

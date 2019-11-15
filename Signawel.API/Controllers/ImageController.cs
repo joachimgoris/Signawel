@@ -24,7 +24,7 @@ namespace Signawel.API.Controllers
 
         public ImageController(IImageService imageService)
         {
-            this._imageService = imageService;
+            _imageService = imageService;
         }
 
         [HttpGet("{id}")]

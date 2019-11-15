@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
-using SkiaSharp;
-using SkiaSharp.Views.Forms;
 using Xamarin.Forms;
 
 namespace Signawel.Mobile.ViewModels

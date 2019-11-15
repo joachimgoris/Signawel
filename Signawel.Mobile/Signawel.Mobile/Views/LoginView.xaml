@@ -4,13 +4,14 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Signawel.Mobile.Views.HomeView"
-             Visual="Material">
+             x:Class="Signawel.Mobile.Views.LoginView"
+             Visual="Material"
+             Title="Authentication Page">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Entry Placeholder="Email" Text="{Binding Email}" Margin="10" />
+            <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password}" Margin="10" />
+            <Button Command="{Binding ButtonTappedCommand}" Text="Login" Margin="10" BackgroundColor="Accent"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

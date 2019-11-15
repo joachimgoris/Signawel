@@ -4,7 +4,8 @@
                   xmlns:views="clr-namespace:Signawel.Mobile.Views"
                   x:Class="Signawel.Mobile.MainView"
                   Title="MasterDetailTitle"
-                  MasterBehavior="Popover">
+                  MasterBehavior="Popover"
+                  Visual="Material">
 
     <MasterDetailPage.Master>
         <views:MenuView BindingContext="{Binding MenuViewModel}" />

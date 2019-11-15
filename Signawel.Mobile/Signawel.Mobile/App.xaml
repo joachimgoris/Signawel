@@ -38,7 +38,7 @@
                 <On Platform="Android, UWP, WinRT, WinPhone" Value="9" />
             </OnPlatform>
 
-            <Color x:Key="Red">#C00809</Color>
+            <Color x:Key="Red">Accent</Color>
             <Color x:Key="HeaderGrey">#aaaaaa</Color>
             <Color x:Key="PlainGrey">#aaaaaa</Color>
             <Color x:Key="LightGrey">#cccccc</Color>

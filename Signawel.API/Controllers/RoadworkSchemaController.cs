@@ -5,8 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Signawel.Business.Abstractions.Services;
 using Signawel.Dto;
 using Swashbuckle.AspNetCore.Annotations;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Signawel.Dto.RoadworkSchema;
@@ -22,7 +20,7 @@ namespace Signawel.API.Controllers
 
         public RoadworkSchemaController(IRoadworkSchemaService schemaService)
         {
-            this._schemaService = schemaService;
+            _schemaService = schemaService;
         }
 
         [HttpGet("{id}")]

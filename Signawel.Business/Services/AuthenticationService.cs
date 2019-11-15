@@ -4,6 +4,9 @@ using Signawel.Business.Abstractions.Services;
 using Signawel.Data.Abstractions.Repositories;
 using Signawel.Domain;
 using Signawel.Dto.Authentication;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Signawel.Business.Services
@@ -57,9 +60,41 @@ namespace Signawel.Business.Services
 
 
 
-        public Task<bool> RefreshJwtTokenAsync(string jwtToken, string refreshToken)
+        public async Task<TokenResponseDto> RefreshJwtTokenAsync(string jwtToken, string refreshToken)
         {
-            throw new System.NotImplementedException();
+            var validatedToken = _tokenFactory.GetPrincipalFromToken(jwtToken);
+
+            if(validatedToken == null)
+            {
+                _logger.LogInformation("Unable to refresh tokens, JWT token {@token} invalid.", jwtToken);
+                return null;
+            }
+
+            var jti = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
+            var storedRefreshToken = await _authenticationRepository.GetRefreshTokenByTokenAsync(refreshToken);
+
+            if (DateTime.UtcNow > storedRefreshToken.ExpiryDate ||
+                storedRefreshToken.Invalidated ||
+                storedRefreshToken.Used ||
+                storedRefreshToken.JwtId != jti)
+            {
+                _logger.LogInformation("Unable to refresh token, token {@token} invalid.", refreshToken);
+                return null;
+            }
+
+            storedRefreshToken.Used = true;
+            var updateResult = await _authenticationRepository.UpdateRefreshTokenAsync(storedRefreshToken);
+
+            var userId = validatedToken.Claims.Single(x => x.Type == "user_id").Value;
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                _logger.LogWarning("Unable to find user with id {userId}", userId);
+                return null;
+            }
+
+            return await ReturnTokenResponseAsync(user);
         }
 
         public async Task<RegisterResponseDto> RegisterAsync(string email, string password)

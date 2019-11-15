@@ -67,6 +67,6 @@ namespace Signawel.Business.Abstractions.Services
         /// <returns>
         ///     A bool resembling succes or failure.
         /// </returns>
-        Task<bool> RefreshJwtTokenAsync(string jwtToken, string refreshToken);
+        Task<TokenResponseDto> RefreshJwtTokenAsync(string jwtToken, string refreshToken);
     }
 }
