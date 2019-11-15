@@ -2,6 +2,8 @@
 using Signawel.Mobile.ViewModels;
 using System;
 using Signawel.Mobile.Bootstrap.Abstract;
+using Signawel.Mobile.Services;
+using Signawel.Mobile.Services.Abstract;
 
 namespace Signawel.Mobile.Bootstrap
 {
@@ -26,8 +28,14 @@ namespace Signawel.Mobile.Bootstrap
             services.AddScoped<MainViewModel>();
             services.AddScoped<MenuViewModel>();
             services.AddScoped<HomeViewModel>();
-            services.AddScoped<InteractiveSketchViewModel>();
             services.AddScoped<LoginViewModel>();
+            services.AddScoped<AboutViewModel>();
+            services.AddScoped<InteractiveSketchViewModel>();
+            services.AddTransient<DeterminationGraphViewModel>();
+            
+            // Services
+            services.AddScoped<IDeterminationGraphService, DeterminationGraphService>();
+            services.AddScoped<IDeterminationSchemaService, DeterminationSchemaService>();
 
             // General
             services.AddSingleton<INavigationService, NavigationService>();

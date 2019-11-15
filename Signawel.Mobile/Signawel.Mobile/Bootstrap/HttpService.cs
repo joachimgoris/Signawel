@@ -88,6 +88,11 @@ namespace Signawel.Mobile.Bootstrap
             return response;
         }
 
+        public async Task<byte[]> GetByteArrayAsync(string url)
+        {
+            return await _httpClient.GetByteArrayAsync(url);
+        }
+
         #region Private Methods
 
         private bool CheckIfNull(string url, HttpContent content)

@@ -15,6 +15,8 @@ namespace Signawel.Mobile.Bootstrap.Abstract
         Task<HttpResponseMessage> PostAsync(string url, HttpContent content);
         
         Task<HttpResponseMessage> PutAsync(string url, HttpContent content);
+
+        Task<byte[]> GetByteArrayAsync(string url);
         
         void SetToken(string token);
     }

@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Net.Http;
+using System.Linq;
+using Signawel.Dto.RoadworkSchema;
 using Signawel.Mobile.ViewModels;
 using SkiaSharp;
 using SkiaSharp.Views.Forms;
@@ -12,6 +14,7 @@ namespace Signawel.Mobile.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class InteractiveSketchView : ContentPage
     {
+        private bool _loaded;
         private SKBitmap _sketchBitmap;
         private IList<SKPath> _paths; 
         public InteractiveSketchView()
@@ -19,17 +22,33 @@ namespace Signawel.Mobile.Views
             InitializeComponent();
 
             _paths = new List<SKPath>();
+            _loaded = false;
+        }
+
+        public void SetupLoadedEvent()
+        {
+            ((InteractiveSketchViewModel) BindingContext).OnLoaded += new EventHandler(Loaded);
+        }
+
+        private void Loaded(object sender, EventArgs e)
+        {
+            _loaded = true;
+            InteractiveSketchSkCanvasView.InvalidateSurface();
         }
 
         private void InteractiveSketchViewCanvasView_OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
+            if(!_loaded)
+                return;
+
             SKImageInfo info = e.Info;
             SKCanvas canvas = e.Surface.Canvas;
+
             canvas.Clear();
 
             ReconstructBitmap(((InteractiveSketchViewModel)BindingContext).ImageUrlBytes);
-            var points = ((InteractiveSketchViewModel) BindingContext).Points;
-            _paths = CalculatePaths(info.Height, info.Width, points);
+            var schema = ((InteractiveSketchViewModel) BindingContext).Schema;
+            _paths = CalculatePaths(info.Height, info.Width, schema);
 
             var paint = CreateSkPaint();
 
@@ -41,14 +60,14 @@ namespace Signawel.Mobile.Views
             }
         }
 
-        private IList<SKPath> CalculatePaths(float canvasHeight, float canvasWidth, IList<List<Point>> points)
+        private IList<SKPath> CalculatePaths(float canvasHeight, float canvasWidth, RoadworkSchemaResponseDto schema)
         {
             var paths = new List<SKPath>();
 
-            foreach (var dataBasePointsList in points)
+            foreach (var bbox in schema.BoundingBoxes)
             {
                 var pathPointsList = new List<SKPoint>();
-                foreach (var point in dataBasePointsList)
+                foreach (var point in bbox.Points.OrderBy(p => p.Order))
                 {
                     var recalculatedPoint = new SKPoint
                     {
@@ -68,14 +87,30 @@ namespace Signawel.Mobile.Views
 
         private void ReconstructBitmap(byte[] imageBytes)
         {
+            if(imageBytes == null)
+            {
+                // TODO navigate back?
+                return;
+            }
+
             var stream = new MemoryStream(imageBytes);
             _sketchBitmap = SKBitmap.Decode(stream);
-            SetCanvasHeightToBitmapHeight();
+            ScaleSketchCanvasToImage();
         }
 
-        private void SetCanvasHeightToBitmapHeight()
+        private void ScaleSketchCanvasToImage()
         {
-            InteractiveSketchSkCanvasView.HeightRequest = _sketchBitmap.Height;
+            double scalePercentage;
+            if(_sketchBitmap.Width < InteractiveSketchSkCanvasView.Width)
+            {
+                scalePercentage = _sketchBitmap.Width / InteractiveSketchSkCanvasView.Width;
+            }
+            else
+            {
+                scalePercentage = 1 - (InteractiveSketchSkCanvasView.Width / _sketchBitmap.Width);
+            }
+
+            InteractiveSketchSkCanvasView.HeightRequest = _sketchBitmap.Height * scalePercentage;
         }
 
         private SKPaint CreateSkPaint()

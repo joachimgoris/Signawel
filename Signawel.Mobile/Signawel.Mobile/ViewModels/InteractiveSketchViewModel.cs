@@ -1,66 +1,48 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using Xamarin.Forms;
+﻿using System;
+using System.Threading.Tasks;
+using Signawel.Dto.RoadworkSchema;
+using Signawel.Mobile.Bootstrap.Abstract;
+using Signawel.Mobile.Constants;
+using Signawel.Mobile.Services.Abstract;
 
 namespace Signawel.Mobile.ViewModels
 {
     public class InteractiveSketchViewModel : ViewModelBase
     {
-        private IList<List<Point>> _points;
-        private byte[] _imageUrlBytes;
+        private readonly IDeterminationSchemaService _determinationSchemaService;
+        private readonly IHttpService _httpService;
 
-        public IList<List<Point>> Points
+        public event EventHandler OnLoaded;
+
+        //public IList<List<Point>> Points { get; set; }
+        public RoadworkSchemaResponseDto Schema { get; set; }
+        public byte[] ImageUrlBytes { get; set; }
+
+        public InteractiveSketchViewModel(IDeterminationSchemaService determinationSchemaService, IHttpService httpService)
         {
-            get => _points;
-            set
+            this._determinationSchemaService = determinationSchemaService;
+            this._httpService = httpService;
+        }
+
+        private async Task<byte[]> RetrieveBitmap(string id)
+        {
+            try
             {
-                if(_points == value) return;
-                _points = value;
+                return await _httpService.GetByteArrayAsync(ApiConstants.GetImage(id));
+            } catch(Exception)
+            {
+                return null;
             }
         }
 
-        public byte[] ImageUrlBytes
+        public override async Task InitializeAsync(object data)
         {
-            get => _imageUrlBytes;
-            set
-            {
-                if (_imageUrlBytes == value) return;
-                _imageUrlBytes = value;
-            }
-        }
+            var id = data as string;
+            
+            Schema = await _determinationSchemaService.GetRoadworkSchema(id);
+            ImageUrlBytes = await RetrieveBitmap(Schema.ImageId);
 
-        public InteractiveSketchViewModel()
-        {
-            _points = DummyPoints();
-            _imageUrlBytes = RetrieveBitmap("https://upload.wikimedia.org/wikipedia/commons/e/e0/Long_March_2D_launching_VRSS-1.jpg");
-        }
-
-        private byte[] RetrieveBitmap(string url)
-        {
-            var httpClient = new HttpClient();
-            var bytes = httpClient.GetByteArrayAsync(url).Result;
-
-            return bytes;
-        }
-
-        private IList<List<Point>> DummyPoints()
-        {
-            return new List<List<Point>>
-            {
-                new List<Point>
-                {
-                    new Point(0.1, 0.1),
-                    new Point(0.5,0.5),
-                    new Point(0.1,0.5) 
-                },
-                new List<Point>
-                {
-                    new Point(0.5, 0.1),
-                    new Point(0.5, 0.5),
-                    new Point(0.8, 0.4),
-                    new Point(0.7, 0.2)
-                }
-            };
+            OnLoaded?.Invoke(this, new EventArgs());
         }
     }
 }

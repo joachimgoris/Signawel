@@ -10,7 +10,7 @@ namespace Signawel.Mobile.Bootstrap.Abstract
         Task InitializeAsync();
 
         [Obsolete("try not to use this method")]
-        Task NavigateToAsync(Type viewModelType);
+        Task NavigateToAsync(Type viewModelType, object parameter = null);
 
         Task NavigateToAsync<TViewModel>() where TViewModel : ViewModelBase;
 

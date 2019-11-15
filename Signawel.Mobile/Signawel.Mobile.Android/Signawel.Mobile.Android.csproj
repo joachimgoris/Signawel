@@ -88,13 +88,19 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\drawable\" />
+    <AndroidResource Include="Resources\drawable\PXL.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Signawel.Mobile\Signawel.Mobile.csproj">
       <Project>{91BD9D6D-A4DC-4436-B11F-98E04C0478D9}</Project>
       <Name>Signawel.Mobile</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Signawel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\PVL.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

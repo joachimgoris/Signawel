@@ -36,9 +36,9 @@ namespace Signawel.Mobile.Bootstrap
         }
 
         [Obsolete("try not to use this method")]
-        public Task NavigateToAsync(Type viewModelType)
+        public Task NavigateToAsync(Type viewModelType, object parameter = null)
         {
-            return Navigate(viewModelType, null);
+            return Navigate(viewModelType, parameter);
         }
 
         protected virtual async Task Navigate(Type viewmodelType, object parameter)
@@ -55,6 +55,11 @@ namespace Signawel.Mobile.Bootstrap
             ViewModelBase viewModel = _dependencyResolver.Resolve(viewmodelType) as ViewModelBase;
             page.BindingContext = viewModel;
 
+            if(page is InteractiveSketchView interactiveSketchView)
+            {
+                interactiveSketchView.SetupLoadedEvent();
+            }
+
             if(page is MainView)
             {
                 Application.Current.MainPage = page;
@@ -67,7 +72,7 @@ namespace Signawel.Mobile.Bootstrap
                 {
                     var currentPage = navigationPage.CurrentPage;
 
-                    if(currentPage.GetType() != page.GetType())
+                    if(currentPage.GetType() != page.GetType() || page.GetType() == typeof(DeterminationGraphView))
                     {
                         await navigationPage.PushAsync(page);
                     }

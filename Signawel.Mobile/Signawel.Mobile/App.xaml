@@ -13,7 +13,13 @@
                 <On Platform="iOS" Value="32" />
                 <On Platform="Android, UWP, WinRT, WinPhone" Value="30" />
             </OnPlatform>
-            
+
+            <OnPlatform x:Key="MLargeFontSize"
+                        x:TypeArguments="x:Double">
+                <On Platform="iOS" Value="26" />
+                <On Platform="Android, UWP, WinRT, WinPhone" Value="24" />
+            </OnPlatform>
+
             <OnPlatform x:Key="LargeFontSize"
                         x:TypeArguments="x:Double">
                 <On Platform="iOS" Value="20" />

@@ -55,14 +55,9 @@ namespace Signawel.API.Controllers
                 page = 0;
             }
 
+            var schemaResult = schemas.Skip(page * (limit <= 0 ? 1 : limit));
+
             if(limit <= 0)
-            {
-                limit = -1;
-            }
-
-            var schemaResult = schemas.Skip(page * limit);
-
-            if(limit != -1)
                 schemaResult = schemaResult.Take(limit);
 
             if(!string.IsNullOrEmpty(search))

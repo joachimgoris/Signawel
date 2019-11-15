@@ -53,7 +53,9 @@ namespace Signawel.Business.Services
 
         public async Task<RoadworkSchemaResponseDto> GetRoadworkSchema(string id)
         {
-            var data = await _context.RoadworkSchemas.FindAsync(id);
+            var data = await _context.RoadworkSchemas
+                .Include(schema => schema.BoundingBoxes).ThenInclude(bb => bb.Points)
+                .FirstOrDefaultAsync(schema => schema.Id == id);
 
             if(data == null)
                 return null;

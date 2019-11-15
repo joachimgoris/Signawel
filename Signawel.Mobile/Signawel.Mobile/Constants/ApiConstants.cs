@@ -2,7 +2,7 @@
 {
     public static class ApiConstants
     {
-        public static string BaseApiAddress => "https://192.168.43.235:5003/api/";
+        public static string BaseApiAddress => "https://10.95.133.233:5005/api/";
 
         #region Authentication
 
@@ -16,7 +16,7 @@
 
         #region DeterminationGraph
 
-        public static string GetDeterminationGrpah => BaseApiAddress + "determination-graph";
+        public static string GetDeterminationGraph => BaseApiAddress + "determination-graph";
 
         public static string PostDeterminationGraph => BaseApiAddress + "determination-graph";
 

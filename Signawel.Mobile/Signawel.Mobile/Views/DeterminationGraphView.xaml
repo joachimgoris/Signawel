@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviours="clr-namespace:Signawel.Mobile.Behaviours;assembly=Signawel.Mobile"
+             xmlns:converter="clr-namespace:Signawel.Mobile.Converter;assembly=Signawel.Mobile"
+             x:Class="Signawel.Mobile.Views.DeterminationGraphView"
+             Title="Determinatie">
+    <ContentPage.Resources>
+        <converter:AnswerSelectedConverter x:Key="AnswerSelectedConverter"/>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid Padding="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"
+                   Text="{Binding Node.Question}"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   FontAttributes="Bold"
+                   FontSize="{StaticResource MLargeFontSize}"/>
+            <ListView Grid.Row="1"
+                      ItemsSource="{Binding Path=Node.Answers}"
+                      VerticalOptions="Start"
+                      HorizontalOptions="Center">
+                <ListView.Behaviors>
+                    <behaviours:EventToCommandBehaviour
+                        EventName="ItemSelected" Command="{Binding AnswerSelectedCommand}"
+                        Converter="{StaticResource AnswerSelectedConverter}"/>
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <Label Text="{Binding Answer}"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Center"
+                                       FontAttributes="Bold"
+                                       FontSize="{StaticResource LargeFontSize}"
+                                       TextColor="White"
+                                       BackgroundColor="Accent"
+                                       Margin="5"/>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Label Text="{Binding Node.QuestionDescription}"
+                   FontSize="{StaticResource MediumFontSize}"
+                   HorizontalTextAlignment="Center"
+                   Grid.Row="2"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
