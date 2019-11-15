@@ -49,6 +49,8 @@ namespace Signawel.API.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, "An error has occurred while attempting to register.")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto model)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
             var result = await _authenticationService.RegisterAsync(model.Email, model.Password);
 
             if (result == null) return BadRequest();
