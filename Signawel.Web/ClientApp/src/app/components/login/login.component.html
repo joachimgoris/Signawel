@@ -1,0 +1,38 @@
+<div class="container">
+        <mat-card>
+                <mat-card-header>
+                    <mat-card-title>Signawel Management Tool</mat-card-title>
+                    <mat-card-subtitle>Enkel geauthoriseerde gebruikers hebben toestemming om in te loggen.</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <form class="example-form" (ngSubmit)="onSubmit(loginForm.value)" #loginForm="ngForm">
+                        <table cellspacing="0">
+                            <tr>
+                                <td>
+                                    <mat-form-field>
+                                        <input matInput type="email" placeholder="E-mailadres" name="email" ngModel email
+                                            #emailRef="ngModel">
+                                        <mat-error *ngIf="emailRef.invalid">
+                                            Vul een geldig e-mailadres in.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-form-field>
+                                        <input matInput type="password" placeholder="Wachtwoord" name="password"
+                                            [(ngModel)]="password" required #passwordRef="ngModel">
+                                        <mat-error *ngIf="passwordRef.invalid">
+                                            Vul uw wachtwoord in.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                        </table>
+                        <button type="submit" mat-raised-button color="primary" [disabled]="!loginForm.valid">Log in</button>
+                    </form>
+                    <mat-spinner [style.display]="isLoading ? 'block' : 'none'"></mat-spinner>
+                </mat-card-content>
+            </mat-card>
+</div>

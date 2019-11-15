@@ -16,11 +16,14 @@ import {
   MatListModule,
   MatFormFieldModule,
   MatSelectModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatSnackBarModule,
+  MatCardModule
 } from "@angular/material";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { LayoutModule } from "@angular/cdk/layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -35,6 +38,10 @@ import { DeterminationEndpointListComponent } from "./components/determination-g
 import { LoaderComponent } from "./components/shared/loader/loader.component";
 import { BladeModalComponent } from "./components/shared/blade-modal/blade-modal.component";
 import { BoundingboxListComponent } from './components/determination-graph/determination-endpoint/determination-endpoint-detail/boundingbox-list/boundingbox-list.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthenticationService } from './services/authentication/authentication.service';
+import { TokenInterceptor } from './util/token-interceptor';
+import { AuthenticationGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -49,15 +56,18 @@ import { BoundingboxListComponent } from './components/determination-graph/deter
     DeterminationEndpointListComponent,
     BladeModalComponent,
     LoaderComponent,
-    BoundingboxListComponent
+    BoundingboxListComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    MatSnackBarModule,
     MatInputModule,
     MatTableModule,
     MatPaginatorModule,
@@ -65,6 +75,7 @@ import { BoundingboxListComponent } from './components/determination-graph/deter
     MatProgressSpinnerModule,
     MatCheckboxModule,
     MatMenuModule,
+    MatCardModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
@@ -75,7 +86,11 @@ import { BoundingboxListComponent } from './components/determination-graph/deter
     MatSelectModule,
     MatAutocompleteModule
   ],
-  providers: [],
+  providers: [AuthenticationService, AuthenticationGuard, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptor,
+    multi: true
+}],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
