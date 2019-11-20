@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:map="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
+             mc:Ignorable="d"
+             x:Class="Signawel.Mobile.MapPageView">
+    <ContentPage.Content>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="*" />
+                <RowDefinition x:Name="DetailsWorkRow" Height="{Binding DetailsWorkRowHeight}" />
+                <RowDefinition Height="6*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+
+            <StackLayout Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                <SearchBar Placeholder="adres" 
+           HorizontalTextAlignment="Center"
+           FontSize="Medium"
+           FontAttributes="Italic"
+           x:Name="SearchBar"
+           IsEnabled="{Binding SearchbarIsEnabled}"
+           Text="{Binding SearchbarText, Mode=TwoWay}"/>
+
+                <ImageButton Source="location.png"
+                         HeightRequest="35"
+                         BackgroundColor="Transparent"
+                         VerticalOptions="Center"
+                         Command="{Binding SetMyLocationCommand}"
+                         x:Name="LocationButton"
+                         Opacity="{Binding LocationButtonOpacity}"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <Label x:Name="SliderLabel" Text="{Binding SliderText}" HorizontalOptions="Center" Margin="0,10,0,10" />
+                <Slider x:Name="SliderRadius"
+            Maximum="5"
+            Minimum="1" 
+            Value="{Binding SliderValue,Mode=TwoWay}"/>
+            </StackLayout>
+
+            <Button Text="Toon werken" Command="{Binding ShowRoadWorksCommand}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#C00809">
+            </Button>
+
+            <StackLayout x:Name="DetailsWorkStack" Orientation="Vertical" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="{Binding SelectedItem.description}" Grid.Row="0" Grid.Column="0"/>
+                    <Label Text="{Binding SelectedItem.distanceToDevice, StringFormat='{0} km'}" Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" FontAttributes="Bold"/>
+                    <ImageButton Source="correct.png"
+                             HeightRequest="25"
+                             BackgroundColor="Transparent"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center"
+                             Grid.Row="0"
+                             Grid.Column="1"
+                             Grid.RowSpan="2">
+
+                    </ImageButton>
+                </Grid>
+
+            </StackLayout>
+
+            <ContentView Content="{Binding Map}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+            <Button x:Name="GoToListButton" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="Transparent" Text="Zie lijst van werken >" TextColor="Black" IsVisible="{Binding SeeListButtonIsVisible}" Command="{Binding NavigateToListCommand}"></Button>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

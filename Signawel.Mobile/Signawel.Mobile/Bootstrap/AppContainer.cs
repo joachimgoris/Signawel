@@ -31,6 +31,8 @@ namespace Signawel.Mobile.Bootstrap
             services.AddScoped<LoginViewModel>();
             services.AddScoped<AboutViewModel>();
             services.AddScoped<InteractiveSketchViewModel>();
+            services.AddScoped<MapPageViewModel>();
+            services.AddScoped<ListViewRoadWorksPageViewModel>();
             services.AddTransient<DeterminationGraphViewModel>();
             
             // Services

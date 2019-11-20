@@ -1,9 +1,5 @@
-﻿using Signawel.Mobile.Bootstrap;
-using Signawel.Mobile.Models;
-using System;
-using System.Collections.Generic;
+﻿using Signawel.Mobile.Models;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 using Signawel.Mobile.Bootstrap.Abstract;
 using Signawel.Mobile.Services.Abstract;
@@ -67,12 +63,6 @@ namespace Signawel.Mobile.ViewModels
 
             MenuItems.Add(new MainMenuItem
             {
-                MenuText = "Temp-Interactive",
-                ViewModelType = typeof(InteractiveSketchViewModel)
-            });
-
-            MenuItems.Add(new MainMenuItem
-            {
                 MenuText = "Login",
                 ViewModelType = typeof(LoginViewModel)
             });
@@ -81,6 +71,12 @@ namespace Signawel.Mobile.ViewModels
             {
                 MenuText = "Temp-Determination",
                 ViewModelType = typeof(DeterminationGraphViewModel)
+            });
+
+            MenuItems.Add(new MainMenuItem
+            {
+                MenuText = "Temp-Map",
+                ViewModelType = typeof(MapPageViewModel)
             });
         }
 

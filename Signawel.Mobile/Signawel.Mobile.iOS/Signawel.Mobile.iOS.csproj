@@ -127,6 +127,9 @@
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.3.0.991211" />
     <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
+    <PackageReference Include="Xamarin.Forms.Maps">
+      <Version>4.3.0.908675</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -134,5 +137,11 @@
       <Project>{91BD9D6D-A4DC-4436-B11F-98E04C0478D9}</Project>
       <Name>Signawel.Mobile</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\location.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\correct.png" />
   </ItemGroup>
 </Project>

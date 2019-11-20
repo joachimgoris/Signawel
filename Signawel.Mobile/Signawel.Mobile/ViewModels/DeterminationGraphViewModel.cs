@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Signawel.Domain.Enums;
 using Signawel.Dto.Determination;
 using Signawel.Mobile.Bootstrap.Abstract;
@@ -16,7 +17,7 @@ namespace Signawel.Mobile.ViewModels
 
         public string Temp => Guid.NewGuid().ToString();
 
-        public Command AnswerSelectedCommand => new Command<DeterminationAnswerResponseDto>(OnAnswerSelected);
+        public ICommand AnswerSelectedCommand => new Command<DeterminationAnswerResponseDto>(OnAnswerSelected);
 
         public override Task InitializeAsync(object data)
         {
