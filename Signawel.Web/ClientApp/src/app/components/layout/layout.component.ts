@@ -19,4 +19,6 @@ export class LayoutComponent implements OnInit {
   constructor(private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit() {}
+
+  logout() {}
 }

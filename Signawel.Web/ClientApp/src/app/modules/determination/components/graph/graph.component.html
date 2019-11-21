@@ -1,0 +1,17 @@
+<h1 class="page-title">Determinatie grafiek</h1>
+
+<bbar>
+  <bbar-button bbar-start text="Wijzigen" (click)="onEdit()" *ngIf="!editing"></bbar-button>
+
+  <bbar-button bbar-end text="Annuleren" (click)="onCancel()" *ngIf="editing" color="warn"></bbar-button>
+  <bbar-button bbar-end text="Opslaan" (click)="onSave()" *ngIf="editing" color="secondary"></bbar-button>
+</bbar>
+
+<div class="spinner-container" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="graph" *ngIf="!loading && determinationGraph">
+  <determination-graph-node [model]="determinationGraph.start" [editing]="editing" [roadworkSchemas]="roadworkSchemas">
+  </determination-graph-node>
+</div>

@@ -1,0 +1,23 @@
+<mat-form-field>
+  <input matInput placeholder="Naam" [(ngModel)]="roadworkSchema.name">
+</mat-form-field>
+
+<div>
+  <input #fileUpload type="file" (change)="imageChanged($event)" style="display: none;" />
+  <button mat-flat-button (click)="fileUpload.click()" [color]="roadworkSchema.imageId ? '' : 'primary'">Kies een<span
+      *ngIf="roadworkSchema.imageId"> andere</span>
+    afbeelding</button>
+</div>
+
+<div [ngStyle]="{'display': roadworkSchema.imageId ? 'block' : 'none'}">
+
+  <div class="output" (click)="clicked($event)" oncontextmenu="return false;">
+    <img #schema [src]="getImageUrl(roadworkSchema.imageId)" (load)="render()">
+    <div #pointOutput></div>
+    <svg #linesOutput class="line-output"></svg>
+  </div>
+
+  <determination-boundingbox-list (onRemoved)="removeBoundingBox($event)"
+    [finishedBoundingBoxes]="roadworkSchema.boundingBoxes">
+  </determination-boundingbox-list>
+</div>
