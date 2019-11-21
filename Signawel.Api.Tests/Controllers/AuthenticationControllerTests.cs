@@ -35,7 +35,7 @@ namespace Signawel.Api.Tests.Controllers
             // Arrange
             var loginRequestDto = new LoginRequestDtoBuilder().WithEmail().WithPassword().Build();
 
-            _authenticationServiceMock.Setup(service => service.LoginEmailAsync(It.IsAny<string>(), 
+            _authenticationServiceMock.Setup(service => service.LoginEmailAsync(It.IsAny<string>(),
                     It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Task.FromResult<TokenResponseDto>(null));
 
@@ -44,7 +44,7 @@ namespace Signawel.Api.Tests.Controllers
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            _authenticationServiceMock.Verify(service => service.LoginEmailAsync(loginRequestDto.Email, 
+            _authenticationServiceMock.Verify(service => service.LoginEmailAsync(loginRequestDto.Email,
                 loginRequestDto.Password, ClientIp), Times.Once);
         }
 
@@ -64,7 +64,7 @@ namespace Signawel.Api.Tests.Controllers
             // Assert
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Value, Is.EqualTo(tokenResponseDto));
-            _authenticationServiceMock.Verify(service => service.LoginEmailAsync(loginRequestDto.Email, 
+            _authenticationServiceMock.Verify(service => service.LoginEmailAsync(loginRequestDto.Email,
                 loginRequestDto.Password, ClientIp), Times.Once);
         }
 
@@ -95,7 +95,7 @@ namespace Signawel.Api.Tests.Controllers
                 .WithPassword().WithPasswordRepeat().Build();
             var registerResponseDto = new RegisterResponseDto();
 
-            _authenticationServiceMock.Setup(service => 
+            _authenticationServiceMock.Setup(service =>
                 service.RegisterAsync(It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(registerResponseDto);
 
@@ -104,8 +104,50 @@ namespace Signawel.Api.Tests.Controllers
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            _authenticationServiceMock.Verify(service => 
+            _authenticationServiceMock.Verify(service =>
                 service.RegisterAsync(registerRequestDto.Email, registerRequestDto.Password), Times.Once);
+        }
+
+        [Test]
+        public void RefreshTokenWithInvalidDtoShouldReturnBadRequest()
+        {
+            // Arrange
+            var refreshRequestDto = new RefreshRequestDtoBuilder()
+                .WithJwtToken().WithRefreshToken().Build();
+
+            _authenticationServiceMock.Setup(service =>
+                    service.RefreshJwtTokenAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync((TokenResponseDto)null);
+
+            // Act
+            var result = _authenticationController.RefreshToken(refreshRequestDto).Result as BadRequestResult;
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            _authenticationServiceMock.Verify(service =>
+                service.RefreshJwtTokenAsync(refreshRequestDto.JwtToken, refreshRequestDto.RefreshToken), Times.Once);
+        }
+
+        [Test]
+        public void RefreshTokenWithValidDtoShouldReturnOkObject()
+        {
+            // Arrange
+            var refreshRequestDto = new RefreshRequestDtoBuilder()
+                .WithJwtToken().WithRefreshToken().Build();
+            var tokenResponseDto = new TokenResponseDto();
+
+            _authenticationServiceMock.Setup(service =>
+                    service.RefreshJwtTokenAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(tokenResponseDto);
+
+            // Act
+            var result = _authenticationController.RefreshToken(refreshRequestDto).Result as OkObjectResult;
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Value, Is.EqualTo(tokenResponseDto));
+            _authenticationServiceMock.Verify(service =>
+                service.RefreshJwtTokenAsync(refreshRequestDto.JwtToken, refreshRequestDto.RefreshToken), Times.Once);
         }
     }
 }
