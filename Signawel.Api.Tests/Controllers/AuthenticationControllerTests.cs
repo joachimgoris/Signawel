@@ -23,7 +23,7 @@ namespace Signawel.Api.Tests.Controllers
             _authenticationServiceMock = new Mock<IAuthenticationService>();
             _authenticationController = new AuthenticationController(_authenticationServiceMock.Object)
             {
-                ControllerContext = new ControllerContextBuilder().WithClientIp().Build()
+                ControllerContext = new ControllerContextBuilder().WithUser().WithClientIp().Build()
             };
             ClientIp = _authenticationController.ControllerContext.HttpContext
                 .GetRemoteIpAddress(true).ToString();

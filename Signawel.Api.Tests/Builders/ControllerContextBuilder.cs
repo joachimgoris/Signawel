@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Primitives;
 
 namespace Signawel.Api.Tests.Builders
 {
@@ -20,7 +25,12 @@ namespace Signawel.Api.Tests.Builders
             {
                 HttpContext = new DefaultHttpContext()
             };
+        }
+
+        public ControllerContextBuilder WithUser()
+        {
             _context.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>()));
+            return this;
         }
 
         public ControllerContextBuilder WithClientIp()
