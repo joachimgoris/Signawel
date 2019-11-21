@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Signawel.Domain;
+using System.Collections.Generic;
 
-namespace Signawel.Domain
+namespace Signawel.Dto.Reports
 {
-    public class Report : Entity
+    public class ReportCreationRequestDto
     {
         public string UserEmail { get; set; }
 

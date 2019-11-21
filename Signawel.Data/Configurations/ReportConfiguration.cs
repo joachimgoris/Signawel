@@ -18,13 +18,24 @@ namespace Signawel.Data.Configurations
                 .HasColumnName("user_email")
                 .IsRequired();
 
+            builder.Property(e => e.Description)
+                .IsUnicode()
+                .HasColumnName("description");
+
+            builder.Property(e => e.RoadWorkId)
+               .IsUnicode()
+               .HasColumnName("roadwork_id");
+
+            builder.Property(e => e.Cities)
+                .HasConversion(list => string.Join(";", list), from => from.Split(';'))
+                .HasColumnName("cities");
+
+
             builder.Property(e => e.CustomMessage)
                 .IsUnicode()
                 .HasColumnName("custom_message");
 
-            builder.Property(e => e.Priority)
-                .IsRequired()
-                .HasColumnName("priority");
+
         }
     }
 }

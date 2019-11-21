@@ -1,4 +1,6 @@
 ﻿using Signawel.Domain;
+using Signawel.Domain.DataResults;
+using Signawel.Dto.Reports;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,28 +13,28 @@ namespace Signawel.Business.Abstractions.Services
         /// <summary>
         ///     Adds a report to the database.
         /// </summary>
-        /// <param name="report">
-        ///     The report to add to the datebase.
+        /// <param name="reportDto">
+        ///     An instance of <see cref="ReportCreationRequestDto"/> containing the data for a new <see cref="Report"/>.
         /// </param>
         /// <returns>
-        ///     The report as it is in the database.
+        ///     An instance of <see cref="DataResult{TEntity}"/> containing an instance of <see cref="ReportCreationResponseDto"/> containing the data of the <see cref="Report"/> as it is in the database.
         /// </returns>
-        Task<Report> AddReportAsync(Report report);
+        Task<DataResult<ReportCreationResponseDto>> AddReportAsync(ReportCreationRequestDto reportDto);
 
         #endregion
 
         #region Get
 
         /// <summary>
-        ///     Get a single report from the database.
+        ///     Get a single <see cref="Report"/> from the database.
         /// </summary>
         /// <param name="reportId">
-        ///     The id of the report.
+        ///     The id of the <see cref="Report"/>.
         /// </param>
         /// <returns>
-        ///     The single report as it is in the database.
+        ///     An instance of <see cref="DataResult{TEntity}"/> containing an instance of <see cref="ReportGetResponseDto"/> containing all the data of the <see cref="Report"/> as it is in the database.
         /// </returns>
-        Task<Report> GetReportAsync(string reportId);
+        Task<DataResult<ReportGetResponseDto>> GetReportAsync(string reportId);
 
         /// <summary>
         ///     Get all the reports currently in the database.
@@ -47,12 +49,12 @@ namespace Signawel.Business.Abstractions.Services
         #region Delete
 
         /// <summary>
-        ///     Delete the report from the database.
+        ///     Delete the <see cref="Report"/> from the database.
         /// </summary>
         /// <param name="reportId">
-        ///     The id of the report to be deleted.
+        ///     The id of the <see cref="Report"/> to be deleted.
         /// </param>
-        Task DeleteReportAsync(string reportId);
+        Task<DataResult> DeleteReportAsync(string reportId);
 
         #endregion
 
@@ -61,13 +63,13 @@ namespace Signawel.Business.Abstractions.Services
         /// <summary>
         ///     Modifies the report in the database with the changes in the new report.
         /// </summary>
-        /// <param name="report">
-        ///     The report containing the changes.
+        /// <param name="reportDto">
+        ///     An instance of <see cref="ReportModifyRequestDto"/> containing all the data to change a <see cref="Report"/> in the database.
         /// </param>
         /// <returns>
-        ///     The modified report as it is in the database.
+        ///     An instance of <see cref="DataResult{TEntity}"/> containing an instance of <see cref="ReportModifyResponseDto"/> with all the data of the modified <see cref="Report"/>.
         /// </returns>
-        Task<Report> ModifyReportAsync(Report report);
+        Task<DataResult<ReportModifyResponseDto>> ModifyReportAsync(ReportModifyRequestDto reportDto);
 
         #endregion
     }

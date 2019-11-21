@@ -17,6 +17,7 @@ using Signawel.Data.Abstractions.Repositories;
 using Signawel.Data.Repositories;
 using Signawel.Domain;
 using Signawel.Domain.Authentication;
+using Signawel.Domain.Configuration;
 
 namespace Signawel.API.Extensions
 {
@@ -46,6 +47,7 @@ namespace Signawel.API.Extensions
         public static IServiceCollection AddSignawelAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             // Read tokenconfiguration from appsettings
+            services.Configure<MailConfiguration>(configuration.GetSection("MailSettings"));
             services.Configure<TokenConfiguration>(configuration.GetSection("TokenSettings"));
             var tokenConfiguration = configuration.GetSection("TokenSettings").Get<TokenConfiguration>();
 
@@ -105,6 +107,8 @@ namespace Signawel.API.Extensions
             services.AddScoped<IDeterminationService, DeterminationService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IRoadworkSchemaService, RoadworkSchemaService>();
+            services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IPriorityEmailService, PriorityEmailService>();
             services.AddScoped<IMailService, MailService>();
 
             return services;

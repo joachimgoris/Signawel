@@ -1,11 +1,7 @@
-﻿using System;
-
-namespace Signawel.Domain
+﻿namespace Signawel.Domain
 {
-    public class PriorityEmail
+    public class PriorityEmail : Entity
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-
         public string EmailSuffix { get; set; }
     }
 }
