@@ -67,5 +67,24 @@ namespace Signawel.Business.Abstractions.Services
         ///     An instance of <see cref="DataResult{TEntity}"/> containing an instance of <see cref="TokenResponseDto"/>.
         /// </returns>
         Task<DataResult<TokenResponseDto>> RefreshJwtTokenAsync(string jwtToken, string refreshToken);
+        
+        /// <summary>
+        ///     Generates a ForgotPassword token.
+        /// </summary>
+        /// <param name="model">
+        ///     An instance of <see cref="ForgotPasswordTokenRequestDto"/> containing the data to request a ForgotPassword token.
+        /// </param>
+        /// <returns>
+        ///     An instance of <see cref="ForgotPasswordTokenResponseDto"/> containing the ForgotPassword token.
+        /// </returns>
+        Task<DataResult<ForgotPasswordTokenResponseDto>> GenerateForgotPasswordTokenAsync(ForgotPasswordTokenRequestDto model);
+
+        /// <summary>
+        ///     Consumes the ForgotPassword token to set the given new password.
+        /// </summary>
+        /// <param name="model">
+        ///     An instance of <see cref="PasswordResetDto"/> containing the data to set the new password.
+        /// </param>
+        Task<DataResult> ResetPasswordAsync(PasswordResetDto model);
     }
 }

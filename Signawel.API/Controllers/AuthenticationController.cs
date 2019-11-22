@@ -112,5 +112,47 @@ namespace Signawel.API.Controllers
 
 
         #endregion
+
+        #region GenerateForgotPasswordToken
+
+        [HttpPost("generateforgotpasswordtoken")]
+        [AllowAnonymous]
+        [SwaggerOperation("generateforgotpasswordtoken")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Forgot password token generated.", typeof(ForgotPasswordTokenResponseDto))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "An error has occurred while attempting generate a ForgotPasswordToken.", typeof(DataResult))]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> GenerateForgotPasswordToken([FromBody] ForgotPasswordTokenRequestDto model)
+        {
+            var result = await _authenticationService.GenerateForgotPasswordTokenAsync(model);
+
+            if (result.HasError(ErrorCodes.NotFoundError))
+                return NotFound();
+
+            if (!result.Succeeded)
+                return BadRequest(result);
+
+            return Ok(result.Entity);
+        }
+
+        #endregion
+
+        #region ResetPassword
+
+        [HttpPost("resetpassword")]
+        [AllowAnonymous]
+        [SwaggerOperation("resetpassword")]
+        [SwaggerResponse(StatusCodes.Status204NoContent, "Password was reset")]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "An error has occurred while attempting to set new password.", typeof(DataResult))]
+        public async Task<ActionResult> ResetPasswordAsync([FromBody] PasswordResetDto model)
+        {
+            var result = await _authenticationService.ResetPasswordAsync(model);
+
+            if (!result.Succeeded)
+                return BadRequest(result);
+
+            return NoContent();
+        }
+
+        #endregion
     }
 }

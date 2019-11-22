@@ -95,9 +95,11 @@ namespace Signawel.Business.Services
         }
 
         #endregion
+        
+        #region CreateReportEmail
 
         /// <inheritdoc cref="IMailService.CreateReportEmailAsync(ReportResponseDto)"/>
-        public async Task CreateReportEmailAsync(ReportResponseDto report)
+        public async Task<DataResult> CreateReportEmailAsync(ReportResponseDto report)
         {
             string mailSuffix = report.UserEmail.Split('@')[1];
             bool priority = await _priorityEmailService.CheckPriorityEmailAsync(mailSuffix);
@@ -120,7 +122,6 @@ namespace Signawel.Business.Services
             mailBody.Append("</ul><br><br>");
             mailBody.Append("<h4>Beschrijving probleem: </h4>" + report.CustomMessage + "<br>");
             mailBody.Append("------------------------------------------<br>");
-            mailBody.Append(report.Description + "<br>");
 
             foreach (string city in report.Cities)
             {
@@ -139,7 +140,14 @@ namespace Signawel.Business.Services
             email.DestinationAddress = report.UserEmail;  //TODO needs to be changed later to the email connected to the cities
             email.Subject = subject;
 
-            SendMail(email);
+            var mailResult = SendMail(email);
+
+            if (!mailResult.Succeeded)
+                return DataResult.WithErrorsFromDataResult(mailResult);
+
+            return DataResult.Success;
         }
+
+        #endregion
     }
 }

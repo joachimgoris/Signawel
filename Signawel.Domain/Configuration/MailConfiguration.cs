@@ -3,7 +3,7 @@
     public class MailConfiguration
     {
         public string Host { get; set; }
-        
+
         public string Sender { get; set; }
 
         public string SenderName { get; set; }

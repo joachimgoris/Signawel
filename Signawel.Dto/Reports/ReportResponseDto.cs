@@ -15,8 +15,6 @@ namespace Signawel.Dto.Reports
 
         public ICollection<string> Cities { get; set; }
 
-        public string Description { get; set; }
-
         public ICollection<ReportImage> Images { get; set; }
 
         public ICollection<ReportIssue> IssueLink { get; set; }

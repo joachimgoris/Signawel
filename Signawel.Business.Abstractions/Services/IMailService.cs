@@ -42,6 +42,6 @@ namespace Signawel.Business.Abstractions.Services
         /// <param name="report">
         ///     An instance of <see cref="ReportResponseDto"/> containing all the data for a report email.
         /// </param>
-        Task CreateReportEmailAsync(ReportResponseDto report);
+        Task<DataResult> CreateReportEmailAsync(ReportResponseDto report);
     }
 }

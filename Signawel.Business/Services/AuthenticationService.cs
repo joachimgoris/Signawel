@@ -63,6 +63,44 @@ namespace Signawel.Business.Services
 
         #endregion
 
+        #region GenerateForgotPasswordToken
+
+        /// <inheritdoc cref="IAuthenticationService.GenerateForgotPasswordTokenAsync(ForgotPasswordTokenRequestDto)"/>
+        public async Task<DataResult<ForgotPasswordTokenResponseDto>> GenerateForgotPasswordTokenAsync(ForgotPasswordTokenRequestDto model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+                return DataResult<ForgotPasswordTokenResponseDto>.WithPublicError(ErrorCodes.NotFoundError, "There was no user associated with the given id.");
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            return DataResult<ForgotPasswordTokenResponseDto>.WithEntityOrError(new ForgotPasswordTokenResponseDto
+            {
+                Token = token
+            }, ErrorCodes.ForgotPasswordTokenError, "Failed to generate ForgotPasswordToken.", DataErrorVisibility.Public);
+        }
+
+        #endregion
+
+        #region ResetPassword
+
+        /// <inheritdoc cref="IAuthenticationService.ResetPasswordAsync(PasswordResetDto)"/>
+        public async Task<DataResult> ResetPasswordAsync(PasswordResetDto model)
+        {
+            if (model == null)
+                return DataResult.WithPublicError(ErrorCodes.ParameterEmptyError, "Parameter PasswordResetDto is empty.");
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            var result = await _userManager.ResetPasswordAsync(user, model.ResetToken, model.NewPassword);
+
+            if (!result.Succeeded)
+                return DataResult.WithPublicError(ErrorCodes.IdentityError, "Something went wrong with the PasswordReset proces.");
+
+            return DataResult.Success;
+        }
+
+        #endregion
+
         #region LoginEmail
 
         /// <inheritdoc cref="IAuthenticationService.LoginEmailAsync(string, string, string)"/>
