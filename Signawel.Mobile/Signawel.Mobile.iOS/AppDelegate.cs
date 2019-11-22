@@ -24,6 +24,7 @@ namespace Signawel.Mobile.iOS
         {
             Xamarin.FormsMaps.Init();
             global::Xamarin.Forms.Forms.Init();
+
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

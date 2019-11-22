@@ -15,7 +15,6 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>false</AndroidUseAapt2>
@@ -98,7 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Signawel.Mobile\Signawel.Mobile.csproj">
-      <Project>{91BD9D6D-A4DC-4436-B11F-98E04C0478D9}</Project>
+      <Project>{DA27020A-AA86-4C3A-8946-865F59D073E3}</Project>
       <Name>Signawel.Mobile</Name>
     </ProjectReference>
   </ItemGroup>

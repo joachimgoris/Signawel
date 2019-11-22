@@ -26,6 +26,7 @@
     <MtouchArch>x86_64</MtouchArch>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
+    <MtouchSdkVersion>13.2</MtouchSdkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -134,7 +135,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\Signawel.Mobile\Signawel.Mobile.csproj">
-      <Project>{91BD9D6D-A4DC-4436-B11F-98E04C0478D9}</Project>
+      <Project>{DA27020A-AA86-4C3A-8946-865F59D073E3}</Project>
       <Name>Signawel.Mobile</Name>
     </ProjectReference>
   </ItemGroup>
@@ -143,5 +144,19 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\correct.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\PVL.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\PXL.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Signawel.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
   </ItemGroup>
 </Project>
