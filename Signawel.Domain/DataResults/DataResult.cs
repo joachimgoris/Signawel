@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Signawel.Domain.DataResults
@@ -45,9 +46,9 @@ namespace Signawel.Domain.DataResults
         ///     <see cref="DataError.Value"/>
         /// </param>
         /// <param name="visiblity">
-        ///     <see cref="DataError.Visiblity"/>
+        ///     <see cref="DataError.Visibility"/>
         /// </param>
-        public void AddError(string code, string value = null, DataErrorVisiblity visiblity = DataErrorVisiblity.Internal)
+        public void AddError(string code, string value = null, DataErrorVisibility visiblity = DataErrorVisibility.Internal)
         {
             _errors.Add(new DataError(code, value, visiblity));
         }
@@ -59,16 +60,16 @@ namespace Signawel.Domain.DataResults
         ///     <see cref="DataResult"/> to add the errors of to the current <see cref="DataResult"/>.
         /// </param>
         /// <remarks>
-        ///     <see cref="DataError"/>s with a <see cref="DataError.Visiblity"/> of <see cref="DataErrorVisiblity.Private"/> will not be transferred.
+        ///     <see cref="DataError"/>s with a <see cref="DataError.Visibility"/> of <see cref="DataErrorVisibility.Private"/> will not be transferred.
         /// </remarks>
         public void AddErrorsFromDataResult(DataResult dataResult)
         {
             foreach (var error in dataResult.Errors)
             {
-                if (error.Visiblity == DataErrorVisiblity.Private)
+                if (error.Visibility == DataErrorVisibility.Private)
                     continue;
 
-                AddError(error.Code, error.Value, error.Visiblity);
+                AddError(error.Code, error.Value, error.Visibility);
             }
         }
 
@@ -131,14 +132,31 @@ namespace Signawel.Domain.DataResults
         /// <param name="value">
         ///     <see cref="DataError.Value"/>
         /// </param>
-        /// <param name="visiblity">
-        ///     <see cref="DataError.Visiblity"/>
+        /// <param name="visibility">
+        ///     <see cref="DataError.Visibility"/>
         /// </param>
-        public static DataResult WithError(string code, string value, DataErrorVisiblity visiblity = DataErrorVisiblity.Internal)
+        public static DataResult WithError(string code, string value, DataErrorVisibility visibility = DataErrorVisibility.Internal)
         {
             var dataResult = new DataResult();
-            dataResult.AddError(code, value, visiblity);
+            dataResult.AddError(code, value, visibility);
             return dataResult;
+        }
+
+        /// <summary>
+        ///     Identical to <see cref="DataResult.WithError(string, string, DataErrorVisibility)"/> but with a public <see cref="DataError"/>.
+        /// </summary>
+        /// <param name="code">
+        ///     <see cref="DataError.Code"/>
+        /// </param>
+        /// <param name="value">
+        ///     <see cref="DataError.Value"/>
+        /// </param>
+        /// <param name="visiblity">
+        ///     <see cref="DataError.Visibility"/>
+        /// </param>
+        public static DataResult WithPublicError(string code, string value)
+        {
+            return WithError(code, value, DataErrorVisibility.Public);
         }
 
         /// <summary>
@@ -148,7 +166,7 @@ namespace Signawel.Domain.DataResults
         ///     <see cref="DataResult"> to copy the <see cref="DataError"/>s from and add to the current <see cref="DataResult"/>.
         /// </param>
         /// <remarks>
-        ///     <see cref="DataError"/>s with a <see cref="DataError.Visiblity"/> of <see cref="DataErrorVisiblity.Private"/> will not be transferred.
+        ///     <see cref="DataError"/>s with a <see cref="DataError.Visibility"/> of <see cref="DataErrorVisibility.Private"/> will not be transferred.
         /// </remarks>
         public static DataResult WithErrorsFromDataResult(DataResult dataResult)
         {

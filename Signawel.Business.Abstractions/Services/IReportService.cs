@@ -17,9 +17,9 @@ namespace Signawel.Business.Abstractions.Services
         ///     An instance of <see cref="ReportCreationRequestDto"/> containing the data for a new <see cref="Report"/>.
         /// </param>
         /// <returns>
-        ///     An instance of <see cref="DataResult{TEntity}"/> containing an instance of <see cref="ReportCreationResponseDto"/> containing the data of the <see cref="Report"/> as it is in the database.
+        ///     An instance of <see cref="DataResult{TEntity}"/> containing an instance of <see cref="ReportResponseDto"/> containing the data of the <see cref="Report"/> as it is in the database.
         /// </returns>
-        Task<DataResult<ReportCreationResponseDto>> AddReportAsync(ReportCreationRequestDto reportDto);
+        Task<DataResult<ReportResponseDto>> AddReportAsync(ReportCreationRequestDto reportDto);
 
         #endregion
 
@@ -32,9 +32,9 @@ namespace Signawel.Business.Abstractions.Services
         ///     The id of the <see cref="Report"/>.
         /// </param>
         /// <returns>
-        ///     An instance of <see cref="DataResult{TEntity}"/> containing an instance of <see cref="ReportGetResponseDto"/> containing all the data of the <see cref="Report"/> as it is in the database.
+        ///     An instance of <see cref="DataResult{TEntity}"/> containing an instance of <see cref="ReportResponseDto"/> containing all the data of the <see cref="Report"/> as it is in the database.
         /// </returns>
-        Task<DataResult<ReportGetResponseDto>> GetReportAsync(string reportId);
+        Task<DataResult<ReportResponseDto>> GetReportAsync(string reportId);
 
         /// <summary>
         ///     Get all the reports currently in the database.
@@ -67,9 +67,9 @@ namespace Signawel.Business.Abstractions.Services
         ///     An instance of <see cref="ReportModifyRequestDto"/> containing all the data to change a <see cref="Report"/> in the database.
         /// </param>
         /// <returns>
-        ///     An instance of <see cref="DataResult{TEntity}"/> containing an instance of <see cref="ReportModifyResponseDto"/> with all the data of the modified <see cref="Report"/>.
+        ///     An instance of <see cref="DataResult{TEntity}"/> containing an instance of <see cref="ReportResponseDto"/> with all the data of the modified <see cref="Report"/>.
         /// </returns>
-        Task<DataResult<ReportModifyResponseDto>> ModifyReportAsync(ReportModifyRequestDto reportDto);
+        Task<DataResult<ReportResponseDto>> ModifyReportAsync(ReportModifyRequestDto reportDto);
 
         #endregion
     }

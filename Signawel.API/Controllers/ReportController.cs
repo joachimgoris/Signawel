@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Signawel.Business.Abstractions.Services;
@@ -28,8 +30,8 @@ namespace Signawel.API.Controllers
 
         [HttpGet("{id}")]
         [SwaggerOperation("getReport")]
-        [SwaggerResponse(StatusCodes.Status200OK, "Report found.", typeof(DataResult<ReportGetResponseDto>))]
-        [SwaggerResponse(StatusCodes.Status404NotFound, "Report not found.")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Report found.", typeof(DataResult<ReportResponseDto>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Report not found.", typeof(IList<DataError>))]
         public async Task<IActionResult> GetReport(string id)
         {
             var result = await _reportService.GetReportAsync(id);
@@ -49,8 +51,8 @@ namespace Signawel.API.Controllers
 
         [HttpPost]
         [SwaggerOperation("uploadReport")]
-        [SwaggerResponse(StatusCodes.Status200OK, "Report created.", typeof(DataResult<ReportCreationResponseDto>))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, "Something went wrong.", typeof(DataResult))]
+        [SwaggerResponse(StatusCodes.Status200OK, "Report created.", typeof(DataResult<ReportResponseDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Something went wrong.", typeof(IList<DataError>))]
         public async Task<ActionResult> AddReport([FromBody] ReportCreationRequestDto model)
         {
             var result = await _reportService.AddReportAsync(model);
@@ -58,7 +60,7 @@ namespace Signawel.API.Controllers
             if (!result.Succeeded)
                 return BadRequest(result);
 
-            await _mailService.CreateEmailAsync(result.Entity);
+            await _mailService.CreateReportEmailAsync(result.Entity);
 
             return Ok(result);
         }

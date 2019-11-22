@@ -6,6 +6,8 @@ using Signawel.Data.Abstractions.Repositories;
 using Signawel.Data.Repositories;
 using Signawel.Domain;
 using Signawel.Domain.Authentication;
+using Signawel.Domain.Constants;
+using Signawel.Domain.DataResults;
 using Signawel.Dto.Authentication;
 using System;
 using System.Collections.Generic;
@@ -31,7 +33,7 @@ namespace Signawel.Business.Services
             _authenticationRepository = authenticationRepository;
         }
 
-        public async Task<TokenResponseDto> GenerateToken(User user, ICollection<Claim> additionalClaims)
+        public async Task<DataResult<TokenResponseDto>> GenerateToken(User user, ICollection<Claim> additionalClaims)
         {
             var claims = new List<Claim>
             {
@@ -60,19 +62,21 @@ namespace Signawel.Business.Services
             if(token == null)
             {
                 _logger.LogWarning("Failed to create a JWT token for user {userId}", user.Id);
-                return null;
+                return DataResult<TokenResponseDto>.WithPublicError(ErrorCodes.JwtTokenError, "Failed to create a JWT token.");
             }
 
             var refreshToken = await _authenticationRepository.CreateRefreshTokenAsync(user.Id, token.Id);
 
-            return new TokenResponseDto
+            var tokenResponse = new TokenResponseDto
             {
                 Token = tokenHandler.WriteToken(token),
-                RefreshToken = refreshToken.Token
+                RefreshToken = refreshToken.Entity.Token
             };
+
+            return DataResult<TokenResponseDto>.WithEntityOrError(tokenResponse, ErrorCodes.JwtTokenError, "Something went wrong during the JWT creation process.", DataErrorVisibility.Public);
         }
 
-        public ClaimsPrincipal GetPrincipalFromToken(string token)
+        public DataResult<ClaimsPrincipal> GetPrincipalFromToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -80,11 +84,12 @@ namespace Signawel.Business.Services
             {
                 _tokenValidationParameters.ValidateLifetime = false;
                 var principal = tokenHandler.ValidateToken(token, _tokenValidationParameters, out var validatedToken);
-                return !IsJwtWithValidSecurityAlgorithm(validatedToken) ? null : principal;
+                return DataResult<ClaimsPrincipal>.WithEntityOrError(!IsJwtWithValidSecurityAlgorithm(validatedToken) ? null : principal,
+                    ErrorCodes.PrincipalTokenError, "Something went wrong during the get PrincipalToken process.", DataErrorVisibility.Public);
             }
             catch (Exception)
             {
-                return null;
+                return DataResult<ClaimsPrincipal>.WithPublicError(ErrorCodes.PrincipalTokenError, "Something went wrong during the get PrincipalToken process.");
             }
             finally
             {

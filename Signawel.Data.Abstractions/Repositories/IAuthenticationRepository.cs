@@ -1,4 +1,5 @@
 ﻿using Signawel.Domain;
+using Signawel.Domain.DataResults;
 using System.Threading.Tasks;
 
 namespace Signawel.Data.Abstractions.Repositories
@@ -20,7 +21,7 @@ namespace Signawel.Data.Abstractions.Repositories
         /// <returns>
         ///     The newly created LoginRecord.
         /// </returns>
-        Task<LoginRecord> AddLoginRecordAsync(string userId, string ipAddress, bool succes);
+        Task<DataResult<LoginRecord>> AddLoginRecordAsync(string userId, string ipAddress, bool succes);
 
         /// <summary>
         ///     Create a new <see cref="RefreshToken"/> for a user.
@@ -34,7 +35,7 @@ namespace Signawel.Data.Abstractions.Repositories
         /// <returns>
         ///     The newly created RefreshToken.
         /// </returns>
-        Task<RefreshToken> CreateRefreshTokenAsync(string userId, string jwtId);
+        Task<DataResult<RefreshToken>> CreateRefreshTokenAsync(string userId, string jwtId);
 
         /// <summary>
         ///     Get a <see cref="RefreshToken"/> based on the token value.
@@ -45,7 +46,7 @@ namespace Signawel.Data.Abstractions.Repositories
         /// <returns>
         ///     The existing RefreshToken.
         /// </returns>
-        Task<RefreshToken> GetRefreshTokenByTokenAsync(string requestRefreshToken);
+        Task<DataResult<RefreshToken>> GetRefreshTokenByTokenAsync(string requestRefreshToken);
 
         /// <summary>
         ///     Update an existing <see cref="RefreshToken"/>.
@@ -56,6 +57,6 @@ namespace Signawel.Data.Abstractions.Repositories
         /// <returns>
         ///     The updated RefreshToken.
         /// </returns>
-        Task<RefreshToken> UpdateRefreshTokenAsync(RefreshToken storedRefreshToken);
+        Task<DataResult<RefreshToken>> UpdateRefreshTokenAsync(RefreshToken storedRefreshToken);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Signawel.Domain;
+using Signawel.Domain.DataResults;
 using Signawel.Dto.Authentication;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -8,8 +9,8 @@ namespace Signawel.Business.Abstractions.Services
 {
     public interface IJwtTokenFactory
     {
-        Task<TokenResponseDto> GenerateToken(User user, ICollection<Claim> additionalClaims);
+        Task<DataResult<TokenResponseDto>> GenerateToken(User user, ICollection<Claim> additionalClaims);
 
-        ClaimsPrincipal GetPrincipalFromToken(string token);
+        DataResult<ClaimsPrincipal> GetPrincipalFromToken(string token);
     }
 }

@@ -65,7 +65,7 @@ namespace Signawel.API.Extensions
                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                options.User.RequireUniqueEmail = true;
 
-               options.SignIn.RequireConfirmedEmail = false;
+               options.SignIn.RequireConfirmedEmail = true;
                options.SignIn.RequireConfirmedPhoneNumber = false;
            }).AddEntityFrameworkStores<SignawelDbContext>().AddDefaultTokenProviders();
 
@@ -97,6 +97,7 @@ namespace Signawel.API.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IJwtTokenFactory, JwtTokenFactory>();
             services.AddScoped<TokenConfiguration>();
+            services.AddScoped<MailConfiguration>();
 
             return services;
         }

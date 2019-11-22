@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Signawel.Domain.DataResults
+﻿namespace Signawel.Domain.DataResults
 {
     public class DataError
     {
@@ -34,9 +30,9 @@ namespace Signawel.Domain.DataResults
         /// <summary>
         ///     The visiblity of the error.
         ///     
-        ///     Default: <see cref="DataErrorVisiblity.Internal"/>
+        ///     Default: <see cref="DataErrorVisibility.Internal"/>
         /// </summary>
-        public DataErrorVisiblity Visiblity { get; private set; }
+        public DataErrorVisibility Visibility { get; private set; }
 
         /// <summary>
         ///     Create a new instance of the <see cref="DataError"/> class.
@@ -47,14 +43,14 @@ namespace Signawel.Domain.DataResults
         /// <param name="value">
         ///     <see cref="Value"/>
         /// </param>
-        /// <param name="visiblity">
-        ///     <see cref="Visiblity"/>
+        /// <param name="visibility">
+        ///     <see cref="Visibility"/>
         /// </param>
-        internal DataError(string code, string value = null, DataErrorVisiblity visiblity = DataErrorVisiblity.Internal)
+        internal DataError(string code, string value = null, DataErrorVisibility visibility = DataErrorVisibility.Internal)
         {
             Code = code;
             Value = value;
-            Visiblity = visiblity;
+            Visibility = visibility;
         }
 
     }

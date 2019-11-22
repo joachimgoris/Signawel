@@ -31,7 +31,7 @@ namespace Signawel.Domain.DataResults
         {
             return new DataResult<TEntity>
             {
-                Entity = entity
+                Entity = entity,
             };
         }
 
@@ -44,14 +44,31 @@ namespace Signawel.Domain.DataResults
         /// <param name="value">
         ///     <see cref="DataError.Value"/>
         /// </param>
-        /// <param name="visiblity">
-        ///     <see cref="DataError.Visiblity"/>
+        /// <param name="visibility">
+        ///     <see cref="DataError.Visibility"/>
         /// </param>
-        public static new DataResult<TEntity> WithError(string code, string value, DataErrorVisiblity visiblity = DataErrorVisiblity.Internal)
+        public static new DataResult<TEntity> WithError(string code, string value, DataErrorVisibility visibility = DataErrorVisibility.Internal)
         {
             var dataResult = new DataResult<TEntity>();
-            dataResult.AddError(code, value, visiblity);
+            dataResult.AddError(code, value, visibility);
             return dataResult;
+        }
+
+        /// <summary>
+        ///     Identical to <see cref="DataResult{TEntity}.WithError(string, string, DataErrorVisibility)"/> but with a public <see cref="DataError"/>.
+        /// </summary>
+        /// <param name="code">
+        ///     <see cref="DataError.Code"/>
+        /// </param>
+        /// <param name="value">
+        ///     <see cref="DataError.Value"/>
+        /// </param>
+        /// <param name="visiblity">
+        ///     <see cref="DataError.Visibility"/>
+        /// </param>
+        public static new DataResult<TEntity> WithPublicError(string code, string value)
+        {
+            return WithError(code, value, DataErrorVisibility.Public);
         }
 
         /// <summary>
@@ -61,7 +78,7 @@ namespace Signawel.Domain.DataResults
         ///     <see cref="DataResult"> to copy the <see cref="DataError"/>s from and add to the current <see cref="DataResult"/>.
         /// </param>
         /// <remarks>
-        ///     <see cref="DataError"/>s with a <see cref="DataError.Visiblity"/> of <see cref="DataErrorVisiblity.Private"/> will not be transferred.
+        ///     <see cref="DataError"/>s with a <see cref="DataError.Visibility"/> of <see cref="DataErrorVisibility.Private"/> will not be transferred.
         /// </remarks>
         public static new DataResult<TEntity> WithErrorsFromDataResult(DataResult dataResult)
         {
@@ -83,12 +100,12 @@ namespace Signawel.Domain.DataResults
         ///     <see cref="DataError.Value"/>
         /// </param>
         /// <param name="visiblity">
-        ///     <see cref="DataError.Visiblity"/>
+        ///     <see cref="DataError.Visibility"/>
         /// </param>
         /// <returns>
         ///     A <see cref="DataResult{TEntity}"/> with <paramref name="entity"/> as <see cref="DataResult{TEntity}.Entity"/> or a <see cref="DataError"/>.
         /// </returns>
-        public static DataResult<TEntity> WithEntityOrError(TEntity entity, string code, string value, DataErrorVisiblity visiblity = DataErrorVisiblity.Internal)
+        public static DataResult<TEntity> WithEntityOrError(TEntity entity, string code, string value, DataErrorVisibility visiblity = DataErrorVisibility.Internal)
         {
             if (entity == null)
             {

@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using Signawel.Data.Abstractions.Repositories;
 using Signawel.Domain;
 using Signawel.Domain.Authentication;
+using Signawel.Domain.Constants;
+using Signawel.Domain.DataResults;
 using System;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -23,12 +25,12 @@ namespace Signawel.Data.Repositories
         }
 
         /// <inheritdoc cref="IAuthenticationRepository.AddLoginRecordAsync(string, string, bool)"/>
-        public async Task<LoginRecord> AddLoginRecordAsync(string userId, string ipAddress, bool succes)
+        public async Task<DataResult<LoginRecord>> AddLoginRecordAsync(string userId, string ipAddress, bool succes)
         {
             if (userId == null)
             {
                 _logger.LogWarning("Failed to create LoginRecord. UserId was null.");
-                return null;
+                return DataResult<LoginRecord>.WithPublicError(ErrorCodes.ParameterEmptyError, "UserId is empty.");
             }
 
             LoginRecord loginRecord = new LoginRecord
@@ -44,24 +46,24 @@ namespace Signawel.Data.Repositories
             if(result.Entity == null)
             {
                 _logger.LogWarning("Failed to create LoginRecord for user {userId}", userId);
-                return null;
+                return DataResult<LoginRecord>.WithPublicError(ErrorCodes.LoginRecordError, "Failed to create a LoginRecord.");
             }
 
-            return result.Entity;
+            return DataResult<LoginRecord>.WithEntityOrError(result.Entity, ErrorCodes.LoginRecordError, "Failed to create a LoginRecord.", DataErrorVisibility.Public);
         }
 
         /// <inheritdoc cref="IAuthenticationRepository.CreateRefreshTokenAsync(string, string)"/>
-        public async Task<RefreshToken> CreateRefreshTokenAsync(string userId, string jwtId)
+        public async Task<DataResult<RefreshToken>> CreateRefreshTokenAsync(string userId, string jwtId)
         {
             if(userId == null)
             {
                 _logger.LogWarning("Failed to create RefreshToken. UserId was null.");
-                return null;
+                return DataResult<RefreshToken>.WithPublicError(ErrorCodes.ParameterEmptyError, "UserId is empty.");
             }
             if(jwtId == null)
             {
                 _logger.LogWarning("Failed to create RefreshToken. JwtId was null.");
-                return null;
+                return DataResult<RefreshToken>.WithPublicError(ErrorCodes.ParameterEmptyError, "JwtId is empty.");
             }
 
             RefreshToken refreshToken = new RefreshToken
@@ -78,28 +80,28 @@ namespace Signawel.Data.Repositories
             if (result.Entity == null)
             {
                 _logger.LogWarning("Failed to create RefreshToken for user {userId}.", userId);
-                return null;
+                return DataResult<RefreshToken>.WithPublicError(ErrorCodes.RefreshTokenError, "Something went wrong during the refreshtoken creation process.");
             }
 
-            return result.Entity;
+            return DataResult<RefreshToken>.WithEntityOrError(result.Entity, ErrorCodes.RefreshTokenError, "Something went wrong during the refreshtoken creation process.", DataErrorVisibility.Public);
         }   
 
         /// <inheritdoc cref="IAuthenticationRepository.GetRefreshTokenByTokenAsync(string)"/>
-        public async Task<RefreshToken> GetRefreshTokenByTokenAsync(string requestRefreshToken)
+        public async Task<DataResult<RefreshToken>> GetRefreshTokenByTokenAsync(string requestRefreshToken)
         {
             var refreshToken = await _context.RefreshTokens.FirstOrDefaultAsync(e => e.Token == requestRefreshToken);
 
             if(refreshToken == null)
             {
                 _logger.LogInformation("RefreshToken {token} not found", requestRefreshToken);
-                return null;
+                return DataResult<RefreshToken>.WithPublicError(ErrorCodes.NotFoundError, "Invalid RefreshToken.");
             }
 
-            return refreshToken;
+            return DataResult<RefreshToken>.WithEntityOrError(refreshToken, ErrorCodes.RefreshTokenError, "Something went wrong during token refresh process", DataErrorVisibility.Public);
         }
 
         /// <inheritdoc cref="IAuthenticationRepository.UpdateRefreshTokenAsync(RefreshToken)"/>
-        public async Task<RefreshToken> UpdateRefreshTokenAsync(RefreshToken storedRefreshToken)
+        public async Task<DataResult<RefreshToken>> UpdateRefreshTokenAsync(RefreshToken storedRefreshToken)
         {
             var result = _context.RefreshTokens.Update(storedRefreshToken);
             await _context.SaveChangesAsync();
@@ -107,10 +109,10 @@ namespace Signawel.Data.Repositories
             if (result.Entity == null)
             {
                 _logger.LogWarning("Failed to update RefreshToken {id}", storedRefreshToken.Id);
-                return null;
+                return DataResult<RefreshToken>.WithPublicError(ErrorCodes.RefreshTokenError, "Failed to update RefreshToken");
             }
 
-            return result.Entity;
+            return DataResult<RefreshToken>.WithEntityOrError(result.Entity, ErrorCodes.RefreshTokenError, "Failed to update RefreshToken", DataErrorVisibility.Public);
         }
 
         #region Private Methods

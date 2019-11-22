@@ -2,7 +2,7 @@
 {
     public class SendMailDto
     {
-        public string destinationAddress { get; set; }
+        public string DestinationAddress { get; set; }
 
         public string Body { get; set; }
 

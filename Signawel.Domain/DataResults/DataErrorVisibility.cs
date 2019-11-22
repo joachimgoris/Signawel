@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Signawel.Domain.DataResults
+﻿namespace Signawel.Domain.DataResults
 {
     /// <summary>
     ///     The visibility level of a <see cref="DataError"/>
     /// </summary>
-    public enum DataErrorVisiblity
+    public enum DataErrorVisibility
     {
 
         /// <summary>

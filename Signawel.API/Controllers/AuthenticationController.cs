@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Signawel.API.Extensions;
 using Signawel.Dto.Authentication;
 using Signawel.API.Attributes;
+using Signawel.Domain.DataResults;
+using Signawel.Domain.Constants;
+using System.Collections.Generic;
 
 namespace Signawel.API.Controllers
 {
@@ -28,14 +31,18 @@ namespace Signawel.API.Controllers
         [AllowAnonymous]
         [SwaggerOperation("login")]
         [SwaggerResponse(StatusCodes.Status200OK, "User successfully logged in.", typeof(TokenResponseDto))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, "An error occurred while attempting to login the user.")]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "An error occurred while attempting to login the user.", typeof(IList<DataError>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Login([FromBody] LoginRequestDto model)
         {
-            TokenResponseDto result = await _authenticationService.LoginEmailAsync(model.Email, model.Password, HttpContext.GetRemoteIpAddress().ToString());
+            var result = await _authenticationService.LoginEmailAsync(model.Email, model.Password, HttpContext.GetRemoteIpAddress().ToString());
 
-            if (result == null) return BadRequest();
+            if (result.HasError(ErrorCodes.NotFoundError))
+                return NotFound();
 
-            return Ok(result);
+            if (!result.Succeeded) return BadRequest(result);
+
+            return Ok(result.Entity);
         }
 
         #endregion
@@ -46,32 +53,64 @@ namespace Signawel.API.Controllers
         [AllowAnonymous]
         [SwaggerOperation("register")]
         [SwaggerResponse(StatusCodes.Status204NoContent, "User was registered.")]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, "An error has occurred while attempting to register.")]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "An error has occurred while attempting to register.", typeof(IList<DataError>))]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto model)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
             var result = await _authenticationService.RegisterAsync(model.Email, model.Password);
 
-            if (result == null) return BadRequest();
+            if (!result.Succeeded)
+                return BadRequest(result);
             
             return NoContent();
         }
 
         #endregion
 
+        #region RefreshToken
+
         [HttpPost("refresh")]
         [AllowAnonymous]
         [SwaggerOperation("refresh")]
         [SwaggerResponse(StatusCodes.Status200OK, "Token was refreshed.", typeof(TokenResponseDto))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, "An error has occurred while attempting to refresh the token")]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "An error has occurred while attempting to refresh the token", typeof(IList<DataError>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshRequestDto model)
         {
             var result = await _authenticationService.RefreshJwtTokenAsync(model.JwtToken, model.RefreshToken);
 
-            if (result == null) return BadRequest();
+            if (result.HasError(ErrorCodes.NotFoundError))
+                return NotFound();
 
-            return Ok(result);
+            if (!result.Succeeded)
+                return BadRequest(result);
+
+            return Ok(result.Entity);
         }
+
+        #endregion
+
+        #region ConfirmEmail
+
+        [HttpPost("confirmemail")]
+        [AllowAnonymous]
+        [SwaggerOperation("confirmEmailAddress")]
+        [SwaggerResponse(StatusCodes.Status204NoContent, "The email address has been confirmed.")]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "An error has occured while attempting to confirm the email address", typeof(IList<DataError>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> ConfirmEmail([FromBody] EmailConfirmRequestDto request)
+        {
+            var result = await _authenticationService.ConfirmEmailAsync(request);
+
+            if (result.HasError(ErrorCodes.NotFoundError))
+                return NotFound();
+
+            if (!result.Succeeded)
+                return BadRequest(result);
+
+            return NoContent();
+        }
+
+
+        #endregion
     }
 }

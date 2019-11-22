@@ -27,10 +27,10 @@ namespace Signawel.Business.Services
         #region AddReport
 
         /// <inheritdoc cref="IReportService.AddReportAsync(ReportCreationRequestDto)"/>
-        public async Task<DataResult<ReportCreationResponseDto>> AddReportAsync(ReportCreationRequestDto reportDto)
+        public async Task<DataResult<ReportResponseDto>> AddReportAsync(ReportCreationRequestDto reportDto)
         {
             if (reportDto == null)
-                return DataResult<ReportCreationResponseDto>.WithError(ErrorCodes.ReportCreationError, "The given Dto is empty.");
+                return DataResult<ReportResponseDto>.WithError(ErrorCodes.ReportCreationError, "The given Dto is empty.");
 
             var report = _mapper.Map<Report>(reportDto);
 
@@ -38,9 +38,9 @@ namespace Signawel.Business.Services
 
             await _context.SaveChangesAsync();
 
-            var reportResponse = _mapper.Map<ReportCreationResponseDto>(report);
+            var reportResponse = _mapper.Map<ReportResponseDto>(report);
 
-            return DataResult<ReportCreationResponseDto>.WithEntityOrError(
+            return DataResult<ReportResponseDto>.WithEntityOrError(
                 reportResponse, ErrorCodes.ReportCreationError, "Something went wrong when creating a report.");
         }
 
@@ -82,14 +82,14 @@ namespace Signawel.Business.Services
         #region GetReport
 
         /// <inheritdoc cref="IReportService.GetReportAsync(string)"/>
-        public async Task<DataResult<ReportGetResponseDto>> GetReportAsync(string reportId)
+        public async Task<DataResult<ReportResponseDto>> GetReportAsync(string reportId)
         {
             if (!string.IsNullOrEmpty(reportId))
-                return DataResult<ReportGetResponseDto>.WithError(ErrorCodes.ReportGetError, "The given reportId is empty.");
+                return DataResult<ReportResponseDto>.WithError(ErrorCodes.ReportGetError, "The given reportId is empty.");
 
             var report = await _context.Reports.FindAsync(reportId);
 
-            return DataResult<ReportGetResponseDto>.WithEntityOrError(_mapper.Map<ReportGetResponseDto>(report), ErrorCodes.NotFoundError, "There was no report linked to the given id in the database.");
+            return DataResult<ReportResponseDto>.WithEntityOrError(_mapper.Map<ReportResponseDto>(report), ErrorCodes.NotFoundError, "There was no report linked to the given id in the database.");
         }
 
         #endregion
@@ -97,17 +97,17 @@ namespace Signawel.Business.Services
         #region ModifyReport
 
         /// <inheritdoc cref="IReportService.ModifyReportAsync(ReportModifyRequestDto)"/>
-        public async Task<DataResult<ReportModifyResponseDto>> ModifyReportAsync(ReportModifyRequestDto reportDto)
+        public async Task<DataResult<ReportResponseDto>> ModifyReportAsync(ReportModifyRequestDto reportDto)
         {
             if (reportDto == null)
-                return DataResult<ReportModifyResponseDto>.WithError(ErrorCodes.ReportModificationError, "The given Dto is empty.");
+                return DataResult<ReportResponseDto>.WithError(ErrorCodes.ReportModificationError, "The given Dto is empty.");
 
             Report oldReport = await _context.Reports.FindAsync(reportDto.Id);
             oldReport = _mapper.Map(reportDto, oldReport);
 
             await _context.SaveChangesAsync();
 
-            return DataResult<ReportModifyResponseDto>.WithEntityOrError(_mapper.Map<ReportModifyResponseDto>(oldReport), ErrorCodes.ReportModificationError, "Something went wrong when updating the report.");
+            return DataResult<ReportResponseDto>.WithEntityOrError(_mapper.Map<ReportResponseDto>(oldReport), ErrorCodes.ReportModificationError, "Something went wrong when updating the report.");
         }
 
         #endregion

@@ -9,44 +9,95 @@ using Signawel.Domain;
 using System.Text;
 using Signawel.Dto.Reports;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.WebUtilities;
+using Signawel.Domain.DataResults;
+using Signawel.Domain.Constants;
 
 namespace Signawel.Business.Services
 {
+    /// <inheritdoc cref="IMailService"/>
     public class MailService : IMailService
     {
-        private IOptions<MailConfiguration> _options;
+        private readonly MailConfiguration _configuration;
         private readonly IPriorityEmailService _priorityEmailService;
-        public MailService(IOptions<MailConfiguration> options,
-            IPriorityEmailService priorityEmailService)
+
+        public MailService(IOptions<MailConfiguration> mailConfiguration, IPriorityEmailService priorityEmailService)
         {
-            this._options = options;
-            this._priorityEmailService = priorityEmailService;
+            _configuration = mailConfiguration.Value;
+            _priorityEmailService = priorityEmailService;
         }
-        public bool SendMail(SendMailDto sendMailDto)
+
+        #region SendConfirmationEmail
+
+        /// <inheritdoc cref="IMailService.SendConfirmationEmailAsync(User, string)"/>
+        public async Task<DataResult> SendConfirmationEmailAsync(User user, string token)
+        {
+            var tokenString = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+            var callbackUri = new Uri(_configuration.FrontEndUrl + $"authentication/confirmemail?userId={user.Id}&token={tokenString}");
+
+            var mailDto = new SendMailDto
+            {
+                DestinationAddress = user.Email,
+                Subject = "Please confirm your registration.",
+                Body = callbackUri.AbsoluteUri
+            };
+
+            var mailResult = SendMail(mailDto);
+            if (!mailResult.Succeeded)
+                return DataResult.WithErrorsFromDataResult(mailResult);
+
+            return DataResult.Success;
+        }
+
+        #endregion
+
+        #region Sendmail
+
+        /// <inheritdoc cref="IMailService.SendMail(SendMailDto)"/>
+        public DataResult SendMail(SendMailDto sendMailDto)
         {
             try
             {
-                SmtpClient client = new SmtpClient();
-                client.Host = _options.Value.Host;
-                client.Port = _options.Value.Port;
-                client.EnableSsl = true;
-                client.Credentials = new NetworkCredential(_options.Value.Sender, _options.Value.Password);
-                MailMessage message = new MailMessage(_options.Value.Sender, sendMailDto.destinationAddress);
-                message.Body = sendMailDto.Body;
-                message.IsBodyHtml = true;
-                message.Subject = sendMailDto.Subject;
+                SmtpClient client = new SmtpClient
+                {
+                    Host = _configuration.Host,
+                    Port = _configuration.Port,
+                    EnableSsl = true,
+                    Credentials = new NetworkCredential(_configuration.Sender, _configuration.Password)
+                };
+                MailMessage message = new MailMessage(_configuration.Sender, sendMailDto.DestinationAddress)
+                {
+                    Body = sendMailDto.Body,
+                    IsBodyHtml = true,
+                    Subject = sendMailDto.Subject
+                };
 
                 string userState = "Signawel test message";
                 client.SendAsync(message, userState);
-                return true;
+                return DataResult.Success;
+            }
+            catch (ArgumentNullException)
+            {
+                return DataResult.WithPublicError(ErrorCodes.ParameterEmptyError, "Message or sender address is null.");
+            }
+            catch (InvalidOperationException)
+            {
+                return DataResult.WithPublicError(ErrorCodes.InvalidOperationError, "The client has a Send call in progress or the DeliveryMethod is invalid.");
+            }
+            catch (SmtpException) 
+            {
+                return DataResult.WithPublicError(ErrorCodes.MailError, "An SmtpException occurred.");
             }
             catch (Exception)
             {
-                return false;
+                return DataResult.WithPublicError(ErrorCodes.MailError, "Something went wrong during the mail process.");
             }
         }
 
-        public async Task CreateEmailAsync(ReportCreationResponseDto report)
+        #endregion
+
+        /// <inheritdoc cref="IMailService.CreateReportEmailAsync(ReportResponseDto)"/>
+        public async Task CreateReportEmailAsync(ReportResponseDto report)
         {
             string mailSuffix = report.UserEmail.Split('@')[1];
             bool priority = await _priorityEmailService.CheckPriorityEmailAsync(mailSuffix);
@@ -85,7 +136,7 @@ namespace Signawel.Business.Services
 
             SendMailDto email = new SendMailDto();
             email.Body = mailBody.ToString();
-            email.destinationAddress = report.UserEmail;  //TODO needs to be changed later to the email connected to the cities
+            email.DestinationAddress = report.UserEmail;  //TODO needs to be changed later to the email connected to the cities
             email.Subject = subject;
 
             SendMail(email);
