@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Signawel.API.Attributes;
 using Signawel.Business.Abstractions.Services;
 using Signawel.Dto.Determination;
 using Swashbuckle.AspNetCore.Annotations;
@@ -8,10 +9,13 @@ using System.Threading.Tasks;
 
 namespace Signawel.API.Controllers
 {
+    /// <summary>
+    ///     Controller for creating and viewing the determination graph
+    /// </summary>
     [ApiController]
-    //TODO : [JwtTokenAuthorize]
+    [JwtTokenAuthorize]
     [Route("api/determination-graph")]
-    public class DeterminationGraphController : ControllerBase
+    public class DeterminationGraphController : BaseController
     {
         private readonly IDeterminationService _determinationService;
 
@@ -20,6 +24,10 @@ namespace Signawel.API.Controllers
             this._determinationService = determinationService;
         }
 
+        /// <summary>
+        ///     Endpoint for getting the determination graph.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         [SwaggerOperation("getDeterminationGraph")]
@@ -29,6 +37,13 @@ namespace Signawel.API.Controllers
             return Ok(await _determinationService.GetGraphAsync());
         }
 
+        /// <summary>
+        ///     Endpoint for setting the determionation graph.
+        /// </summary>
+        /// <param name="dto">
+        ///     Instance of <see cref="DeterminationGraphCreationRequestDto"/> containg details about the determination graph to set in the database.
+        /// </param>
+        /// <returns></returns>
         [HttpPost]
         [SwaggerOperation("setDeterminationGraph")]
         [SwaggerResponse(StatusCodes.Status200OK, "Updated determination graph", typeof(DeterminationGraphResponseDto))]

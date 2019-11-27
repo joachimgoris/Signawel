@@ -6,7 +6,6 @@ import {
   ElementRef,
   Input
 } from "@angular/core";
-import { ImageService } from "../../services/image/image.service";
 import { BoundingBox } from "../../models/boundingbox.model";
 import { RoadworkSchemaModel } from "../../models/roadwork-schema.model";
 import { Point } from "../../models/point.model";
@@ -28,10 +27,9 @@ export class SchemaDetailComponent implements OnInit {
   private currentSelectedPoint: Point;
   private dragPointListener: () => void;
 
-  constructor(
-    private renderer: Renderer2,
-    private imageService: ImageService
-  ) {}
+  private imageResult: string;
+
+  constructor(private renderer: Renderer2) {}
 
   ngOnInit() {}
 
@@ -263,16 +261,29 @@ export class SchemaDetailComponent implements OnInit {
   }
 
   imageChanged(event) {
-    var file = event.target.files[0] as File;
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
 
-    this.imageService.postImage(file).subscribe(res => {
-      this.roadworkSchema.imageId = res.id;
-      this.render();
-    });
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imageResult = e.target.result;
+        this.roadworkSchema.image = file;
+      };
+
+      reader.readAsDataURL(file);
+    }
   }
 
-  getImageUrl(id: string) {
-    return IMAGES + `/${id}`;
+  getImageUrl() {
+    if (this.imageResult) {
+      return this.imageResult;
+    }
+
+    if (this.roadworkSchema.imageId) {
+      return IMAGES + `/${this.roadworkSchema.imageId}`;
+    }
+
+    return "";
   }
 
   getXCord(percentage: number) {

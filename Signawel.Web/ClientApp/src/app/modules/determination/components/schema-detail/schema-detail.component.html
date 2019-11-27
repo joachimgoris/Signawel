@@ -9,10 +9,10 @@
     afbeelding</button>
 </div>
 
-<div [ngStyle]="{'display': roadworkSchema.imageId ? 'block' : 'none'}">
+<div [ngStyle]="{'display': getImageUrl() != '' ? 'block' : 'none'}">
 
   <div class="output" (click)="clicked($event)" oncontextmenu="return false;">
-    <img #schema [src]="getImageUrl(roadworkSchema.imageId)" (load)="render()">
+    <img #schema [src]="getImageUrl()" (load)="render()" alt="schema">
     <div #pointOutput></div>
     <svg #linesOutput class="line-output"></svg>
   </div>

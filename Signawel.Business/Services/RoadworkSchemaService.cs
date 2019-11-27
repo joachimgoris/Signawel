@@ -1,16 +1,14 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Signawel.Business.Abstractions.Services;
 using Signawel.Data;
 using Signawel.Domain;
 using Signawel.Dto;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Signawel.Dto.RoadworkSchema;
+using Signawel.Domain.DataResults;
 
 namespace Signawel.Business.Services
 {
@@ -25,62 +23,79 @@ namespace Signawel.Business.Services
             this._mapper = mapper;
         }
 
-        public async Task<RoadworkSchemaResponseDto> CreateRoadworkSchema(RoadworkSchemaCreationRequestDto dto)
+        /// <inheritdoc/>
+        public async Task<DataResult<RoadworkSchemaResponseDto>> CreateRoadworkSchema(RoadworkSchemaCreationRequestDto dto, string imageId)
         {
             var schema = _mapper.Map<RoadworkSchema>(dto);
 
-            await _context.RoadworkSchemas.AddAsync(schema);
-            await _context.SaveChangesAsync();
-            return _mapper.Map<RoadworkSchemaResponseDto>(schema);
+            schema.ImageId = imageId;
+
+            try
+            {
+                await _context.RoadworkSchemas.AddAsync(schema);
+                await _context.SaveChangesAsync();
+
+                var result = _mapper.Map<RoadworkSchemaResponseDto>(schema);
+                return DataResult<RoadworkSchemaResponseDto>.Success(result);
+            }
+            catch (Exception)
+            {
+                return DataResult<RoadworkSchemaResponseDto>.WithError("RoadworkSchemaCreation", "Failed to create roadworkschema.", DataErrorVisibility.Public);
+            }
         }
 
-        public async Task<bool> DeleteRoadworkSchema(string id)
+        /// <inheritdoc/>
+        public async Task<DataResult> DeleteRoadworkSchema(string id)
         {
             var data = await _context.RoadworkSchemas.FindAsync(id);
 
             if (data == null)
-                return false;
+                return DataResult.WithError("RoadworkSchemaNotFound", "Roadwork Schema not found", DataErrorVisibility.Public);
 
             _context.RoadworkSchemas.Remove(data);
             await _context.SaveChangesAsync();
-            return true;
+            return DataResult.Success;
         }
 
+        /// <inheritdoc/>
         public IQueryable<RoadworkSchemaResponseDto> GetAllRoadworkSchemas()
         {
             return _mapper.ProjectTo<RoadworkSchemaResponseDto>(_context.RoadworkSchemas);
         }
 
-        public async Task<RoadworkSchemaResponseDto> GetRoadworkSchema(string id)
+        /// <inheritdoc/>
+        public async Task<DataResult<RoadworkSchemaResponseDto>> GetRoadworkSchema(string id)
         {
             var data = await _context.RoadworkSchemas
                 .Include(schema => schema.BoundingBoxes).ThenInclude(bb => bb.Points)
                 .FirstOrDefaultAsync(schema => schema.Id == id);
 
             if(data == null)
-                return null;
+                return DataResult<RoadworkSchemaResponseDto>.WithError("RoadworkSchemaNotFound", $"No roadwork schema found with id '{ id }'.", DataErrorVisibility.Public);
 
-            return _mapper.Map<RoadworkSchemaResponseDto>(data);
+            return DataResult<RoadworkSchemaResponseDto>.Success(_mapper.Map<RoadworkSchemaResponseDto>(data));
         }
 
-        public async Task<RoadworkSchemaResponseDto> PutRoadworkSchema(string id, RoadworkSchemaPutRequestDto dto)
+        /// <inheritdoc/>
+        public async Task<DataResult<RoadworkSchemaResponseDto>> PutRoadworkSchema(string id, RoadworkSchemaPutRequestDto dto)
         {
             var currentSchema = await _context.RoadworkSchemas
                 .Include(rs => rs.BoundingBoxes).ThenInclude(bb => bb.Points)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if(currentSchema == null)
-                return null;
+                return DataResult<RoadworkSchemaResponseDto>.WithError("RoadworkSchemaNotFound", $"No roadwork schema found with id '{ id }'.", DataErrorVisibility.Public);
 
             var newSchema = _mapper.Map<RoadworkSchema>(dto);
             newSchema.Id = id;
+            newSchema.ImageId = currentSchema.ImageId;
 
             _context.RoadworkSchemas.Remove(currentSchema);
             await _context.SaveChangesAsync();
             await _context.RoadworkSchemas.AddAsync(newSchema);
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<RoadworkSchemaResponseDto>(newSchema);
+            return DataResult<RoadworkSchemaResponseDto>.Success(_mapper.Map<RoadworkSchemaResponseDto>(newSchema));
         }
     }
 }

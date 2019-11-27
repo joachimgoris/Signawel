@@ -1,29 +1,32 @@
-﻿using AutoMapper;
-using Signawel.Business.Abstractions.Services;
+﻿using Signawel.Business.Abstractions.Services;
 using Signawel.Data;
 using Signawel.Domain;
-using Signawel.Dto;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
+using Signawel.Domain.DataResults;
 
 namespace Signawel.Business.Services
 {
+    /// <summary>
+    ///     Service for managing the images in the application.
+    /// </summary>
     public class ImageService : IImageService
     {
         private readonly SignawelDbContext _context;
-        private readonly IMapper _mapper;
 
-        public ImageService(SignawelDbContext context, IMapper mapper)
+        /// <summary>
+        ///     Default contructor
+        /// </summary>
+        /// <param name="context">
+        ///     Instance of <see cref="SignawelDbContext"/> provided by DI.
+        /// </param>
+        public ImageService(SignawelDbContext context)
         {
             this._context = context;
-            this._mapper = mapper;
         }
 
+        /// <inheritdoc/>
         public async Task<MemoryStream> GetImageAsync(string id)
         {
             var image = await _context.Images.FindAsync(id);
@@ -33,16 +36,15 @@ namespace Signawel.Business.Services
                 return null;
             }
 
-            // TODO get image from file server
             var bytes = Convert.FromBase64String(image.ImagePath);
             return new MemoryStream(bytes);
         }
 
-        public async Task<ImageResponseDto> AddImage(MemoryStream memoryStream)
+        /// <inheritdoc/>
+        public async Task<DataResult<string>> AddImage(MemoryStream memoryStream)
         {
-            byte[] bytes = memoryStream.ToArray();
+            byte[] bytes = memoryStream.ToArray(); 
 
-            // TODO save to file server and save path
             string base64 = Convert.ToBase64String(bytes);
 
             var image = new Image
@@ -50,12 +52,19 @@ namespace Signawel.Business.Services
                 ImagePath = base64
             };
 
-            _context.Images.Add(image);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Images.Add(image);
+                await _context.SaveChangesAsync();
 
-            return _mapper.Map<ImageResponseDto>(image);
+                return DataResult<string>.Success(image.Id);
+            } catch(Exception)
+            {
+                return DataResult<string>.WithError("FailedToSaveImage", "Failed to add image to database", DataErrorVisibility.Public);
+            }
         }
 
+        /// <inheritdoc/>
         public async Task DeleteImage(string id)
         {
             var image = await _context.Images.FindAsync(id);
@@ -66,5 +75,30 @@ namespace Signawel.Business.Services
             await _context.SaveChangesAsync();
         }
 
+        /// <inheritdoc/>
+        public async Task<DataResult<string>> UpdateImage(string id, MemoryStream stream)
+        {
+            var image = await _context.Images.FindAsync(id);
+
+            if(image == null)
+            {
+                return DataResult<string>.WithError("NoImageFound", $"No image found with id '{ id }'", DataErrorVisibility.Public);
+            }
+
+            byte[] bytes = stream.ToArray();
+            string base64 = Convert.ToBase64String(bytes);
+
+            image.ImagePath = base64;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+                return DataResult<string>.Success(image.Id);
+            } catch(Exception)
+            {
+                return DataResult<string>.WithError("FailedToSaveImage", "Faild to add image to database");
+            }
+        }
     }
 }

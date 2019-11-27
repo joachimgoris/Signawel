@@ -9,7 +9,6 @@ using Newtonsoft.Json.Converters;
 using Signawel.API.Extensions;
 using Signawel.Business.MapperProfiles;
 using Signawel.Data;
-using Signawel.Data.Abstractions.Repositories;
 
 namespace Signawel.API
 {

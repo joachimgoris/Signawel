@@ -16,7 +16,7 @@ namespace Signawel.API.Controllers
     [ApiController]
     [JwtTokenAuthorize]
     [Route("api/authentication")]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController : BaseController
     {
         private readonly IAuthenticationService _authenticationService;
 

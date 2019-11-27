@@ -97,8 +97,7 @@ export class SchemaListComponent implements OnInit, AfterViewInit {
   }
 
   doEdit(schema: RoadworkSchemaModel) {
-    console.log(schema);
-    this.selectedRoadworkSchema = JSON.parse(JSON.stringify(schema));
+    this.selectedRoadworkSchema = JSON.parse(JSON.stringify(schema)); // Deep-Copy
     this.modalService.open("schemaEditor");
   }
 
@@ -121,19 +120,21 @@ export class SchemaListComponent implements OnInit, AfterViewInit {
       this.service
         .createRoadworkSchema(this.selectedRoadworkSchema)
         .subscribe(res => {
-          this.selectedRoadworkSchema = null;
-          this.modalService.close("schemaEditor");
-          this.loadWorkroadSchemas();
+          this.endEdit();
         });
     } else {
       this.service
         .updateRoadworkSchema(this.selectedRoadworkSchema)
         .subscribe(res => {
-          this.selectedRoadworkSchema = null;
-          this.modalService.close("schemaEditor");
-          this.loadWorkroadSchemas();
+          this.endEdit();
         });
     }
+  }
+
+  private endEdit() {
+    this.selectedRoadworkSchema = null;
+    this.modalService.close("schemaEditor");
+    this.loadWorkroadSchemas();
   }
 
   createNew() {

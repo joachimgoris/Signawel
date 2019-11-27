@@ -8,19 +8,31 @@ using Swashbuckle.AspNetCore.Annotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Signawel.Dto.RoadworkSchema;
+using Signawel.API.Attributes;
+using System.Collections.Generic;
+using Signawel.Domain.DataResults;
+using System.IO;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System;
 
 namespace Signawel.API.Controllers
 {
+    /// <summary>
+    ///     Controller for doing CRUD actions with RoadworkSchemas
+    /// </summary>
     [ApiController]
-    // TODO [JwtTokenAuthorize]
+    [JwtTokenAuthorize]
     [Route("api/roadwork-schemas")]
-    public class RoadworkSchemaController : ControllerBase
+    public class RoadworkSchemaController : BaseController
     {
         private readonly IRoadworkSchemaService _schemaService;
+        private readonly IImageService _imageService;
 
-        public RoadworkSchemaController(IRoadworkSchemaService schemaService)
+        public RoadworkSchemaController(IRoadworkSchemaService schemaService, IImageService imageService)
         {
             _schemaService = schemaService;
+            _imageService = imageService;
         }
 
         [HttpGet("{id}")]
@@ -30,15 +42,16 @@ namespace Signawel.API.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, "Roadwork schema was not found")]
         public async Task<IActionResult> GetRoadworkSchema(string id)
         {
-            var schema = await _schemaService.GetRoadworkSchema(id);
+            var result = await _schemaService.GetRoadworkSchema(id);
 
-            if(schema == null)
-                return NotFound();
+            if(!result.Succeeded)
+                return NotFound(result);
 
-            return Ok(schema);
+            return Ok(result.Entity);
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [SwaggerOperation("getAllRoadworkSchemas")]
         [SwaggerResponse(StatusCodes.Status200OK, "All roadwork schema", typeof(RoadworkSchemaPaginationResponseDto))]
         public async Task<IActionResult> GetAllRoadworkSchemas([FromQuery] string search = null, [FromQuery] int page = 0, [FromQuery] int limit = 20)
@@ -71,29 +84,100 @@ namespace Signawel.API.Controllers
         [HttpPost]
         [SwaggerOperation("createRoadworkSchema")]
         [SwaggerResponse(StatusCodes.Status200OK, "The created roadwork schema", typeof(RoadworkSchemaResponseDto))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, "Something whent wrong")]
-        public async Task<IActionResult> AddRoadworkSchema([FromBody] RoadworkSchemaCreationRequestDto dto)
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Something whent wrong", typeof(IList<ErrorResponseDto>))]
+        public async Task<IActionResult> AddRoadworkSchema([FromJson] RoadworkSchemaCreationRequestDto value, IList<IFormFile> files)
         {
-            var creation = await _schemaService.CreateRoadworkSchema(dto);
+            var image = files.FirstOrDefault();
 
-            if(creation == null)
-                return BadRequest();
+            if(image == null || image.Length <= 0)
+            {
+                return BadRequest(DataResult.WithError("ImageRequired", "An image is required and cannot have size of 0 for creating a roadwork schema.", DataErrorVisibility.Public));
+            }
 
-            return Ok(creation);
+            var imageId = string.Empty;
+
+            using(var copyMemoryStream = new MemoryStream())
+            using(var changeFormatMemoryStream = new MemoryStream())
+            {
+                await image.CopyToAsync(copyMemoryStream);
+                try
+                {
+                    var bitmap = Image.FromStream(copyMemoryStream);
+
+                    bitmap.Save(changeFormatMemoryStream, ImageFormat.Png);
+                    bitmap.Dispose();
+
+                    var result = await _imageService.AddImage(changeFormatMemoryStream);
+
+                    if(result.Succeeded)
+                    {
+                        imageId = result.Entity;
+                    } else
+                    {
+                        return BadRequest(result);
+                    }
+                } catch (Exception)
+                {
+                    return BadRequest(DataResult.WithError("InvalidFileFormat", "The uploaded file is not a valid image format.", DataErrorVisibility.Public));
+                }
+            }
+
+            var creationResult = await _schemaService.CreateRoadworkSchema(value, imageId);
+
+            if(!creationResult.Succeeded)
+            {
+                await _imageService.DeleteImage(imageId);
+                return BadRequest(creationResult);
+            }
+
+            return Ok(creationResult.Entity);
         }
 
         [HttpPut("{id}")]
         [SwaggerOperation("putUpdateRoadworkSchema")]
         [SwaggerResponse(StatusCodes.Status200OK, "The updated roadwork schema", typeof(RoadworkSchemaResponseDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Something whent wrong")]
-        public async Task<IActionResult> PutRoadworkSchema(string id, [FromBody] RoadworkSchemaPutRequestDto dto)
+        public async Task<IActionResult> PutRoadworkSchema(string id, [FromJson] RoadworkSchemaPutRequestDto value, IList<IFormFile> files)
         {
-            var updated = await _schemaService.PutRoadworkSchema(id, dto);
+            var image = files.FirstOrDefault();
 
-            if(updated == null)
-                return BadRequest();
+            if(image != null)
+            {
+                if(image.Length <= 0)
+                {
+                    return BadRequest(DataResult.WithError("FileInvalid", "An image cannot have size lower of equal to 0.", DataErrorVisibility.Public));
+                }
 
-            return Ok(updated);
+                using(var copyMemoryStream = new MemoryStream())
+                using(var changeFormatMemoryStream = new MemoryStream())
+                {
+                    await image.CopyToAsync(copyMemoryStream);
+                    try
+                    {
+                        var bitmap = Image.FromStream(copyMemoryStream);
+
+                        bitmap.Save(changeFormatMemoryStream, ImageFormat.Png);
+                        bitmap.Dispose();
+
+                        var result = await _imageService.UpdateImage(value.ImageId, changeFormatMemoryStream);
+
+                        if(!result.Succeeded)
+                        {
+                            return BadRequest(result);
+                        }
+                    } catch(Exception)
+                    {
+                        return BadRequest(DataResult.WithError("InvalidFileFormat", "The uploaded file is not a valid image format.", DataErrorVisibility.Public));
+                    }
+                }
+            }
+
+            var updated = await _schemaService.PutRoadworkSchema(id, value);
+
+            if(!updated.Succeeded)
+                return BadRequest(updated);
+
+            return Ok(updated.Entity);
         }
 
         [HttpDelete("{id}")]
@@ -104,8 +188,8 @@ namespace Signawel.API.Controllers
         {
             var result = await _schemaService.DeleteRoadworkSchema(id);
 
-            if (!result)
-                return BadRequest();
+            if (!result.Succeeded)
+                return BadRequest(result);
 
             return NoContent();
         }

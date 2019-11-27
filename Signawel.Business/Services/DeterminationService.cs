@@ -16,12 +16,22 @@ namespace Signawel.Business.Services
         private readonly IDeterminationRepository _repository;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        ///     Constructor
+        /// </summary>
+        /// <param name="repository">
+        ///     Instance of <see cref="IDeterminationRepository"/> provided by DI.
+        /// </param>
+        /// <param name="mapper">
+        ///     Instance of <see cref="IMapper"/> provided by DI.
+        /// </param>
         public DeterminationService(IDeterminationRepository repository, IMapper mapper)
         {
             this._repository = repository;
             this._mapper = mapper;
         }
 
+        /// <inheritdoc/>
         public async Task<DeterminationGraphResponseDto> GetGraphAsync()
         {
             var result = await _repository.GetGraphAsync();
@@ -29,6 +39,7 @@ namespace Signawel.Business.Services
             return response;
         }
 
+        /// <inheritdoc/>
         public async Task<DeterminationGraphResponseDto> SetGraphAsync(DeterminationGraphCreationRequestDto creationDto)
         {
             var toSave = _mapper.Map<DeterminationGraph>(creationDto);

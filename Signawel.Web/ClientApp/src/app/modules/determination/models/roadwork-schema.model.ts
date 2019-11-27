@@ -6,8 +6,9 @@ export class RoadworkSchemaModel {
   id: string;
   name: string;
   imageId: string;
-
   boundingBoxes: BoundingBox[];
+
+  image: File;
 
   constructor() {
     this.boundingBoxes = new Array<BoundingBox>();
