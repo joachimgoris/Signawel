@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Signawel.Dto.Determination;
+﻿using Signawel.Dto.Determination;
 
 namespace Signawel.Api.Tests.Builders.Dtos
 {

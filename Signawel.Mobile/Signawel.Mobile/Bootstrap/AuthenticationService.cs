@@ -2,7 +2,6 @@
 using Signawel.Dto.Authentication;
 using Signawel.Mobile.Bootstrap.Abstract;
 using Signawel.Mobile.Constants;
-using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;

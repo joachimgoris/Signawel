@@ -1,8 +1,6 @@
 ﻿using Signawel.Mobile.Bootstrap.Abstract;
 using Signawel.Mobile.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Signawel.Mobile.ViewModels

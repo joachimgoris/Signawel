@@ -1,6 +1,4 @@
-﻿using Signawel.Domain;
-
-namespace Signawel.Dto.Authentication
+﻿namespace Signawel.Dto.Authentication
 {
     public class ForgotPasswordTokenResponseDto
     {

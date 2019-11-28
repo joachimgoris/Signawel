@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Signawel.API.Controllers;
-using Signawel.Api.Tests.Builders;
 using Signawel.Business.Abstractions.Services;
 
 namespace Signawel.Api.Tests.Controllers

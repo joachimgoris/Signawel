@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Signawel.Mobile.ViewModels;
 
 namespace Signawel.Mobile.Models
 {

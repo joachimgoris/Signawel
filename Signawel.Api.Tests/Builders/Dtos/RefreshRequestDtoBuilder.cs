@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Signawel.Dto.Authentication;
 
 namespace Signawel.Api.Tests.Builders.Dtos

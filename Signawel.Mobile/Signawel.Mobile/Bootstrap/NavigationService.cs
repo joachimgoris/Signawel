@@ -1,9 +1,7 @@
 ﻿using Signawel.Mobile.ViewModels;
 using Signawel.Mobile.Views;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Signawel.Mobile.Bootstrap.Abstract;
 using Xamarin.Forms;

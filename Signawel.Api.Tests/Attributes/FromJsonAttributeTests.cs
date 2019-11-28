@@ -1,9 +1,6 @@
 ﻿using NUnit.Framework;
 using Signawel.API.Attributes;
 using Signawel.API.BinderProviders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Signawel.Api.Tests.Attributes
 {

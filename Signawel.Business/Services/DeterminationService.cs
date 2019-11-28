@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
 using Signawel.Business.Abstractions.Services;
 using Signawel.Data.Abstractions.Repositories;
-using Signawel.Domain;
 using Signawel.Dto.Determination;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Signawel.Domain.Determination;
 

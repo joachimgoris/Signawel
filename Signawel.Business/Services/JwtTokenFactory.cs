@@ -3,7 +3,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Signawel.Business.Abstractions.Services;
 using Signawel.Data.Abstractions.Repositories;
-using Signawel.Data.Repositories;
 using Signawel.Domain;
 using Signawel.Domain.Authentication;
 using Signawel.Domain.Constants;

@@ -4,8 +4,6 @@ using System.Windows.Input;
 using Signawel.Domain.Enums;
 using Signawel.Dto.Determination;
 using Signawel.Mobile.Bootstrap.Abstract;
-using Signawel.Mobile.Services;
-using Signawel.Mobile.Util;
 using Xamarin.Forms;
 
 namespace Signawel.Mobile.ViewModels

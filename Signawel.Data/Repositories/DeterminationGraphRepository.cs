@@ -1,10 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Signawel.Data.Abstractions.Repositories;
-using Signawel.Domain;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Signawel.Domain.Determination;
 

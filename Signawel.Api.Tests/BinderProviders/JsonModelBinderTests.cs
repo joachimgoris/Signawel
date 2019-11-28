@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using Signawel.API.BinderProviders;
 using System;
-using System.Collections.Specialized;
 using System.Threading.Tasks;
 
 namespace Signawel.Api.Tests.BinderProviders

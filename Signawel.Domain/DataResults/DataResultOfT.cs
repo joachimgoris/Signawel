@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Signawel.Domain.DataResults
+﻿namespace Signawel.Domain.DataResults
 {
     /// <summary>
     ///     Represents the result of an entity operation.

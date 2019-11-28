@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Signawel.Mobile.Models
+﻿namespace Signawel.Mobile.Models
 {
     public class RoadWork
     {

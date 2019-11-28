@@ -2,7 +2,6 @@
 using Signawel.Domain;
 using Signawel.Domain.Authentication.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 

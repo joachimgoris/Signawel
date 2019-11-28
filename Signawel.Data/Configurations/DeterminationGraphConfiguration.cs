@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Signawel.Domain;
 using Signawel.Domain.Determination;
 
 namespace Signawel.Data.Configurations

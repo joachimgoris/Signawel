@@ -1,7 +1,4 @@
-﻿using System;
-using Signawel.Dto.Determination;
-using System.Collections.Generic;
-using System.Text;
+﻿using Signawel.Dto.Determination;
 using System.Threading.Tasks;
 
 namespace Signawel.Business.Abstractions.Services
