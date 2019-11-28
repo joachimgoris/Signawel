@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Signawel.API.Attributes;
 using Signawel.Business.Abstractions.Services;
 using Signawel.Domain.Constants;
 using Signawel.Domain.DataResults;
@@ -11,9 +12,9 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Signawel.API.Controllers
 {
     [ApiController]
-    // TODO [JwtTokenAuthorize]
+    [JwtTokenAuthorize]
     [Route("api/reports")]
-    public class ReportController : ControllerBase
+    public class ReportController : BaseController
     {
         private readonly IReportService _reportService;
         private readonly IMailService _mailService;

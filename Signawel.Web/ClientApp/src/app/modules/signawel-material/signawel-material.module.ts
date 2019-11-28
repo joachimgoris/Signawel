@@ -21,6 +21,7 @@ import {
   MatCard,
   MatCardHeader,
   MatCardContent,
+  MatCardActions,
   MatFormField,
   MatError,
   MatSpinner,
@@ -51,7 +52,11 @@ import {
   MatColumnDef,
   MatHeaderCellDef,
   MatSort,
-  MatCellDef
+  MatCellDef,
+  MatAutocomplete,
+  MatGridListModule,
+  MatGridTile,
+  MatDialogModule
 } from "@angular/material";
 import { LayoutModule } from "@angular/cdk/layout";
 
@@ -77,12 +82,15 @@ import { LayoutModule } from "@angular/cdk/layout";
     LayoutModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatGridListModule,
+    MatDialogModule
   ],
   exports: [
     MatCard,
     MatCardHeader,
     MatCardContent,
+    MatCardActions,
     MatFormField,
     MatError,
     MatSpinner,
@@ -113,7 +121,9 @@ import { LayoutModule } from "@angular/cdk/layout";
     MatPaginator,
     MatColumnDef,
     MatSort,
-    MatSortHeader
+    MatSortHeader,
+    MatAutocomplete,
+    MatGridTile
   ]
 })
 export class SignawelMaterialModule {}

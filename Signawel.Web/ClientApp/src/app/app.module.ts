@@ -11,6 +11,7 @@ import { LayoutComponent } from "./components/layout/layout.component";
 import { HomeComponent } from "./components/home/home.component";
 import { AuthenticationModule } from "./modules/authentication/authentication.module";
 import { DeterminationModule } from "./modules/determination/determination.module";
+import { ReportGroupsModule } from "./modules/report-groups/report-groups.module";
 import { SignawelMaterialModule } from "./modules/signawel-material/signawel-material.module";
 import { SharedModule } from "./modules/shared/shared.module";
 
@@ -27,7 +28,8 @@ import { SharedModule } from "./modules/shared/shared.module";
     SignawelMaterialModule,
     SharedModule,
     AuthenticationModule,
-    DeterminationModule
+    DeterminationModule,
+    ReportGroupsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

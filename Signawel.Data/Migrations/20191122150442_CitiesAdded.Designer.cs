@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Signawel.Data;
 
 namespace Signawel.Data.Migrations
 {
     [DbContext(typeof(SignawelDbContext))]
-    partial class SignawelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191122150442_CitiesAdded")]
+    partial class CitiesAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -327,20 +329,12 @@ namespace Signawel.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("id");
 
-                    b.Property<string>("Cities")
-                        .HasColumnName("cities");
-
                     b.Property<string>("CustomMessage")
                         .HasColumnName("custom_message")
                         .IsUnicode(true);
 
-                    b.Property<string>("Description")
-                        .HasColumnName("description")
-                        .IsUnicode(true);
-
-                    b.Property<string>("RoadWorkId")
-                        .HasColumnName("roadwork_id")
-                        .IsUnicode(true);
+                    b.Property<bool>("Priority")
+                        .HasColumnName("priority");
 
                     b.Property<string>("UserEmail")
                         .IsRequired()

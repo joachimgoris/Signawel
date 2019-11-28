@@ -4,6 +4,7 @@ using Signawel.Data.Configurations;
 using Signawel.Domain;
 using Signawel.Domain.BBox;
 using Signawel.Domain.Determination;
+using Signawel.Domain.ReportGroups;
 
 namespace Signawel.Data
 {
@@ -35,6 +36,11 @@ namespace Signawel.Data
             builder.ApplyConfiguration(new BBoxPointConfiguration());
             builder.ApplyConfiguration(new RoadworkSchemaConfiguration());
             builder.ApplyConfiguration(new ImageConfiguration());
+            builder.ApplyConfiguration(new CityConfiguration());
+            builder.ApplyConfiguration(new EmailConfiguration());
+            builder.ApplyConfiguration(new ReportGroupConfiguration());
+            builder.ApplyConfiguration(new CityReportGroupConfiguration());
+            builder.ApplyConfiguration(new EmailReportGroupConfiguration());
         }
 
         #endregion
@@ -55,6 +61,11 @@ namespace Signawel.Data
         public DbSet<BBoxPoint> BoundingBoxPoint { get; set; }
         public DbSet<RoadworkSchema> RoadworkSchemas { get; set; }
         public DbSet<Image> Images { get; set;}
+        public DbSet<ReportGroup> ReportGroups { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Email> Emails { get; set; }
+        public DbSet<CityReportGroup> CityReportGroups { get; set; }
+        public DbSet<EmailReportGroup> EmailReportGroups { get; set; }
 
         #endregion
     }

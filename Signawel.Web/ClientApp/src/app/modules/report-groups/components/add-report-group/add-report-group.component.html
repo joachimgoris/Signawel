@@ -1,0 +1,107 @@
+<div class="container">
+  <mat-card class="addReportGroupCard">
+    <mat-card-header>
+      <mat-card-title>Voeg een reportgroep toe</mat-card-title>
+      <mat-card-subtitle>Geef emailadressen op die verbonden worden met de rapporten van bepaalde steden
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form #addReportGroup="ngForm" class="addReportForm" *ngIf="!isLoading">
+
+        <div *ngFor="let city of reportGroupCreationRequest.cityReportGroups; let i = index" class="form-row">
+          <mat-form-field>
+            <mat-grid-list cols="2" rowHeight="5:1">
+              <mat-grid-tile><input placeholder="Stad" type="search" matInput [formControl]="cityControl"
+                  [matAutocomplete]="auto">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                  <mat-option *ngFor="let cityName of filteredOptions | async" [value]="cityName">
+                    {{ cityName }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-grid-tile>
+              <mat-grid-tile *ngIf="i>0"><button mat-icon-button (click)="RemoveCityFromForm(i)">
+                  <mat-icon>delete_outline</mat-icon>
+                </button></mat-grid-tile>
+            </mat-grid-list>
+          </mat-form-field>
+        </div>
+
+        <button mat-raised-button (click)="addCity()">Voeg een stad toe</button>
+
+        <div *ngFor="let email of reportGroupCreationRequest.emailReportGroups; let i = index" class="form-row">
+          <mat-form-field>
+            <mat-grid-list cols="2" rowHeight="5:1">
+              <mat-grid-tile><input matInput placeholder="emailadres" type="email" [formControl]="emailControl"
+                  name="emailInput"></mat-grid-tile>
+              <mat-grid-tile *ngIf="i>0"><button mat-icon-button (click)="RemoveEmailFromForm(i)">
+                  <mat-icon>delete_outline</mat-icon>
+                </button></mat-grid-tile>
+            </mat-grid-list>
+          </mat-form-field>
+        </div>
+
+        <button mat-raised-button (click)="addEmail()">Voeg een emailadres toe</button>
+
+
+        <div class="form-row">
+          <button mat-raised-button type="submit" [disabled]="!addReportGroup.valid" class="submitButton"
+            (click)="onSubmit()">Opslagen</button>
+        </div>
+      </form>
+      <mat-spinner [style.display]="isLoading ? 'block' : 'none'"></mat-spinner>
+    </mat-card-content>
+  </mat-card>
+  
+  <div class="whiteSpace"></div>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Alle Report groepen</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-grid-list cols="5" rowHeight="5:1">
+        <mat-grid-tile><input placeholder="Zoekterm" type="text" matInput [(ngModel)]="searchText"></mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-select [(ngModel)]="selectedSearch">
+              <mat-option value="city">Stad</mat-option>
+              <mat-option value="email">Email</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile><button mat-raised-button (click)="GetReportGroups()">Zoek</button></mat-grid-tile>
+      </mat-grid-list>
+      <mat-spinner [style.display]="isRequestLoading ? 'block' : 'none'"></mat-spinner>
+      
+      <mat-card *ngFor="let report of reportGroupResponses;let i = index">
+        <mat-card-header>
+          <mat-card-title>Report groep {{i + 1}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-grid-list cols="4">
+            <mat-grid-tile>
+              <mat-nav-list>
+                <mat-list-item *ngFor="let city of report.cityReportGroups">
+                    <mat-icon>play_arrow</mat-icon>
+                  {{city.name}}
+                </mat-list-item>
+              </mat-nav-list>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <mat-nav-list>
+                <mat-list-item *ngFor="let email of report.emailReportGroups">
+                    <mat-icon>play_arrow</mat-icon>
+                  {{email.emailAddress}}
+                </mat-list-item>
+              </mat-nav-list>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-icon-button (click)="editReportGroup(i)">EDIT</button>
+          <button mat-icon-button (click)="deleteReportGroup(i)">DELETE</button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-card-content>
+  </mat-card>
+</div>

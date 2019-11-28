@@ -21,6 +21,13 @@ const routes: Routes = [
           import("./modules/determination/determination.module").then(
             m => m.DeterminationModule
           )
+      },
+      {
+        path: "report-groups",
+        loadChildren: () =>
+          import("./modules/report-groups/report-groups.module").then(
+            m => m.ReportGroupsModule
+          )
       }
     ]
   },

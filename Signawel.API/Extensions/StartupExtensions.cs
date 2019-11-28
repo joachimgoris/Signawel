@@ -105,6 +105,7 @@ namespace Signawel.API.Extensions
         public static IServiceCollection AddSignawelServices(this IServiceCollection services)
         {
             services.AddScoped<IDeterminationRepository, DeterminationGraphRepository>();
+            services.AddScoped<IReportGroupService, ReportGroupService>();
             services.AddScoped<IDeterminationService, DeterminationService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IRoadworkSchemaService, RoadworkSchemaService>();
