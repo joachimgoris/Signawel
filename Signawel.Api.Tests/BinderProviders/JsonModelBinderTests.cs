@@ -19,7 +19,7 @@ namespace Signawel.Api.Tests.BinderProviders
         }
 
         [Test]
-        public async Task BindModelAsync_ShouldThrowException_WhenContextIsNull()
+        public void BindModelAsync_ShouldThrowException_WhenContextIsNull()
         {
             // Act + Assert
             Assert.ThrowsAsync<ArgumentNullException>(async () => await _binder.BindModelAsync(null));

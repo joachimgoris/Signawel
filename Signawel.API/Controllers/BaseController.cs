@@ -6,12 +6,12 @@ using System.Linq;
 namespace Signawel.API.Controllers
 {
     /// <summary>
-    ///     Custom controller implementation for improvind error data results
+    ///     Custom controller implementation for improved error data results
     /// </summary>
     public abstract class BaseController : ControllerBase
     {
 
-        public BadRequestObjectResult BadRequest(DataResult dataResult)
+        protected BadRequestObjectResult BadRequest(DataResult dataResult)
         {
             var errorList = dataResult.Errors.Where(error => error.Visibility == DataErrorVisibility.Public).Select(error => new ErrorResponseDto
             {
@@ -22,7 +22,7 @@ namespace Signawel.API.Controllers
             return BadRequest(errorList);
         }
 
-        public NotFoundObjectResult NotFound(DataResult dataResult)
+        protected NotFoundObjectResult NotFound(DataResult dataResult)
         {
              var errorList = dataResult.Errors.Where(error => error.Visibility == DataErrorVisibility.Public).Select(error => new ErrorResponseDto
             {

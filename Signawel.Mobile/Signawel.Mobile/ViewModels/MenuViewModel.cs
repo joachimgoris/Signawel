@@ -5,6 +5,7 @@ using Signawel.Mobile.Bootstrap.Abstract;
 using Signawel.Mobile.Services.Abstract;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using Signawel.Mobile.Bootstrap;
 
 namespace Signawel.Mobile.ViewModels
 {
@@ -17,7 +18,7 @@ namespace Signawel.Mobile.ViewModels
 
         public string WelcomeText => "SIGNAWEL";
 
-        public ICommand MenuItemTappedCommand => new Command(async (object menuItemTappedEventArgs) => await OnMenuItemTapped(menuItemTappedEventArgs));
+        public ICommand MenuItemTappedCommand => new AsyncCommand<object>(OnMenuItemTapped);
 
         public MenuViewModel(INavigationService navigationService, IDeterminationGraphService determinationGraphService)
         {

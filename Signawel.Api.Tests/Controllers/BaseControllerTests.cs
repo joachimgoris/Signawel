@@ -14,13 +14,12 @@ namespace Signawel.Api.Tests.Controllers
     public class BaseControllerTests
     {
 
-        private ImageController _controller;
+        private TestController _controller;
 
         [SetUp]
         public void Setup()
         {
-            var imageServiceMock = new Mock<IImageService>();
-            _controller = new ImageController(imageServiceMock.Object);
+            _controller = new TestController();
         }
         
         [Test]
@@ -59,6 +58,21 @@ namespace Signawel.Api.Tests.Controllers
             Assert.That(errorResponse, Is.Not.Null);
             Assert.That(errorResponse.Value, Is.InstanceOf<IList<ErrorResponseDto>>());
             Assert.That(errorResponse.Value, Has.Count.EqualTo(1));
+        }
+
+    }
+
+    public class TestController : BaseController
+    {
+
+        public new IActionResult BadRequest(DataResult dr)
+        {
+            return base.BadRequest(dr);
+        }
+
+        public new IActionResult NotFound(DataResult dr)
+        {
+            return base.NotFound(dr);
         }
 
     }

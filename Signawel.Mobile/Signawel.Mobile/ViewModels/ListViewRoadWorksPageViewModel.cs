@@ -31,9 +31,11 @@ namespace Signawel.Mobile.ViewModels
         }
 
 
-        public override async Task InitializeAsync(object data)
+        public override Task InitializeAsync(object data)
         {
             RoadWorks = data as List<RoadWork>;
+
+            return Task.CompletedTask;
         }
     }
 

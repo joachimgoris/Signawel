@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Signawel.SignawelCommand.Abstractions
+namespace Signawel.Mobile.Bootstrap.Abstract
 {
     public interface IAsynCommand : ICommand
     {

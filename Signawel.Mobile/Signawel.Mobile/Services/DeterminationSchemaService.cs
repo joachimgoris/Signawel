@@ -26,7 +26,7 @@ namespace Signawel.Mobile.Services
             {
                 response = await _httpService.GetAsync(ApiConstants.GetRoadworkSchema(id));
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 // Handle error: failed to get data
                 return null;

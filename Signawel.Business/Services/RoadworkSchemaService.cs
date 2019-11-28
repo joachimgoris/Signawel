@@ -7,6 +7,7 @@ using Signawel.Dto;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Signawel.Domain.Constants;
 using Signawel.Dto.RoadworkSchema;
 using Signawel.Domain.DataResults;
 
@@ -23,9 +24,13 @@ namespace Signawel.Business.Services
             this._mapper = mapper;
         }
 
-        /// <inheritdoc/>
-        public async Task<DataResult<RoadworkSchemaResponseDto>> CreateRoadworkSchema(RoadworkSchemaCreationRequestDto dto, string imageId)
+        /// <inheritdoc cref="IRoadworkSchemaService.CreateRoadworkSchema"/>
+        public async Task<DataResult<RoadworkSchemaResponseDto>> CreateRoadworkSchema(
+            RoadworkSchemaCreationRequestDto dto, string imageId)
         {
+            if (dto == null || string.IsNullOrEmpty(imageId))
+                return DataResult<RoadworkSchemaResponseDto>.WithPublicError(ErrorCodes.ParameterEmptyError, "Model or imageId is empty.");
+
             var schema = _mapper.Map<RoadworkSchema>(dto);
 
             schema.ImageId = imageId;
@@ -34,23 +39,27 @@ namespace Signawel.Business.Services
             {
                 await _context.RoadworkSchemas.AddAsync(schema);
                 await _context.SaveChangesAsync();
-
-                var result = _mapper.Map<RoadworkSchemaResponseDto>(schema);
-                return DataResult<RoadworkSchemaResponseDto>.Success(result);
             }
             catch (Exception)
             {
-                return DataResult<RoadworkSchemaResponseDto>.WithError("RoadworkSchemaCreation", "Failed to create roadworkschema.", DataErrorVisibility.Public);
+                return DataResult<RoadworkSchemaResponseDto>.WithError(ErrorCodes.RoadworkSchemaCreationError,
+                    "Failed to create roadworkschema.", DataErrorVisibility.Public);
             }
+
+            var result = _mapper.Map<RoadworkSchemaResponseDto>(schema);
+            return DataResult<RoadworkSchemaResponseDto>.Success(result);
         }
 
         /// <inheritdoc/>
         public async Task<DataResult> DeleteRoadworkSchema(string id)
         {
+            if (string.IsNullOrEmpty(id))
+                return DataResult.WithPublicError(ErrorCodes.ParameterEmptyError, "Id is empty");
+
             var data = await _context.RoadworkSchemas.FindAsync(id);
 
             if (data == null)
-                return DataResult.WithError("RoadworkSchemaNotFound", "Roadwork Schema not found", DataErrorVisibility.Public);
+                return DataResult.WithPublicError(ErrorCodes.NotFoundError, "Roadwork schema not found");
 
             _context.RoadworkSchemas.Remove(data);
             await _context.SaveChangesAsync();
@@ -70,21 +79,24 @@ namespace Signawel.Business.Services
                 .Include(schema => schema.BoundingBoxes).ThenInclude(bb => bb.Points)
                 .FirstOrDefaultAsync(schema => schema.Id == id);
 
-            if(data == null)
-                return DataResult<RoadworkSchemaResponseDto>.WithError("RoadworkSchemaNotFound", $"No roadwork schema found with id '{ id }'.", DataErrorVisibility.Public);
+            if (data == null)
+                return DataResult<RoadworkSchemaResponseDto>.WithError("RoadworkSchemaNotFound",
+                    $"No roadwork schema found with id '{id}'.", DataErrorVisibility.Public);
 
             return DataResult<RoadworkSchemaResponseDto>.Success(_mapper.Map<RoadworkSchemaResponseDto>(data));
         }
 
         /// <inheritdoc/>
-        public async Task<DataResult<RoadworkSchemaResponseDto>> PutRoadworkSchema(string id, RoadworkSchemaPutRequestDto dto)
+        public async Task<DataResult<RoadworkSchemaResponseDto>> PutRoadworkSchema(string id,
+            RoadworkSchemaPutRequestDto dto)
         {
             var currentSchema = await _context.RoadworkSchemas
                 .Include(rs => rs.BoundingBoxes).ThenInclude(bb => bb.Points)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            if(currentSchema == null)
-                return DataResult<RoadworkSchemaResponseDto>.WithError("RoadworkSchemaNotFound", $"No roadwork schema found with id '{ id }'.", DataErrorVisibility.Public);
+            if (currentSchema == null)
+                return DataResult<RoadworkSchemaResponseDto>.WithError("RoadworkSchemaNotFound",
+                    $"No roadwork schema found with id '{id}'.", DataErrorVisibility.Public);
 
             var newSchema = _mapper.Map<RoadworkSchema>(dto);
             newSchema.Id = id;

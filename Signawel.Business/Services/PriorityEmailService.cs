@@ -1,4 +1,5 @@
-﻿using Signawel.Business.Abstractions.Services;
+﻿using Microsoft.EntityFrameworkCore;
+using Signawel.Business.Abstractions.Services;
 using Signawel.Data;
 using Signawel.Domain;
 using System.Linq;
@@ -9,24 +10,15 @@ namespace Signawel.Business.Services
     public class PriorityEmailService : IPriorityEmailService
     {
         private readonly SignawelDbContext _context;
-        private IQueryable<PriorityEmail> _priorityEmails;
 
         public PriorityEmailService(SignawelDbContext context)
         {
             _context = context;
-            _priorityEmails = _context.PriorityEmails;
         }
 
         public async Task<bool> CheckPriorityEmailAsync(string emailSuffix)
         {
-            foreach (PriorityEmail mail in _priorityEmails)
-            {
-                if (emailSuffix.Equals(mail.EmailSuffix))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return await _context.PriorityEmails.AnyAsync(pe => pe.EmailSuffix.Equals(emailSuffix));
         }
 
         public IQueryable<PriorityEmail> GetPriorityEmails()

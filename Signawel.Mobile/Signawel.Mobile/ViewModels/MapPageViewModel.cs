@@ -9,7 +9,7 @@ using Xamarin.Forms.Maps;
 using System.Linq;
 using System.Windows.Input;
 using Signawel.Mobile.Bootstrap.Abstract;
-using Signawel.SignawelCommand;
+using Signawel.Mobile.Bootstrap;
 
 namespace Signawel.Mobile.ViewModels
 {
@@ -17,7 +17,6 @@ namespace Signawel.Mobile.ViewModels
     {
         private readonly INavigationService _navigationService;
         private readonly IHttpService _httpService;
-
 
         public double Latitude { get; set; }
 

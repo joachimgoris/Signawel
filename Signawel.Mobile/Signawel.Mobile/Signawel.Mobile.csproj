@@ -75,6 +75,5 @@
     <ProjectReference Include="..\..\Signawel.Domain\Signawel.Domain.csproj" />
     <ProjectReference Include="..\..\Signawel.Dto\Signawel.Dto.csproj" />
     <ProjectReference Include="..\..\Signawel.MobileData\Signawel.MobileData.csproj" />
-    <ProjectReference Include="..\..\Signawel.SignawelCommand\Signawel.SignawelCommand.csproj" />
   </ItemGroup>
 </Project>

@@ -46,7 +46,7 @@ namespace Signawel.API.Extensions
 
         public static IServiceCollection AddSignawelAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            // Read tokenconfiguration from appsettings
+            // Read token configuration from app-settings
             services.Configure<MailConfiguration>(configuration.GetSection("MailSettings"));
             services.Configure<TokenConfiguration>(configuration.GetSection("TokenSettings"));
             var tokenConfiguration = configuration.GetSection("TokenSettings").Get<TokenConfiguration>();

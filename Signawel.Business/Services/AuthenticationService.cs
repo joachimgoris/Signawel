@@ -24,8 +24,11 @@ namespace Signawel.Business.Services
         private readonly IUserService _userService;
         private readonly IJwtTokenFactory _tokenFactory;
         private readonly UserManager<User> _userManager;
-        
-        public AuthenticationService(ILogger<AuthenticationService> logger, IAuthenticationRepository authenticationRepository, IUserService userService, IJwtTokenFactory jwtTokenFactory, UserManager<User> userManager,
+
+        public AuthenticationService(ILogger<AuthenticationService> logger,
+            IAuthenticationRepository authenticationRepository,
+            IUserService userService, IJwtTokenFactory jwtTokenFactory,
+            UserManager<User> userManager,
             IMailService mailService)
         {
             _logger = logger;
@@ -46,7 +49,8 @@ namespace Signawel.Business.Services
             if (user == null)
             {
                 _logger.LogWarning("Unable to find user with id {userId}", request.UserId);
-                return DataResult.WithPublicError(ErrorCodes.NotFoundError, "There is no user associated with this id in the database.");
+                return DataResult.WithPublicError(ErrorCodes.NotFoundError,
+                    "There is no user associated with this id in the database.");
             }
 
             var token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.Token));
@@ -66,17 +70,23 @@ namespace Signawel.Business.Services
         #region GenerateForgotPasswordToken
 
         /// <inheritdoc cref="IAuthenticationService.GenerateForgotPasswordTokenAsync(ForgotPasswordTokenRequestDto)"/>
-        public async Task<DataResult<ForgotPasswordTokenResponseDto>> GenerateForgotPasswordTokenAsync(ForgotPasswordTokenRequestDto model)
+        public async Task<DataResult<ForgotPasswordTokenResponseDto>> GenerateForgotPasswordTokenAsync(
+            ForgotPasswordTokenRequestDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
-                return DataResult<ForgotPasswordTokenResponseDto>.WithPublicError(ErrorCodes.NotFoundError, "There was no user associated with the given id.");
+                return DataResult<ForgotPasswordTokenResponseDto>.WithPublicError(ErrorCodes.NotFoundError,
+                    "There was no user associated with the given id.");
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            return DataResult<ForgotPasswordTokenResponseDto>.WithEntityOrError(new ForgotPasswordTokenResponseDto
-            {
-                Token = token
-            }, ErrorCodes.ForgotPasswordTokenError, "Failed to generate ForgotPasswordToken.", DataErrorVisibility.Public);
+            ForgotPasswordTokenResponseDto response = null;
+            if (!string.IsNullOrEmpty(token))
+                response = new ForgotPasswordTokenResponseDto
+                {
+                    Token = token
+                };
+            return DataResult<ForgotPasswordTokenResponseDto>.WithEntityOrError(response, ErrorCodes.ForgotPasswordTokenError,
+                "Failed to generate ForgotPasswordToken.", DataErrorVisibility.Public);
         }
 
         #endregion
@@ -87,14 +97,16 @@ namespace Signawel.Business.Services
         public async Task<DataResult> ResetPasswordAsync(PasswordResetDto model)
         {
             if (model == null)
-                return DataResult.WithPublicError(ErrorCodes.ParameterEmptyError, "Parameter PasswordResetDto is empty.");
+                return DataResult.WithPublicError(ErrorCodes.ParameterEmptyError,
+                    "Parameter PasswordResetDto is empty.");
 
             var user = await _userManager.FindByEmailAsync(model.Email);
 
             var result = await _userManager.ResetPasswordAsync(user, model.ResetToken, model.NewPassword);
 
             if (!result.Succeeded)
-                return DataResult.WithPublicError(ErrorCodes.IdentityError, "Something went wrong with the PasswordReset proces.");
+                return DataResult.WithPublicError(ErrorCodes.IdentityError,
+                    "Something went wrong with the PasswordReset proces.");
 
             return DataResult.Success;
         }
@@ -110,27 +122,36 @@ namespace Signawel.Business.Services
 
             if (user == null)
             {
-                _logger.LogInformation("Login attempted, but username and password combination was incorrect. (ip: {ipAddress})", ipAddress);
+                _logger.LogInformation(
+                    "Login attempted, but username and password combination was incorrect. (ip: {ipAddress})",
+                    ipAddress);
                 await _authenticationRepository.AddLoginRecordAsync(null, ipAddress, succes: false);
-                return DataResult<TokenResponseDto>.WithPublicError(ErrorCodes.NotFoundError, "The user was not found in the database.");
+                return DataResult<TokenResponseDto>.WithPublicError(ErrorCodes.NotFoundError,
+                    "The user was not found in the database.");
             }
 
             if (!await _userManager.CheckPasswordAsync(user, password))
             {
-                _logger.LogInformation("Login attempted, but username and password combination was incorrect. (ip: {ipAddress})", ipAddress);
+                _logger.LogInformation(
+                    "Login attempted, but username and password combination was incorrect. (ip: {ipAddress})",
+                    ipAddress);
                 await _authenticationRepository.AddLoginRecordAsync(user.Id, ipAddress, succes: false);
-                return DataResult<TokenResponseDto>.WithPublicError(ErrorCodes.AuthenticationIncorrectCredentialsError, "Credentials are incorrect.");
+                return DataResult<TokenResponseDto>.WithPublicError(ErrorCodes.AuthenticationIncorrectCredentialsError,
+                    "Credentials are incorrect.");
             }
-            if(!await _userManager.IsEmailConfirmedAsync(user))
+
+            if (!await _userManager.IsEmailConfirmedAsync(user))
             {
                 _logger.LogInformation("Login attempted, but email was not confirmed.");
-                return DataResult<TokenResponseDto>.WithPublicError(ErrorCodes.EmailNotConfirmedError, "The email associated to this account has not been confirmed.");
-                
+                await _authenticationRepository.AddLoginRecordAsync(user.Id, ipAddress, succes: false);
+                return DataResult<TokenResponseDto>.WithPublicError(ErrorCodes.EmailNotConfirmedError,
+                    "The email associated to this account has not been confirmed.");
             }
 
             var token = await ReturnTokenResponseAsync(user);
             await _authenticationRepository.AddLoginRecordAsync(user.Id, ipAddress, succes: true);
-            return DataResult<TokenResponseDto>.WithEntityOrError(token, ErrorCodes.LoginError, "Something went wrong during the login process.", DataErrorVisibility.Public);
+            return DataResult<TokenResponseDto>.WithEntityOrError(token, ErrorCodes.LoginError,
+                "Something went wrong during the login process.", DataErrorVisibility.Public);
         }
 
         #endregion
@@ -172,7 +193,9 @@ namespace Signawel.Business.Services
                 return DataResult<TokenResponseDto>.WithPublicError(ErrorCodes.NotFoundError, "User not found.");
             }
 
-            return DataResult<TokenResponseDto>.WithEntityOrError(await ReturnTokenResponseAsync(user), ErrorCodes.RefreshTokenError, "Something went wrong during the refresh token process.", DataErrorVisibility.Public);
+            return DataResult<TokenResponseDto>.WithEntityOrError(await ReturnTokenResponseAsync(user),
+                ErrorCodes.RefreshTokenError, "Something went wrong during the refresh token process.",
+                DataErrorVisibility.Public);
         }
 
         #endregion
@@ -193,7 +216,8 @@ namespace Signawel.Business.Services
             if (!result.Succeeded)
             {
                 _logger.LogWarning("Failed to create user.");
-                return DataResult<RegisterResponseDto>.WithPublicError(ErrorCodes.UserCreationError, "Something went wrong during the process of creating a user.");
+                return DataResult<RegisterResponseDto>.WithPublicError(ErrorCodes.UserCreationError,
+                    "Something went wrong during the process of creating a user.");
             }
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -212,7 +236,8 @@ namespace Signawel.Business.Services
                 UserName = user.UserName
             };
 
-            return DataResult<RegisterResponseDto>.WithEntityOrError(responseDto, ErrorCodes.RegisterError, "Something went wrong during the register process.", DataErrorVisibility.Public);
+            return DataResult<RegisterResponseDto>.WithEntityOrError(responseDto, ErrorCodes.RegisterError,
+                "Something went wrong during the register process.", DataErrorVisibility.Public);
         }
 
         #endregion

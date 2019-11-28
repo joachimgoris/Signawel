@@ -1,9 +1,9 @@
-﻿using Signawel.SignawelCommand.Abstractions;
+﻿using Signawel.Mobile.Bootstrap.Abstract;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Signawel.SignawelCommand
+namespace Signawel.Mobile.Bootstrap
 {
     public class AsyncCommand : IAsynCommand
     {

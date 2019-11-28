@@ -42,7 +42,7 @@ namespace Signawel.Business.Services
                 Body = callbackUri.AbsoluteUri
             };
 
-            var mailResult = SendMail(mailDto);
+            var mailResult = await SendMail(mailDto);
             if (!mailResult.Succeeded)
                 return DataResult.WithErrorsFromDataResult(mailResult);
 
@@ -54,17 +54,18 @@ namespace Signawel.Business.Services
         #region Sendmail
 
         /// <inheritdoc cref="IMailService.SendMail(SendMailDto)"/>
-        public DataResult SendMail(SendMailDto sendMailDto)
+        public async Task<DataResult> SendMail(SendMailDto sendMailDto)
         {
             try
             {
-                SmtpClient client = new SmtpClient
+                SmtpClient smtpClient = new SmtpClient
                 {
                     Host = _configuration.Host,
                     Port = _configuration.Port,
                     EnableSsl = true,
                     Credentials = new NetworkCredential(_configuration.Sender, _configuration.Password)
                 };
+
                 MailMessage message = new MailMessage(_configuration.Sender, sendMailDto.DestinationAddress)
                 {
                     Body = sendMailDto.Body,
@@ -72,8 +73,7 @@ namespace Signawel.Business.Services
                     Subject = sendMailDto.Subject
                 };
 
-                string userState = "Signawel test message";
-                client.SendAsync(message, userState);
+                await smtpClient.SendMailAsync(message);
                 return DataResult.Success;
             }
             catch (ArgumentNullException)
@@ -104,8 +104,10 @@ namespace Signawel.Business.Services
             string mailSuffix = report.UserEmail.Split('@')[1];
             bool priority = await _priorityEmailService.CheckPriorityEmailAsync(mailSuffix);
 
+            string subject = (priority ? "!P! " : "") + $"Foutmelding wegenwerken nr : {report.Id}";
 
-            string subject = "";
+            #region Email Body
+
             StringBuilder mailBody = new StringBuilder("<h4>Probleem geraporteerd aan wegenwerk met GipodId: </h4>");
             mailBody.Append(report.RoadWorkId);
             mailBody.Append("<br><br>");
@@ -128,19 +130,16 @@ namespace Signawel.Business.Services
                 mailBody.Append(city + ", ");
             }
 
-            if (priority)
+            #endregion Email Body
+
+            SendMailDto email = new SendMailDto
             {
-                subject = "!P! ";
-            }
+                Body = mailBody.ToString(),
+                DestinationAddress = report.UserEmail,  //TODO needs to be changed later to the email connected to the cities
+                Subject = subject
+            };
 
-            subject += "Foutmelding wegenwerken nr : " + report.Id;
-
-            SendMailDto email = new SendMailDto();
-            email.Body = mailBody.ToString();
-            email.DestinationAddress = report.UserEmail;  //TODO needs to be changed later to the email connected to the cities
-            email.Subject = subject;
-
-            var mailResult = SendMail(email);
+            var mailResult = await SendMail(email);
 
             if (!mailResult.Succeeded)
                 return DataResult.WithErrorsFromDataResult(mailResult);

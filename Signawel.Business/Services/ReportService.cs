@@ -30,16 +30,13 @@ namespace Signawel.Business.Services
         public async Task<DataResult<ReportResponseDto>> AddReportAsync(ReportCreationRequestDto reportDto)
         {
             if (reportDto == null)
-                return DataResult<ReportResponseDto>.WithError(ErrorCodes.ReportCreationError, "The given Dto is empty.");
+                return DataResult<ReportResponseDto>.WithError(ErrorCodes.ParameterEmptyError, "The given Dto is empty.");
 
             var report = _mapper.Map<Report>(reportDto);
-
             await _context.Reports.AddAsync(report);
-
             await _context.SaveChangesAsync();
 
             var reportResponse = _mapper.Map<ReportResponseDto>(report);
-
             return DataResult<ReportResponseDto>.WithEntityOrError(
                 reportResponse, ErrorCodes.ReportCreationError, "Something went wrong when creating a report.");
         }

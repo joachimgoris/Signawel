@@ -55,5 +55,11 @@
         public const string ReportModificationError = "Failed to modify a report.";
 
         #endregion
+
+        #region RoadworkSchemas
+
+        public const string RoadworkSchemaCreationError = "Failed to create a roadworkschema";
+
+        #endregion
     }
 }

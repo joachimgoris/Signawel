@@ -1,6 +1,7 @@
-﻿using Signawel.Mobile.Bootstrap.Abstract;
+﻿using Signawel.Mobile.Bootstrap;
+using Signawel.Mobile.Bootstrap.Abstract;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Forms;
 
 namespace Signawel.Mobile.ViewModels
 {
@@ -14,14 +15,14 @@ namespace Signawel.Mobile.ViewModels
 
         public string Token { get; set; }
 
-        public ICommand ButtonTappedCommand => new Command(ButtonTapped);
+        public ICommand ButtonTappedCommand => new AsyncCommand<object>(ButtonTapped);
 
         public LoginViewModel(IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
         }
 
-        private async void ButtonTapped(object buttonTappedEventArgs)
+        private async Task ButtonTapped(object buttonTappedEventArgs)
         {
             var tokenResponse = await _authenticationService.LoginAsync(Email, Password);
             Token = tokenResponse.Token;

@@ -20,7 +20,7 @@ namespace Signawel.Business.Abstractions.Services
         /// <returns>
         ///     True or false depending on succes of the method.
         /// </returns>
-        DataResult SendMail(SendMailDto sendMailDto);
+        Task<DataResult> SendMail(SendMailDto sendMailDto);
 
         /// <summary>
         ///     Sends the confirmation email with the given token for the given user.
