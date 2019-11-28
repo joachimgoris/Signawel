@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.signawel.mobile">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.signawel.mobile" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
-	<application android:label="Signawel.Mobile.Android" android:usesCleartextTraffic="true">
+	<application android:label="Signawel" android:usesCleartextTraffic="true" android:icon="@mipmap/launcher_foreground">
 		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyA6DeX9XqCNzCI0Bv9hBuHf-fCu1u6YvXA" />
 		<uses-library android:name="org.apache.http.legacy" android:required="false" />
 	</application>

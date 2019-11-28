@@ -21,7 +21,7 @@
 	<key>MinimumOSVersion</key>
 	<string>8.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>Signawel.Mobile</string>
+	<string>Signawel</string>
 	<key>CFBundleIdentifier</key>
 	<string>be.limburg.SignawelApp</string>
 	<key>CFBundleVersion</key>
@@ -30,13 +30,13 @@
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
 	<string>Signawel App</string>
-	<key>XSAppIconAssets</key>
-	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Can we use your location at all times?</string>
 	<key>NSLocationWhenInUsageDescription</key>
 	<string>Can we use your location when your app is being used?</string>
 	<key>NSLocationAlwaysAndWhenInUsageDescription</key>
 	<string>Can we use your location at all times?</string>
+	<key>XSAppIconAssets</key>
+	<string>Media.xcassets/AppIcons.appiconset</string>
 </dict>
 </plist>
