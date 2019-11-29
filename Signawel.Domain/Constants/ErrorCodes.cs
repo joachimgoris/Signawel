@@ -60,6 +60,8 @@
 
         public const string RoadworkSchemaCreationError = "Failed to create a roadworkschema";
 
+        public const string RoadworkSchemaNotFoundError = "Roadwork schema is not found.";
+
         #endregion
 
         #region PriorityEmails
