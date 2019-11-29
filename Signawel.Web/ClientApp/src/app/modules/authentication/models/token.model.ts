@@ -1,4 +1,4 @@
 export class TokenModel {
-    jwt: string;
-    refresh: string;
+  token: string;
+  refreshToken: string;
 }

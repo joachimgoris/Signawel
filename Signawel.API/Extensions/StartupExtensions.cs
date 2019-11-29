@@ -91,12 +91,12 @@ namespace Signawel.API.Extensions
                 options.SaveToken = true;
                 options.TokenValidationParameters = tokenValidationParameters;
             });
-
+            
+            services.AddSingleton(tokenConfiguration);
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IJwtTokenFactory, JwtTokenFactory>();
-            services.AddScoped<TokenConfiguration>();
             services.AddScoped<MailConfiguration>();
 
             return services;

@@ -61,5 +61,13 @@
         public const string RoadworkSchemaCreationError = "Failed to create a roadworkschema";
 
         #endregion
+
+        #region PriorityEmails
+
+        public const string PriorityEmailDeletionError = nameof(PriorityEmailDeletionError);
+
+        public const string PriorityEmailCreationError = nameof(PriorityEmailCreationError);
+
+        #endregion PriorityEmails
     }
 }

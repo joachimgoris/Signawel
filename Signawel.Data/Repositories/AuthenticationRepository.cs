@@ -71,7 +71,7 @@ namespace Signawel.Data.Repositories
                 Token = GenerateRefreshToken(),
                 UserId = userId,
                 JwtId = jwtId,
-                ExpiryDate = DateTime.UtcNow.AddMonths(_tokenConfiguration.RefreshTokenLifetime)
+                ExpiryDate = DateTime.Now.AddMonths(_tokenConfiguration.RefreshTokenLifetime)
             };
 
             var result = await _context.RefreshTokens.AddAsync(refreshToken);

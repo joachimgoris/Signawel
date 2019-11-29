@@ -65,6 +65,11 @@ namespace Signawel.Data
 
         private async static Task<bool> SeedUsers(UserManager<User> userManager)
         {
+            if(await userManager.Users.AnyAsync())
+            {
+                return false;
+            }
+
             await userManager.CreateAsync(new User
             {
                 Email = "admin@signawel.be",

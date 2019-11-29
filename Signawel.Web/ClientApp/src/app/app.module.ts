@@ -1,6 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { LayoutModule } from "@angular/cdk/layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -14,6 +14,7 @@ import { DeterminationModule } from "./modules/determination/determination.modul
 import { ReportGroupsModule } from "./modules/report-groups/report-groups.module";
 import { SignawelMaterialModule } from "./modules/signawel-material/signawel-material.module";
 import { SharedModule } from "./modules/shared/shared.module";
+import { TokenInterceptor } from "./modules/authentication/intercepters/token-interceptor";
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent, HomeComponent],
@@ -31,7 +32,13 @@ import { SharedModule } from "./modules/shared/shared.module";
     DeterminationModule,
     ReportGroupsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

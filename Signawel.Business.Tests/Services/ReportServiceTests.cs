@@ -7,7 +7,6 @@ using Signawel.Data;
 using Signawel.Domain;
 using System.Threading.Tasks;
 using Signawel.Domain.Constants;
-using Signawel.Domain.DataResults;
 using Signawel.Dto.Reports;
 
 namespace Signawel.Business.Tests.Services

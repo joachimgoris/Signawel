@@ -4,8 +4,9 @@ import {
   AUTHENTICATE_REFRESH_URL,
   AUTHENTICATE_LOGIN_URL
 } from "src/app/constants/api.constants";
-import { tap } from "rxjs/operators";
+import { tap, catchError } from "rxjs/operators";
 import { TokenModel } from "../models/token.model";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class AuthenticationService {
@@ -16,13 +17,13 @@ export class AuthenticationService {
 
   login(email: string, password: string) {
     return this.httpClient
-      .post<any>(AUTHENTICATE_LOGIN_URL, {
+      .post<TokenModel>(AUTHENTICATE_LOGIN_URL, {
         email: email,
         password: password
       })
       .pipe(
-        tap(tokens => {
-          this.doLoginuser({ jwt: tokens.token, refresh: tokens.refreshToken });
+        tap(tokenModel => {
+          this.doLoginuser(tokenModel);
         })
       );
   }
@@ -39,14 +40,15 @@ export class AuthenticationService {
     return localStorage.getItem(this.JWT_TOKEN);
   }
 
-  attemptRefreshToken() {
+  attemptRefreshToken(): Observable<TokenModel> {
     return this.httpClient
-      .post<any>(AUTHENTICATE_REFRESH_URL, {
+      .post<TokenModel>(AUTHENTICATE_REFRESH_URL, {
+        jwtToken: this.getJwtToken(),
         refreshToken: this.getRefreshToken()
       })
       .pipe(
         tap((tokens: TokenModel) => {
-          this.storeJwtToken(tokens.jwt);
+          this.storeTokens(tokens);
         })
       );
   }
@@ -64,8 +66,8 @@ export class AuthenticationService {
   }
 
   private storeTokens(tokens: TokenModel) {
-    localStorage.setItem(this.JWT_TOKEN, tokens.jwt);
-    localStorage.setItem(this.REFRESH_TOKEN, tokens.refresh);
+    localStorage.setItem(this.JWT_TOKEN, tokens.token);
+    localStorage.setItem(this.REFRESH_TOKEN, tokens.refreshToken);
   }
 
   private removeTokens() {

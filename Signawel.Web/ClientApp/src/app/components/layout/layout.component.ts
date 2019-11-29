@@ -5,6 +5,8 @@ import {
   Breakpoints
 } from "@angular/cdk/layout";
 import { Observable } from "rxjs";
+import { AuthenticationService } from "src/app/modules/authentication/services/authentication.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-layout",
@@ -16,9 +18,16 @@ export class LayoutComponent implements OnInit {
     Breakpoints.Handset
   );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private authService: AuthenticationService,
+    private router: Router
+  ) {}
 
   ngOnInit() {}
 
-  logout() {}
+  logout() {
+    this.authService.logout();
+    this.router.navigate(["/authentication/login"]);
+  }
 }

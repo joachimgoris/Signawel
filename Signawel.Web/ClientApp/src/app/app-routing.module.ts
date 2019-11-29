@@ -28,6 +28,13 @@ const routes: Routes = [
           import("./modules/report-groups/report-groups.module").then(
             m => m.ReportGroupsModule
           )
+      },
+      {
+        path: "settings",
+        loadChildren: () =>
+          import("./modules/settings/settings.module").then(
+            m => m.SettingsModule
+          )
       }
     ]
   },

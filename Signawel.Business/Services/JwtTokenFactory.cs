@@ -39,6 +39,7 @@ namespace Signawel.Business.Services
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("user_id", user.Id)
             };
             claims.AddRange(additionalClaims);
 
@@ -82,9 +83,16 @@ namespace Signawel.Business.Services
             try
             {
                 _tokenValidationParameters.ValidateLifetime = false;
+
                 var principal = tokenHandler.ValidateToken(token, _tokenValidationParameters, out var validatedToken);
-                return DataResult<ClaimsPrincipal>.WithEntityOrError(!IsJwtWithValidSecurityAlgorithm(validatedToken) ? null : principal,
-                    ErrorCodes.PrincipalTokenError, "Something went wrong during the get PrincipalToken process.", DataErrorVisibility.Public);
+
+                if(IsJwtWithValidSecurityAlgorithm(validatedToken))
+                {
+                    return DataResult<ClaimsPrincipal>.Success(principal);
+                } else
+                {
+                    return DataResult<ClaimsPrincipal>.WithError(ErrorCodes.PrincipalTokenError, "Something went wrong during the get PrincipalToken process.", DataErrorVisibility.Public);
+                }
             }
             catch (Exception)
             {

@@ -9,15 +9,18 @@ import { Observable, BehaviorSubject, throwError } from "rxjs";
 import { tap, filter, switchMap, take, catchError } from "rxjs/operators";
 import { AuthenticationService } from "../services/authentication.service";
 import { TokenModel } from "../models/token.model";
+import { Router } from "@angular/router";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   private authService: AuthenticationService;
 
   isRefreshingToken: boolean = false;
-  refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  refreshTokenSubject: BehaviorSubject<TokenModel> = new BehaviorSubject<
+    TokenModel
+  >(null);
 
-  constructor(private injector: Injector) {
+  constructor(private injector: Injector, private router: Router) {
     this.authService = injector.get(AuthenticationService);
   }
 
@@ -42,13 +45,14 @@ export class TokenInterceptor implements HttpInterceptor {
     request = this.addToken(request);
 
     return next.handle(request).pipe(
-      tap(null, (error: any) => {
+      catchError((error: any) => {
         if (
-          request.url.includes("authentication/login") ||
-          request.url.includes("authentication/refresh")
+          request.url.includes("/api/authentication/login") ||
+          request.url.includes("/api/authentication/refresh")
         ) {
-          if (request.url.includes("authentication/refresh")) {
+          if (request.url.includes("/api/authentication/refresh")) {
             this.authService.logout();
+            this.router.navigate(["/authentication/login"]);
           }
 
           return throwError(error);
@@ -71,7 +75,7 @@ export class TokenInterceptor implements HttpInterceptor {
           return this.authService.attemptRefreshToken().pipe(
             switchMap((tokenModel: TokenModel) => {
               this.isRefreshingToken = false;
-              this.refreshTokenSubject.next(tokenModel.jwt);
+              this.refreshTokenSubject.next(tokenModel);
 
               return next.handle(this.addToken(request));
             })

@@ -1,0 +1,31 @@
+<div class="spinner-container" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div *ngIf="!loading">
+  <div class="input-row">
+    <mat-form-field class="add-field">
+      <input matInput type="text" placeholder="@example.com" [(ngModel)]="newEmail">
+
+      <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="newEmail=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <button mat-icon-button class="add-button" aria-label="Prioriteit email toevoegen"
+      matTooltip="Prioriteit email toevoegen" matTooltipPosition="above" (click)="addPriorityEmail()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <mat-list>
+    <mat-list-item *ngFor="let email of priorityEmails">
+      <h3 matLine>@{{ email.emailSuffix }}</h3>
+      <button mat-icon-button class="remove-button" aria-label="Prioriteit email verwijderen"
+        [matTooltip]="'@' + email.emailSuffix + ' verwijderen'" matTooltipPosition="above"
+        (click)="removePriorityEmail(email.id)">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </mat-list-item>
+  </mat-list>
+</div>

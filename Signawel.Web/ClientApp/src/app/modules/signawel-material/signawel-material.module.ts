@@ -56,15 +56,14 @@ import {
   MatAutocomplete,
   MatGridListModule,
   MatGridTile,
-  MatDialogModule
+  MatDialogModule,
+  MatTooltipModule
 } from "@angular/material";
 import { LayoutModule } from "@angular/cdk/layout";
 
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
-
     MatSnackBarModule,
     MatInputModule,
     MatTableModule,
@@ -84,46 +83,31 @@ import { LayoutModule } from "@angular/cdk/layout";
     MatSelectModule,
     MatAutocompleteModule,
     MatGridListModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTooltipModule
   ],
   exports: [
-    MatCard,
-    MatCardHeader,
-    MatCardContent,
-    MatCardActions,
-    MatFormField,
-    MatError,
-    MatSpinner,
-    MatInput,
-    MatCardTitle,
-    MatCardSubtitle,
-    MatToolbar,
-    MatSidenav,
-    MatNavList,
-    MatList,
-    MatListItem,
-    MatIcon,
-    MatSidenavContent,
-    MatSidenavContainer,
-    MatOption,
-    MatSelect,
-    MatButton,
-    MatCheckbox,
-    MatTable,
-    MatCell,
-    MatCellDef,
-    MatHeaderRow,
-    MatHeaderCell,
-    MatHeaderCellDef,
-    MatRow,
-    MatHeaderRowDef,
-    MatRowDef,
-    MatPaginator,
-    MatColumnDef,
-    MatSort,
-    MatSortHeader,
-    MatAutocomplete,
-    MatGridTile
+    MatSnackBarModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatCheckboxModule,
+    MatMenuModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    LayoutModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatGridListModule,
+    MatDialogModule,
+    MatTooltipModule
   ]
 })
 export class SignawelMaterialModule {}

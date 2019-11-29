@@ -178,13 +178,13 @@ namespace Signawel.Business.Services
                 storedRefreshTokenResult.Entity.JwtId != jti)
             {
                 _logger.LogInformation("Unable to refresh token, token {@token} invalid.", refreshToken);
-                return DataResult<TokenResponseDto>.WithErrorsFromDataResult(storedRefreshTokenResult);
+                return DataResult<TokenResponseDto>.WithError(ErrorCodes.JwtTokenError, "", DataErrorVisibility.Public);
             }
 
             storedRefreshTokenResult.Entity.Used = true;
             var updateResult = await _authenticationRepository.UpdateRefreshTokenAsync(storedRefreshTokenResult.Entity);
 
-            var userId = validatedTokenResult.Entity.Claims.Single(x => x.Type == "user_id").Value;
+            var userId = validatedTokenResult.Entity.Claims.FirstOrDefault(x => x.Type == "user_id").Value;
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
@@ -247,7 +247,6 @@ namespace Signawel.Business.Services
         private async Task<TokenResponseDto> ReturnTokenResponseAsync(User user)
         {
             var claims = await _userService.GetUserClaimsAsync(user.Id);
-
             var tokenResult = await _tokenFactory.GenerateToken(user, claims);
 
             return new TokenResponseDto

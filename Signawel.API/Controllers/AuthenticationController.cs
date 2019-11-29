@@ -73,10 +73,14 @@ namespace Signawel.API.Controllers
         [SwaggerOperation("refresh")]
         [SwaggerResponse(StatusCodes.Status200OK, "Token was refreshed.", typeof(TokenResponseDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "An error has occurred while attempting to refresh the token", typeof(IList<DataError>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Refresh failed.")]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshRequestDto model)
         {
             var result = await _authenticationService.RefreshJwtTokenAsync(model.JwtToken, model.RefreshToken);
+
+            if (result.HasError(ErrorCodes.JwtTokenError))
+                return Unauthorized();
 
             if (result.HasError(ErrorCodes.NotFoundError))
                 return NotFound();

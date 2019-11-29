@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 using Signawel.Business.Services;
 using Signawel.Data;
 using Signawel.Domain;
-using Signawel.Dto;
 using System;
 using System.IO;
 using System.Threading.Tasks;
