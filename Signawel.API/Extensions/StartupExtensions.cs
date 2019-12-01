@@ -108,6 +108,7 @@ namespace Signawel.API.Extensions
             services.AddScoped<IReportGroupService, ReportGroupService>();
             services.AddScoped<IDeterminationService, DeterminationService>();
             services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IRoadworkSchemaService, RoadworkSchemaService>();
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IPriorityEmailService, PriorityEmailService>();

@@ -30,6 +30,12 @@
 
         #endregion
 
+        #region Categories
+
+        public static string GetCategories => $"{BaseApiAddress}categories";
+
+        #endregion
+
         #region RoadworkSchemas
 
         public static string GetRoadworkSchema(string roadworkSchemaId) =>

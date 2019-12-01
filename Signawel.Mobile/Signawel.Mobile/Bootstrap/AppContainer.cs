@@ -27,7 +27,7 @@ namespace Signawel.Mobile.Bootstrap
             // ViewModels
             services.AddScoped<MainViewModel>();
             services.AddScoped<MenuViewModel>();
-            services.AddScoped<HomeViewModel>();
+            services.AddScoped<CategoryViewModel>();
             services.AddScoped<LoginViewModel>();
             services.AddScoped<AboutViewModel>();
             services.AddScoped<InteractiveSketchViewModel>();
@@ -38,6 +38,7 @@ namespace Signawel.Mobile.Bootstrap
             // Services
             services.AddScoped<IDeterminationGraphService, DeterminationGraphService>();
             services.AddScoped<IDeterminationSchemaService, DeterminationSchemaService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             // General
             services.AddSingleton<INavigationService, NavigationService>();

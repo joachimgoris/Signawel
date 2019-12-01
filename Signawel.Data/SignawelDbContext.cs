@@ -25,6 +25,7 @@ namespace Signawel.Data
             builder.ApplyConfiguration(new ReportConfiguration());
             builder.ApplyConfiguration(new ReportIssueConfiguration());
             builder.ApplyConfiguration(new DefaultIssueConfiguration());
+            builder.ApplyConfiguration(new CategoryConfiguration());
             builder.ApplyConfiguration(new PriorityEmailConfiguration());
             builder.ApplyConfiguration(new ReportImageConfiguration());
             builder.ApplyConfiguration(new LoginRecordsConfiguration());
@@ -50,6 +51,7 @@ namespace Signawel.Data
         public DbSet<DefaultIssue> DefaultIssues { get; set; }
         public DbSet<PriorityEmail> PriorityEmails { get; set; }
         public DbSet<Report> Reports { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<ReportImage> ReportImages { get; set; }
         public DbSet<ReportIssue> ReportIssues { get; set; }
         public DbSet<DeterminationGraph> DeterminationGraphs { get; set; }

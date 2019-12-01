@@ -53,7 +53,7 @@ namespace Signawel.Mobile.ViewModels
             MenuItems.Add(new MainMenuItem
             {
                 MenuText = "Home",
-                ViewModelType = typeof(HomeViewModel)
+                ViewModelType = typeof(CategoryViewModel)
             });
 
             MenuItems.Add(new MainMenuItem

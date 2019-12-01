@@ -13,6 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Polly" Version="7.2.0" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.1.3" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.0" />
     <PackageReference Include="Xamarin.Forms" Version="4.3.0.991211" />
@@ -27,6 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\CategoryView.xaml.cs">
+      <DependentUpon>CategoryView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\ListViewRoadWorksPageView.xaml.cs">
       <DependentUpon>ListViewRoadWorksPageView.xaml</DependentUpon>
     </Compile>
@@ -51,7 +55,7 @@
     <EmbeddedResource Update="Views\AboutView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\HomeView.xaml">
+    <EmbeddedResource Update="Views\CategoryView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\InteractiveSketchView.xaml">
@@ -75,5 +79,9 @@
     <ProjectReference Include="..\..\Signawel.Domain\Signawel.Domain.csproj" />
     <ProjectReference Include="..\..\Signawel.Dto\Signawel.Dto.csproj" />
     <ProjectReference Include="..\..\Signawel.MobileData\Signawel.MobileData.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
   </ItemGroup>
 </Project>

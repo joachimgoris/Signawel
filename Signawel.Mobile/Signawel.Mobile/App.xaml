@@ -50,6 +50,7 @@
             <Color x:Key="LightGrey">#cccccc</Color>
             <Color x:Key="EntryGrey">Gray</Color>
             <Color x:Key="LightForeground">White</Color>
+            <Color x:Key="LightTitle">White</Color>
 
             <Style x:Key="MenuLabelStyle" TargetType="{x:Type Label}">
                 <Setter Property="FontSize" Value="{StaticResource XLargeFontSize}"></Setter>
