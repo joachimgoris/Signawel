@@ -18,8 +18,9 @@ namespace Signawel.Business.Tests.Services
     public class MailServiceTests
     {
         private MailService _service;
-        private IOptions<MailConfiguration> _configuration;
+        private IOptions<MailConfiguration> _mailConfiguration;
         private Mock<IPriorityEmailService> _mockPriorityEmailService;
+        
 
         [SetUp]
         public void SetUp()
@@ -27,15 +28,15 @@ namespace Signawel.Business.Tests.Services
             var config = new MailConfiguration
             {
                 Host = "smtp.gmail.com",
-                FrontEndUrl = "https://localhost:5001/",
                 Password = "Test123-123",
                 Port = 587,
                 Sender = "signawelTestEmail@gmail.com",
-                SenderName = "Signawel Test Email"
+                SenderName = "Signawel Test Email",
+                FrontEndUrl = "https://localhost:5001/api"
             };
             _mockPriorityEmailService = new Mock<IPriorityEmailService>();
-            _configuration = Options.Create(config);
-            _service = new MailService(_configuration, _mockPriorityEmailService.Object);
+            _mailConfiguration = Options.Create(config);
+            _service = new MailService(_mailConfiguration, _mockPriorityEmailService.Object);
         }
 
         #region  SendMail
@@ -80,8 +81,7 @@ namespace Signawel.Business.Tests.Services
         public async Task SendConfirmationEmail_ShouldReturnErrorsFromSendMail_WhenModelIsInvalid()
         {
             // Arrange
-            
-            
+
             // Act
             var result = await _service.SendConfirmationEmailAsync(new User(), Guid.NewGuid().ToString());
 
@@ -98,7 +98,7 @@ namespace Signawel.Business.Tests.Services
             {
                 Email = "test@test.com"
             };
-            
+
             // Act
             var result = await _service.SendConfirmationEmailAsync(user, Guid.NewGuid().ToString());
 

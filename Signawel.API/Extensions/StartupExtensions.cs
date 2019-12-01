@@ -97,7 +97,6 @@ namespace Signawel.API.Extensions
             services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IJwtTokenFactory, JwtTokenFactory>();
-            services.AddScoped<MailConfiguration>();
 
             return services;
         }

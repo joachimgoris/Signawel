@@ -33,7 +33,8 @@ namespace Signawel.Business.Services
         public async Task<DataResult> SendConfirmationEmailAsync(User user, string token)
         {
             var tokenString = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-            var callbackUri = new Uri(_configuration.FrontEndUrl + $"authentication/confirmemail?userId={user.Id}&token={tokenString}");
+            string frontEndUrl = _configuration.FrontEndUrl;
+            var callbackUri = new Uri(frontEndUrl + $"authentication/confirmemail?userId={user.Id}&token={tokenString}");
 
             var mailDto = new SendMailDto
             {

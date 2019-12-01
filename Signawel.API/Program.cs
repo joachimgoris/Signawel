@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Signawel.Data;
 using Signawel.Domain;
@@ -34,6 +35,10 @@ namespace Signawel.API
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((context, conf) =>
+                {
+                    conf.AddEnvironmentVariables("SA_");
+                })
                 .UseStartup<Startup>();
     }
 }
