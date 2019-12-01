@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,42 @@ namespace Signawel.API.Controllers
             _reportService = reportService;
             _mailService = mailService;
         }
+
+        #region GetReports
+
+        [HttpGet]
+        [SwaggerOperation("getReports")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Retrieved all reports.", typeof(DataResult<ReportResponseDto>))]
+        public IActionResult GetReports([FromQuery] string search = null, [FromQuery] int page = 0, [FromQuery] int limit = 20)
+        {
+            var reports = _reportService.GetAllReports();
+
+            var result = new ReportGetPaginationDto()
+            {
+                Total = reports.Count()
+            };
+
+            if (page < 0)
+            {
+                page = 0;
+            }
+
+            var reportResult = reports.Skip(page * (limit <= 0 ? 0 : limit));
+
+            if (limit > 0)
+                reportResult = reportResult.Take(limit);
+
+            if (!string.IsNullOrEmpty(search))
+                reportResult = reportResult.Where(x => x.SenderEmail.Contains(search) ||
+                                                       x.Description.Contains(search) ||
+                                                       x.CreationTime.ToString().Contains(search));
+
+            result.Reports = reportResult.ToList();
+
+            return Ok(result);
+        }
+
+        #endregion
 
         #region GetReport
 

@@ -1,21 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace Signawel.Domain
+namespace Signawel.Domain.Reports
 {
     public class Report : Entity
     {
-        public string UserEmail { get; set; }
+        public DateTime CreationTime { get; set; }
 
-        public string CustomMessage { get; set; }
-
-        public string RoadWorkId { get; set; }
-
-        public ICollection<string> Cities { get; set; }
+        public string SenderEmail { get; set; }
 
         public string Description { get; set; }
 
+        public string RoadworkId { get; set; }
+
         public ICollection<ReportImage> Images { get; set; }
 
-        public ICollection<ReportIssue> IssueLink { get; set; }
+        public ReportDefaultIssue Issue { get; set; }
     }
 }

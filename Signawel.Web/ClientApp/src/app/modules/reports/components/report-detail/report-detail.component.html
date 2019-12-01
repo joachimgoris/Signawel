@@ -1,0 +1,27 @@
+<form>
+    <mat-form-field>
+        <input matInput placeholder="E-mailadres verzender" name="userEmail" [(ngModel)]="report.senderEmail"
+            [disabled]="!editmode">
+    </mat-form-field>
+
+    <mat-form-field>
+        <textarea matInput placeholder="Omschrijving" name="description" [(ngModel)]="report.description"
+            [disabled]="!editmode"></textarea>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Aangemaakt op" name="creationTime" [ngModel]="report.creationTime | date:'dd/MM/yyyy hh:mm a'"
+        (ngModelChange)="report.creationTime=$event" disabled/>
+    </mat-form-field>
+
+    <div class="card-deck">
+        <mat-card *ngFor="let reportImage of report.images">
+            <img mat-card-image src="{{ reportImage.imagePath }}" alt="report image">
+            <mat-card-actions>
+                <button mat-icon-button>
+                    <mat-icon (click)="onZoomIn(reportImage.imagePath)">zoom_in</mat-icon>
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</form>

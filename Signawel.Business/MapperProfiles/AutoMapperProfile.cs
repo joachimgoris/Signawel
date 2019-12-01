@@ -14,6 +14,7 @@ namespace Signawel.Business.MapperProfiles
             new RoadworkSchemaProfile();
             new BBoxProfile();
             new BBoxPointProfile();
+            new ReportProfile();
             new PriorityEmailProfile();
         }
     }

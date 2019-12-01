@@ -1,22 +1,22 @@
-﻿using Signawel.Domain;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Signawel.Domain.Reports;
 
 namespace Signawel.Dto.Reports
 {
     public class ReportCreationRequestDto
     {
-        public string UserEmail { get; set; }
+        [Required]
+        public string SenderEmail { get; set; }
 
-        public string CustomMessage { get; set; }
-
-        public string RoadWorkId { get; set; }
-
-        public ICollection<string> Cities { get; set; }
-
+        [Required]
         public string Description { get; set; }
+
+        [Required]
+        public string RoadworkId { get; set; }
 
         public ICollection<ReportImage> Images { get; set; }
 
-        public ICollection<ReportIssue> IssueLink { get; set; }
+        public int DefaultIssueId { get; set; }
     }
 }

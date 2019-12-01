@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Signawel.API\Signawel.API.csproj" />
     <ProjectReference Include="..\Signawel.Business\Signawel.Business.csproj" />
     <ProjectReference Include="..\Signawel.Data\Signawel.Data.csproj" />
   </ItemGroup>

@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Signawel.Domain;
+using Signawel.Domain.Reports;
 
 namespace Signawel.Data.Configurations
 {
-    internal class DefaultIssueConfiguration : IEntityTypeConfiguration<DefaultIssue>
+    internal class ReportDefaultIssueConfiguration : IEntityTypeConfiguration<ReportDefaultIssue>
     {
-        public void Configure(EntityTypeBuilder<DefaultIssue> builder)
+        public void Configure(EntityTypeBuilder<ReportDefaultIssue> builder)
         {
-            builder.ToTable("default_issues");
+            builder.ToTable("report_default_issues");
 
             builder.HasKey(e => e.Id);
 

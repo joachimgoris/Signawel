@@ -30,7 +30,7 @@ namespace Signawel.Business.Services
 
         public IQueryable<PriorityEmailReponseDto> GetPriorityEmails()
         {
-           return _mapper.ProjectTo<PriorityEmailReponseDto>(_context.PriorityEmails.AsQueryable());
+            return _mapper.ProjectTo<PriorityEmailReponseDto>(_context.PriorityEmails.AsQueryable());
         }
 
         public async Task<DataResult<PriorityEmailReponseDto>> AddPriorityEmailAsync(PriorityEmailCreationRequestDto dto)

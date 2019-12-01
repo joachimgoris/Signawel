@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Signawel.Domain;
+using Signawel.Domain.Reports;
 using Signawel.Dto.Reports;
 
 namespace Signawel.Business.MapperProfiles

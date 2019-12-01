@@ -8,4 +8,4 @@ export const ROADWORK_SCHEMAS = BASE_URL + "/roadwork-schemas";
 export const REPORT_GROUPS = BASE_URL + "/reportgroups";
 export const CITIES = REPORT_GROUPS + "/cities";
 export const PRIORITY_EMAILS = BASE_URL + "/priority-emails";
-
+export const REPORTS = BASE_URL + "/reports"

@@ -85,7 +85,7 @@ namespace Signawel.Business.Services
             {
                 return DataResult.WithPublicError(ErrorCodes.InvalidOperationError, "The client has a Send call in progress or the DeliveryMethod is invalid.");
             }
-            catch (SmtpException) 
+            catch (SmtpException)
             {
                 return DataResult.WithPublicError(ErrorCodes.MailError, "An SmtpException occurred.");
             }
@@ -96,13 +96,13 @@ namespace Signawel.Business.Services
         }
 
         #endregion
-        
+
         #region CreateReportEmail
 
         /// <inheritdoc cref="IMailService.CreateReportEmailAsync(ReportResponseDto)"/>
         public async Task<DataResult> CreateReportEmailAsync(ReportResponseDto report)
         {
-            string mailSuffix = report.UserEmail.Split('@')[1];
+            string mailSuffix = report.SenderEmail.Split('@')[1];
             bool priority = await _priorityEmailService.CheckPriorityEmailAsync(mailSuffix);
 
             string subject = (priority ? "!P! " : "") + $"Foutmelding wegenwerken nr : {report.Id}";
@@ -110,33 +110,19 @@ namespace Signawel.Business.Services
             #region Email Body
 
             StringBuilder mailBody = new StringBuilder("<h4>Probleem geraporteerd aan wegenwerk met GipodId: </h4>");
-            mailBody.Append(report.RoadWorkId);
+            mailBody.Append(report.RoadworkId);
             mailBody.Append("<br><br>");
-            mailBody.Append("<h4>Fout/fouten:</h4><br><ul>");
-
-            if (report.IssueLink != null)
-            {
-                foreach (ReportIssue issue in report.IssueLink)
-                {
-                    mailBody.Append("<li>" + issue.Issue.Name + "</li>");
-                    mailBody.Append("\n\t");
-                }
-            }
+            mailBody.Append("<h4>Fout:</h4>" + report.Issue.Name);
             mailBody.Append("</ul><br><br>");
-            mailBody.Append("<h4>Beschrijving probleem: </h4>" + report.CustomMessage + "<br>");
+            mailBody.Append("<h4>Beschrijving probleem: </h4>" + report.Description + "<br>");
             mailBody.Append("------------------------------------------<br>");
-
-            foreach (string city in report.Cities)
-            {
-                mailBody.Append(city + ", ");
-            }
 
             #endregion Email Body
 
             SendMailDto email = new SendMailDto
             {
                 Body = mailBody.ToString(),
-                DestinationAddress = report.UserEmail,  //TODO needs to be changed later to the email connected to the cities
+                DestinationAddress = report.SenderEmail,  //TODO needs to be changed later to the email connected to the cities
                 Subject = subject
             };
 

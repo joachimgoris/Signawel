@@ -1,6 +1,6 @@
-﻿namespace Signawel.Domain
+﻿namespace Signawel.Domain.Enums
 {
-    public enum ItemType
+    public enum TrafficSignType
     {
         Sign = 1,
         Light = 2,

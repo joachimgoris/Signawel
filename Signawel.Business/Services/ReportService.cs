@@ -2,12 +2,12 @@
 using Microsoft.Extensions.Logging;
 using Signawel.Business.Abstractions.Services;
 using Signawel.Data;
-using Signawel.Domain;
 using Signawel.Domain.Constants;
 using Signawel.Domain.DataResults;
 using Signawel.Dto.Reports;
 using System.Linq;
 using System.Threading.Tasks;
+using Signawel.Domain.Reports;
 
 namespace Signawel.Business.Services
 {
@@ -69,9 +69,9 @@ namespace Signawel.Business.Services
         #region GetAllReports
 
         /// <inheritdoc cref="IReportService.GetAllReports"/>
-        public IQueryable<Report> GetAllReports()
+        public IQueryable<ReportResponseDto> GetAllReports()
         {
-            return _context.Reports;
+            return _mapper.ProjectTo<ReportResponseDto>(_context.Reports);
         }
 
         #endregion

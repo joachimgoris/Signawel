@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Signawel.Domain;
+using Signawel.Domain.Reports;
 
 namespace Signawel.Data.Configurations
 {
@@ -13,29 +13,25 @@ namespace Signawel.Data.Configurations
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id).HasColumnName("id");
-            builder.Property(e => e.UserEmail)
+
+            builder.Property(e => e.SenderEmail)
                 .IsUnicode()
-                .HasColumnName("user_email")
+                .HasColumnName("sender_email")
                 .IsRequired();
 
             builder.Property(e => e.Description)
                 .IsUnicode()
+                .IsRequired()
                 .HasColumnName("description");
 
-            builder.Property(e => e.RoadWorkId)
+            builder.Property(e => e.RoadworkId)
                .IsUnicode()
+               .IsRequired()
                .HasColumnName("roadwork_id");
 
-            builder.Property(e => e.Cities)
-                .HasConversion(list => string.Join(";", list), from => from.Split(';'))
-                .HasColumnName("cities");
-
-
-            builder.Property(e => e.CustomMessage)
+            builder.Property(e => e.Description)
                 .IsUnicode()
-                .HasColumnName("custom_message");
-
-
+                .HasColumnName("description");
         }
     }
 }

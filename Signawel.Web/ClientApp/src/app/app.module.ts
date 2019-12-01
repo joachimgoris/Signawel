@@ -4,6 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { LayoutModule } from "@angular/cdk/layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { AngularMaterialImageOverlayModule } from "angular-material-image-overlay";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -29,8 +30,9 @@ import { TokenInterceptor } from "./modules/authentication/intercepters/token-in
     SignawelMaterialModule,
     SharedModule,
     AuthenticationModule,
+    ReportGroupsModule,
     DeterminationModule,
-    ReportGroupsModule
+    AngularMaterialImageOverlayModule
   ],
   providers: [
     {

@@ -1,0 +1,73 @@
+<h1 class="page-title">Meldingen</h1>
+
+<mat-form-field>
+  <input matInput placeholder="Zoeken" #searchInput>
+</mat-form-field>
+
+<div class="spinner-container" *ngIf="listData.loading$ | async">
+  <mat-spinner></mat-spinner>
+</div>
+
+<mat-table [dataSource]="listData" matSort matSortActive="seqNo" matSortDirection="asc" matSortDisableClear>
+
+  <!-- Checkbox Column -->
+  <ng-container matColumnDef="select">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+        [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+      </mat-checkbox>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(element) : null"
+        [checked]="selection.isSelected(element)" [aria-label]="checkboxLabel(element)">
+      </mat-checkbox>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Sender Email Column -->
+  <ng-container matColumnDef="senderEmail">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>E-mailadres melder</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.senderEmail }}</mat-cell>
+  </ng-container>
+
+   <!-- Probleem Column -->
+   <ng-container matColumnDef="issue">
+    <mat-header-cell *matHeaderCellDef>Probleem</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.issue.name }}</mat-cell>
+  </ng-container>
+
+  <!-- Creation Time Column -->
+  <ng-container matColumnDef="creationTime">
+    <mat-header-cell *matHeaderCellDef>Aangemaakt op</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.creationTime | date:'dd/MM/yyyy hh:mm a' }}</mat-cell>
+  </ng-container>
+
+  <!-- Description Column -->
+  <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef>Omschrijving</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element.description | slice:0:100}}..</mat-cell>
+  </ng-container> 
+
+  <!-- Actions Column -->
+  <ng-container matColumnDef="actions" stickyEnd>
+    <mat-header-cell *matHeaderCellDef>
+        Acties
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <button mat-icon-button (click)="doShow(element)">
+        <mat-icon>open_in_new</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns:displayedColumns;"></mat-row>
+</mat-table>
+
+<mat-paginator [length]="listData.total" [pageSize]="15" [pageSizeOptions]="[5, 10, 15]"></mat-paginator>
+
+<blade-modal id="reportEditor" modalTitle="Melding details" [closeButton]="true"
+  (modalClose)="onModalClose($event)">
+  <report-detail [report]="selectedReport" *ngIf="selectedReport">
+    </report-detail>
+</blade-modal>

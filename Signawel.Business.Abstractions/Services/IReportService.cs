@@ -1,5 +1,4 @@
-﻿using Signawel.Domain;
-using Signawel.Domain.DataResults;
+﻿using Signawel.Domain.DataResults;
 using Signawel.Dto.Reports;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,7 +41,7 @@ namespace Signawel.Business.Abstractions.Services
         /// <returns>
         ///     A list of all the reports in the database.
         /// </returns>
-        IQueryable<Report> GetAllReports();
+        IQueryable<ReportResponseDto> GetAllReports();
 
         #endregion
 

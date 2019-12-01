@@ -8,6 +8,7 @@ using Signawel.Domain;
 using System.Threading.Tasks;
 using Signawel.Domain.Constants;
 using Signawel.Dto.Reports;
+using Signawel.Domain.Reports;
 
 namespace Signawel.Business.Tests.Services
 {
@@ -51,7 +52,7 @@ namespace Signawel.Business.Tests.Services
             // Arrange
             var model = new ReportCreationRequestDto
             {
-                UserEmail = "test@test.com"
+                SenderEmail = "test@test.com"
             };
             _mockMapper.Setup(_ => _.Map<Report>(It.IsAny<ReportCreationRequestDto>()))
                 .Returns(new Report());

@@ -5,6 +5,7 @@ using Signawel.Domain;
 using Signawel.Domain.BBox;
 using Signawel.Domain.Determination;
 using Signawel.Domain.ReportGroups;
+using Signawel.Domain.Reports;
 
 namespace Signawel.Data
 {
@@ -23,8 +24,7 @@ namespace Signawel.Data
         private void ApplyConfigurations(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new ReportConfiguration());
-            builder.ApplyConfiguration(new ReportIssueConfiguration());
-            builder.ApplyConfiguration(new DefaultIssueConfiguration());
+            builder.ApplyConfiguration(new ReportDefaultIssueConfiguration());
             builder.ApplyConfiguration(new CategoryConfiguration());
             builder.ApplyConfiguration(new PriorityEmailConfiguration());
             builder.ApplyConfiguration(new ReportImageConfiguration());
@@ -48,12 +48,11 @@ namespace Signawel.Data
 
         #region DbSets
 
-        public DbSet<DefaultIssue> DefaultIssues { get; set; }
+        public DbSet<ReportDefaultIssue> DefaultIssues { get; set; }
         public DbSet<PriorityEmail> PriorityEmails { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ReportImage> ReportImages { get; set; }
-        public DbSet<ReportIssue> ReportIssues { get; set; }
         public DbSet<DeterminationGraph> DeterminationGraphs { get; set; }
         public DbSet<DeterminationNode> DeterminationNodes { get; set; }
         public DbSet<DeterminationAnswer> DeterminationAnswers { get; set; }

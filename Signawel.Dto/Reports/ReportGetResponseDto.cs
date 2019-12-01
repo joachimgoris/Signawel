@@ -1,10 +1,10 @@
-﻿using Signawel.Domain.Reports;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Signawel.Domain.Reports;
 
 namespace Signawel.Dto.Reports
 {
-    public class ReportResponseDto
+    public class ReportGetResponseDto
     {
         public string Id { get; set; }
 

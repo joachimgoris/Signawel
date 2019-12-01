@@ -9,6 +9,10 @@
     <Compile Remove="Migrations\20191112225634_Added_DescriptionToDeterminationQuestion.Designer.cs" />
     <Compile Remove="Migrations\20191114083220_InitialLogin.cs" />
     <Compile Remove="Migrations\20191114083220_InitialLogin.Designer.cs" />
+    <Compile Remove="Migrations\20191122142150_ReportImprovements.cs" />
+    <Compile Remove="Migrations\20191122142150_ReportImprovements.Designer.cs" />
+    <Compile Remove="Migrations\20191122142306_ReportImprovements.cs" />
+    <Compile Remove="Migrations\20191122142306_ReportImprovements.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

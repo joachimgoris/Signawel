@@ -11,6 +11,7 @@ using Signawel.Domain.Configuration;
 using Signawel.Domain.Constants;
 using Signawel.Dto.Mail;
 using Signawel.Dto.Reports;
+using Signawel.Domain.Reports;
 
 namespace Signawel.Business.Tests.Services
 {
@@ -45,8 +46,8 @@ namespace Signawel.Business.Tests.Services
         public async Task SendMail_ShouldReturnParameterEmptyError_WhenMailDtoIsEmpty()
         {
             // Arrange
-            
-            
+
+
             // Act
             var result = await _service.SendMail(new SendMailDto());
 
@@ -65,7 +66,7 @@ namespace Signawel.Business.Tests.Services
                 DestinationAddress = "test@test.com",
                 Subject = "test"
             };
-            
+
             // Act
             var result = await _service.SendMail(model);
 
@@ -81,6 +82,7 @@ namespace Signawel.Business.Tests.Services
         public async Task SendConfirmationEmail_ShouldReturnErrorsFromSendMail_WhenModelIsInvalid()
         {
             // Arrange
+
 
             // Act
             var result = await _service.SendConfirmationEmailAsync(new User(), Guid.NewGuid().ToString());
@@ -116,23 +118,13 @@ namespace Signawel.Business.Tests.Services
             // Arrange
             var model = new ReportResponseDto
             {
-                UserEmail = "test@test.com",
-                Cities = new List<string>
+                SenderEmail = "test@test.com",
+                Issue = new ReportDefaultIssue
                 {
-                    "testCity"
-                },
-                IssueLink = new List<ReportIssue>
-                {
-                    new ReportIssue
-                    {
-                        Issue = new DefaultIssue
-                        {
-                            Name = "testIssue"
-                        }
-                    }
+                    Name = "testIssue"
                 }
             };
-            
+
             // Act
             var result = await _service.CreateReportEmailAsync(model);
 
