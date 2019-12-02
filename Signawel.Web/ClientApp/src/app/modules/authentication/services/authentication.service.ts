@@ -1,19 +1,20 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { Router } from "@angular/router";
 import {
   AUTHENTICATE_REFRESH_URL,
   AUTHENTICATE_LOGIN_URL
 } from "src/app/constants/api.constants";
-import { tap, catchError } from "rxjs/operators";
+import { tap, catchError, mapTo } from "rxjs/operators";
 import { TokenModel } from "../models/token.model";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 
 @Injectable()
 export class AuthenticationService {
   private readonly JWT_TOKEN = "JWT_TOKEN";
   private readonly REFRESH_TOKEN = "REFRESH_TOKEN";
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private router: Router) {}
 
   login(email: string, password: string) {
     return this.httpClient
@@ -24,12 +25,18 @@ export class AuthenticationService {
       .pipe(
         tap(tokenModel => {
           this.doLoginuser(tokenModel);
+        }),
+        mapTo(true),
+        catchError(error => {
+          console.error(error);
+          return of(false);
         })
       );
   }
 
   logout() {
     this.removeTokens();
+    this.router.navigate(["/authentication/login"]);
   }
 
   isLoggedIn() {
@@ -51,10 +58,6 @@ export class AuthenticationService {
           this.storeTokens(tokens);
         })
       );
-  }
-
-  private storeJwtToken(jwt: string) {
-    localStorage.setItem(this.JWT_TOKEN, jwt);
   }
 
   private getRefreshToken() {

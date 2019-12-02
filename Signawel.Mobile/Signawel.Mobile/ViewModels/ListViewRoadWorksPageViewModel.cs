@@ -19,7 +19,7 @@ namespace Signawel.Mobile.ViewModels
             set
             {
                 _SelectedRoadWork = value;
-                //TODO navigate back to report
+                _navigationService.NavigateToAsync<ReportViewModel>(SelectedRoadWork);
             }
         }
 

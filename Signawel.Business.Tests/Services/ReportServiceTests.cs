@@ -4,11 +4,10 @@ using Moq;
 using NUnit.Framework;
 using Signawel.Business.Services;
 using Signawel.Data;
-using Signawel.Domain;
 using System.Threading.Tasks;
 using Signawel.Domain.Constants;
-using Signawel.Dto.Reports;
 using Signawel.Domain.Reports;
+using Signawel.Dto.Reports;
 
 namespace Signawel.Business.Tests.Services
 {

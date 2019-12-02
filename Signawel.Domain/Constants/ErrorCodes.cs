@@ -71,5 +71,13 @@
         public const string PriorityEmailCreationError = nameof(PriorityEmailCreationError);
 
         #endregion PriorityEmails
+
+        #region Images
+
+        public const string FailedToSaveImage = "FailedToSaveImage";
+
+        public const string InvalidFileFormat = "InvalidFileFormat";
+
+        #endregion
     }
 }

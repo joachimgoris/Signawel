@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using Signawel.API.Controllers;
 using Signawel.Business.Abstractions.Services;
 
@@ -33,7 +32,7 @@ namespace Signawel.Api.Tests.Controllers
             var response = await _sutImageController.GetImage(id) as NotFoundResult;
             
             _iImageServiceMock.Verify(service => service.GetImageAsync(id), Times.Once);
-            Assert.That(response?.StatusCode, Is.EqualTo(404));
+            Assert.IsInstanceOf<NotFoundResult>(response);
         }
 
         [Test]

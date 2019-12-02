@@ -172,7 +172,8 @@ namespace Signawel.Business.Services
             var jti = validatedTokenResult.Entity.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
             var storedRefreshTokenResult = await _authenticationRepository.GetRefreshTokenByTokenAsync(refreshToken);
 
-            if (DateTime.UtcNow > storedRefreshTokenResult.Entity.ExpiryDate ||
+            if (!storedRefreshTokenResult.Succeeded ||
+                DateTime.UtcNow > storedRefreshTokenResult.Entity.ExpiryDate ||
                 storedRefreshTokenResult.Entity.Invalidated ||
                 storedRefreshTokenResult.Entity.Used ||
                 storedRefreshTokenResult.Entity.JwtId != jti)

@@ -7,9 +7,9 @@ namespace Signawel.Dto.Reports
     public class ReportCreationRequestDto
     {
         [Required]
+        [EmailAddress]
         public string SenderEmail { get; set; }
 
-        [Required]
         public string Description { get; set; }
 
         [Required]
@@ -17,6 +17,7 @@ namespace Signawel.Dto.Reports
 
         public ICollection<ReportImage> Images { get; set; }
 
-        public int DefaultIssueId { get; set; }
+        [Required]
+        public ReportDefaultIssue Issue { get; set; }
     }
 }

@@ -12,7 +12,7 @@
         
         <ListView.ItemTemplate>
             <DataTemplate>
-                <TextCell Text="{Binding description}" Detail="{Binding distanceToDevice, StringFormat='{0} km'}"/>
+                <TextCell Text="{Binding Description}" Detail="{Binding DistanceToDevice, StringFormat='{0} km'}"/>
             </DataTemplate>
     </ListView.ItemTemplate>
     

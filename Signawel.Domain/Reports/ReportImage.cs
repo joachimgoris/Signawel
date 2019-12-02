@@ -7,6 +7,7 @@ namespace Signawel.Domain.Reports
 
         public Report Report { get; set; }
 
-        public string ImagePath { get; set; }
+        public string ImageId { get; set; }
+        public Image Image { get; set; }
     }
 }

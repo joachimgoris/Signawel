@@ -71,5 +71,22 @@ namespace Signawel.Business.Abstractions.Services
         Task<DataResult<ReportResponseDto>> ModifyReportAsync(ReportModifyRequestDto reportDto);
 
         #endregion
+
+        #region Link
+        /// <summary>
+        ///     Link images to the added report.
+        /// </summary>
+        /// <param name="reportId">
+        ///     The id of the report the image should be linked to.
+        /// </param>
+        /// <param name="imageId">
+        ///     The id of the image to be linked.
+        /// </param>
+        /// <returns>
+        ///     A result indicating if the image was linked to the report.
+        /// </returns>
+        Task LinkImagesToReportAsync(string reportId, string imageId);
+
+        #endregion
     }
 }

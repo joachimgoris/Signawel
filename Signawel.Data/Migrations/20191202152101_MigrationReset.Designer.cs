@@ -10,8 +10,8 @@ using Signawel.Data;
 namespace Signawel.Data.Migrations
 {
     [DbContext(typeof(SignawelDbContext))]
-    [Migration("20191201165612_FixedAllMigrations")]
-    partial class FixedAllMigrations
+    [Migration("20191202152101_MigrationReset")]
+    partial class MigrationReset
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -346,212 +346,212 @@ namespace Signawel.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2b4a2266-49f5-4d41-b09b-afbc7798d610",
+                            Id = "829cef46-3a6e-4fe9-b531-f82cc488f908",
                             Name = "Alken"
                         },
                         new
                         {
-                            Id = "c386e621-9f38-43a1-b7c4-ac13efb7fc8e",
+                            Id = "0adb2933-3ff8-48d8-9058-6f6398e1cdde",
                             Name = "As"
                         },
                         new
                         {
-                            Id = "ef4846ba-3260-43b4-9fd2-dce297090261",
+                            Id = "dbdfc118-65cf-4175-b1cb-7c83917246cb",
                             Name = "Beringen"
                         },
                         new
                         {
-                            Id = "c0670dea-2db6-4769-89ae-b21b4a7b901c",
+                            Id = "fbd9b409-9e54-4025-aa72-b9f92c767607",
                             Name = "Bilzen"
                         },
                         new
                         {
-                            Id = "40f37b91-bd21-4c52-afc5-dd457c7d09f8",
+                            Id = "ffb77b12-f2d7-4c4a-bc0b-8bd3e6c7a2be",
                             Name = "Bocholt"
                         },
                         new
                         {
-                            Id = "b837250a-423d-4cf7-bb36-32ad7cfed4c9",
+                            Id = "705af8bc-c5b0-4ca8-8e68-078239ca8676",
                             Name = "Borgloon"
                         },
                         new
                         {
-                            Id = "b643e362-2d3e-4c18-b5b7-460fe6b25068",
+                            Id = "0bc39bbf-d02f-4837-8895-1bbb255539d3",
                             Name = "Bree"
                         },
                         new
                         {
-                            Id = "efa88d13-b487-4936-8907-5546bf2ac7a7",
+                            Id = "b950becf-150b-4f74-bbf5-b0a6b7fbed44",
                             Name = "Diepenbeek"
                         },
                         new
                         {
-                            Id = "2667048c-5659-4832-9147-4c1436d8d521",
+                            Id = "6fd3c011-73b9-46ef-aacf-27f7c174477f",
                             Name = "Dilsen-Stokkem"
                         },
                         new
                         {
-                            Id = "be0e635a-ecf3-4280-8c0f-5918079642a5",
+                            Id = "17a1922d-5b05-432c-9f97-9c0a279ecaf8",
                             Name = "Genk"
                         },
                         new
                         {
-                            Id = "76ddd8e9-9c32-40ef-bd29-07fef49a5c8c",
+                            Id = "c12aac6d-5513-4b68-b331-0a403f8950b4",
                             Name = "Gingelom"
                         },
                         new
                         {
-                            Id = "b4f58173-8fed-44c2-a912-d114ca879c12",
+                            Id = "c73dab2d-8bdf-417c-9bc8-936ee7106146",
                             Name = "Halen"
                         },
                         new
                         {
-                            Id = "d1f8b474-3fd1-4946-8576-19901c94ec95",
+                            Id = "c7fb8ef5-f3e3-4fe7-a164-d2a9b8a3fb06",
                             Name = "Ham"
                         },
                         new
                         {
-                            Id = "6a25fece-dec7-47b9-9ec6-d4ef638fbc8a",
+                            Id = "9c2efdf8-d514-4c75-b9ab-472bc9f9827f",
                             Name = "Hamont-Achel"
                         },
                         new
                         {
-                            Id = "ee0d5564-f65a-46ec-b130-beee14634450",
+                            Id = "5de99735-8b0c-4c70-876a-df6837196787",
                             Name = "Hasselt"
                         },
                         new
                         {
-                            Id = "72fd4f16-a6f7-4582-bc78-7b10eac5fcf8",
+                            Id = "c28f5a5e-4249-40b3-ab84-62810ea39445",
                             Name = "Hechelt-Eksel"
                         },
                         new
                         {
-                            Id = "3cec904d-6fb5-4acc-9ed6-a64b992bfb04",
+                            Id = "1f889685-5360-4cf8-8745-0be139625427",
                             Name = "Heers"
                         },
                         new
                         {
-                            Id = "1bad5687-be6d-4aa2-8090-dbbd82c1885b",
+                            Id = "7943928f-b2dd-4617-9bb2-05d9d33939bc",
                             Name = "Herk-de-Stad"
                         },
                         new
                         {
-                            Id = "11111887-7c0b-4914-b2f0-f55430664d75",
+                            Id = "217d9c61-4a81-4116-a24f-4390ab456d69",
                             Name = "Herstappe"
                         },
                         new
                         {
-                            Id = "0a5f419b-e546-4d64-8a69-f1976d7fd4ad",
+                            Id = "dc0432f1-72c2-4cb2-9c52-b28be52c6a71",
                             Name = "Heusden-Zolder"
                         },
                         new
                         {
-                            Id = "7487d9ef-ad73-44ac-a28a-4200235c6a18",
+                            Id = "a956e3fb-eeac-42e4-befd-220075c52ee0",
                             Name = "Hoeselt"
                         },
                         new
                         {
-                            Id = "e3704ae2-9c8e-4744-abf5-995ad87def3e",
+                            Id = "29c54b7d-762c-4102-bfd9-fb652b322a69",
                             Name = "Houthalen-Helchteren"
                         },
                         new
                         {
-                            Id = "fa6ffe60-d49b-4cb5-bfef-9a9984cf4047",
+                            Id = "f98eb09c-02c1-4da9-82ac-431f9481651a",
                             Name = "Kinrooi"
                         },
                         new
                         {
-                            Id = "175aa7db-ce54-4987-9d1e-19b279cd570a",
+                            Id = "70d6ea53-9218-4ea5-acab-7b97443d7f69",
                             Name = "Kortessem"
                         },
                         new
                         {
-                            Id = "983ebb16-c448-414e-a2f4-5673fc67849f",
+                            Id = "9dc1f7e2-bc2a-4c7a-a28e-b542aa06e0c2",
                             Name = "Lanaken"
                         },
                         new
                         {
-                            Id = "cebed561-b1c6-41ed-b792-0d61c43621f0",
+                            Id = "5aab5ebe-d390-4bf5-bb2d-ef696c34a741",
                             Name = "Leopoldsburg"
                         },
                         new
                         {
-                            Id = "efdc5db8-7af3-4c19-b30e-791bcf4c0be2",
+                            Id = "1874c3c5-0e4f-4565-a4d3-e179b77e993e",
                             Name = "Lommel"
                         },
                         new
                         {
-                            Id = "f33335e8-5fd6-4c88-aec9-6038a359513d",
+                            Id = "1c98ca9a-02ac-4f6a-b41f-0eee6cb6627e",
                             Name = "Lummen"
                         },
                         new
                         {
-                            Id = "64371ce6-00d9-4e0b-b798-5e733b1c9153",
+                            Id = "b96d0451-e8c7-4bf8-ad34-4be2d27120c4",
                             Name = "Maaseik"
                         },
                         new
                         {
-                            Id = "42d0da53-c1b8-422b-a0cf-c73f79487e25",
+                            Id = "729764fb-a0fa-4a86-845c-2c57e1fc0fae",
                             Name = "Maasmechelen"
                         },
                         new
                         {
-                            Id = "9b07fa13-f3d3-4359-94a8-bdccf0d185c7",
+                            Id = "d7b2f2cb-13b7-462b-8036-682dff1f1583",
                             Name = "Nieuwerkerken"
                         },
                         new
                         {
-                            Id = "0a7e443a-2b55-440e-a218-318a6224858d",
+                            Id = "30217cff-55e0-480b-819e-f6ea724c2f16",
                             Name = "Oudsbergen"
                         },
                         new
                         {
-                            Id = "c4ef8b5f-a7ae-4f3a-b771-40f728caf2d0",
+                            Id = "f284f8ad-e758-4171-a30d-6e49bfbafc36",
                             Name = "Peer"
                         },
                         new
                         {
-                            Id = "6aaf3137-6ffb-49e4-86f5-fe5d1caa4337",
+                            Id = "99de3e3b-f8fa-4bbd-b1bb-c365d6bd83dc",
                             Name = "Pelt"
                         },
                         new
                         {
-                            Id = "8839c271-7a9c-47a3-90a0-d3051f4b0cab",
+                            Id = "af72dfea-3872-4902-93f8-c5fe25506859",
                             Name = "Riemst"
                         },
                         new
                         {
-                            Id = "d8c192b2-79d1-4fcf-a299-4479ffc803e0",
+                            Id = "5e1df4df-66e1-44b4-a9d6-57c16abf0fc8",
                             Name = "Sint-Truiden"
                         },
                         new
                         {
-                            Id = "55e4a13b-be73-493c-83dd-9906a10cf768",
+                            Id = "4ba0fa02-d22e-4191-8a0f-7abb80066b3c",
                             Name = "Tessenderlo"
                         },
                         new
                         {
-                            Id = "b65276cf-a159-451f-9ed3-866202a191b5",
+                            Id = "80451bee-07af-4820-b567-173e47e6a6b3",
                             Name = "Tongeren"
                         },
                         new
                         {
-                            Id = "5a84a2e4-6bbf-4e6e-8d2a-8fc4141f14f9",
+                            Id = "74f22229-da71-4c41-9424-8ca12f239f6b",
                             Name = "Voeren"
                         },
                         new
                         {
-                            Id = "ea6f2104-bc20-4d12-93f3-68c04cb150c5",
+                            Id = "0fe26c29-7fee-488e-8fbf-39c36249fcdb",
                             Name = "Wellen"
                         },
                         new
                         {
-                            Id = "ceba1175-8619-43f4-b8cf-2b41e727bcde",
+                            Id = "97d1185e-7db0-4cb5-bb4b-694396479283",
                             Name = "Zonhoven"
                         },
                         new
                         {
-                            Id = "1f5eea52-dd26-46b3-b870-040c51173177",
+                            Id = "9c814573-1fcb-4be9-b1b9-5810656d3f0c",
                             Name = "Zutendaal"
                         });
                 });
@@ -666,14 +666,16 @@ namespace Signawel.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("id");
 
-                    b.Property<string>("ImagePath")
+                    b.Property<string>("ImageId")
                         .IsRequired()
-                        .HasColumnName("image_path");
+                        .HasColumnName("image_id");
 
                     b.Property<string>("ReportId")
                         .HasColumnName("report_id");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
 
                     b.HasIndex("ReportId");
 
@@ -910,6 +912,11 @@ namespace Signawel.Data.Migrations
 
             modelBuilder.Entity("Signawel.Domain.Reports.ReportImage", b =>
                 {
+                    b.HasOne("Signawel.Domain.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Signawel.Domain.Reports.Report", "Report")
                         .WithMany("Images")
                         .HasForeignKey("ReportId");

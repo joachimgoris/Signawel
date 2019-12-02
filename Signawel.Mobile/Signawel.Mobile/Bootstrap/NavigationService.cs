@@ -78,6 +78,19 @@ namespace Signawel.Mobile.Bootstrap
                 {
                     var currentPage = navigationPage.CurrentPage;
 
+                    if (viewModel is ReportViewModel reportViewModel)
+                    {
+                        if (currentPage.GetType() == typeof(MapPageView))
+                        {
+                            await navigationPage.PopAsync();
+                            await (navigationPage.CurrentPage.BindingContext as ViewModelBase).InitializeAsync(parameter);
+                            return;
+                        }
+
+                        reportViewModel.ClearReportForm();
+                        _dependencyResolver.Resolve<MapPageViewModel>().ClearMap();
+                    }
+
                     if(currentPage.GetType() != page.GetType() || page.GetType() == typeof(DeterminationGraphView))
                     {
                         await navigationPage.PushAsync(page);

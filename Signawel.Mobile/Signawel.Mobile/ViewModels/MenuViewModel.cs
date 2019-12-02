@@ -75,6 +75,12 @@ namespace Signawel.Mobile.ViewModels
                 MenuText = "Temp-Map",
                 ViewModelType = typeof(MapPageViewModel)
             });
+
+            MenuItems.Add(new MainMenuItem
+            {
+                MenuText = "Temp-Report",
+                ViewModelType = typeof(ReportViewModel)
+            });
         }
 
     }

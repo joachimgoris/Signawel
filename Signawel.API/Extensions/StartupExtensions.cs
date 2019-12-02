@@ -112,6 +112,7 @@ namespace Signawel.API.Extensions
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IPriorityEmailService, PriorityEmailService>();
             services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IIssueService, IssueService>();
 
             return services;
         }

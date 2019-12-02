@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:map="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
              mc:Ignorable="d"
-             x:Class="Signawel.Mobile.MapPageView">
+             x:Class="Signawel.Mobile.MapPageView"
+             Title="Selecteer een werk">
     <ContentPage.Content>
 
         <Grid>
@@ -64,8 +65,8 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Label Text="{Binding SelectedItem.description}" Grid.Row="0" Grid.Column="0"/>
-                    <Label Text="{Binding SelectedItem.distanceToDevice, StringFormat='{0} km'}" Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" FontAttributes="Bold"/>
+                    <Label Text="{Binding SelectedItem.Description}" Grid.Row="0" Grid.Column="0"/>
+                    <Label Text="{Binding SelectedItem.DistanceToDevice, StringFormat='{0} km'}" Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" FontAttributes="Bold"/>
                     <ImageButton Source="correct.png"
                              HeightRequest="25"
                              BackgroundColor="Transparent"
@@ -73,7 +74,8 @@
                              HorizontalOptions="Center"
                              Grid.Row="0"
                              Grid.Column="1"
-                             Grid.RowSpan="2">
+                             Grid.RowSpan="2"
+                             Command="{Binding AddRoadworkToReportCommand}">
 
                     </ImageButton>
                 </Grid>

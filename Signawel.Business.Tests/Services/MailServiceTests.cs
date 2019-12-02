@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using Signawel.Business.Services;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -9,9 +8,9 @@ using Signawel.Business.Abstractions.Services;
 using Signawel.Domain;
 using Signawel.Domain.Configuration;
 using Signawel.Domain.Constants;
+using Signawel.Domain.Reports;
 using Signawel.Dto.Mail;
 using Signawel.Dto.Reports;
-using Signawel.Domain.Reports;
 
 namespace Signawel.Business.Tests.Services
 {
@@ -121,7 +120,7 @@ namespace Signawel.Business.Tests.Services
                 SenderEmail = "test@test.com",
                 Issue = new ReportDefaultIssue
                 {
-                    Name = "testIssue"
+                    Name = "problem"
                 }
             };
 

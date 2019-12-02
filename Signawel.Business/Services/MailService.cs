@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Signawel.Business.Abstractions.Services;
 using Signawel.Dto.Mail;
 using System.Net;

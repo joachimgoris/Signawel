@@ -2,6 +2,7 @@
 using Signawel.Mobile.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -48,14 +49,19 @@ namespace Signawel.Mobile.ViewModels
 
         public ICommand NavigateToListCommand => new AsyncCommand(NavigateToList);
 
-
+        public ICommand AddRoadworkToReportCommand => new Command(OnAddRoadworkToReport);
 
         public MapPageViewModel(INavigationService navigationService, IHttpService httpService)
         {
             _navigationService = navigationService;
             _httpService = httpService;
 
-            SliderValue = 1;
+            ClearMap();
+        }
+
+        public void ClearMap()
+        {
+            SliderValue = 3;
             SearchbarText = "";
             DetailsWorkRowHeight = 0;
             LocationButtonOpacity = 1;
@@ -67,8 +73,8 @@ namespace Signawel.Mobile.ViewModels
                 MapType = MapType.Street,
                 HasZoomEnabled = true
             };
+            Map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(50.932196, 5.343894), Distance.FromKilometers(3)));
         }
-
 
         // Calculate distance between two coordinates
         public double CalculateDistanceBetweenCoordinates(double lat1, double long1, double lat2, double long2)
@@ -82,10 +88,12 @@ namespace Signawel.Mobile.ViewModels
         public async Task ShowRoadWorks()
         {
             // Everytime the user searches at a new place, the previous pins are removed
-            foreach (Pin pin in Map.Pins)
+            foreach (Pin pin in Map.Pins.ToList())
             {
                 Map.Pins.Remove(pin);
             }
+
+            RoadWorks.Clear();
 
             // When the searchbar is enabled the user searchers roadworks by address
             if (SearchbarIsEnabled)
@@ -99,28 +107,31 @@ namespace Signawel.Mobile.ViewModels
                     return;
                 }
 
-                Latitude = Convert.ToDouble(coordinates.locationResult[0].location.LatWGS84);
-                Longitude = Convert.ToDouble(coordinates.locationResult[0].location.LonWGS84);
+                Latitude = Convert.ToDouble(coordinates.locationResult[0].location.LatWGS84, CultureInfo.InvariantCulture);
+                Longitude = Convert.ToDouble(coordinates.locationResult[0].location.LonWGS84, CultureInfo.InvariantCulture);
             }
 
+            var latString = Latitude.ToString(CultureInfo.InvariantCulture);
+            var lngString = Longitude.ToString(CultureInfo.InvariantCulture);
+
             var roadWorksBeforeCheck = JsonConvert.DeserializeObject<List<RoadWork>>(
-                await AccessTheWebAsync("http://api.gipod.vlaanderen.be/ws/v1/WorkAssignment?point={Longitude},{Latitude}&radius={(SliderValue*1000)}"));
+                await AccessTheWebAsync($"http://api.gipod.vlaanderen.be/ws/v1/WorkAssignment?point={lngString},{latString}&radius={(SliderValue*1000)}"));
 
             foreach (var roadWork in roadWorksBeforeCheck)
             {
-                var distance = CalculateDistanceBetweenCoordinates(Latitude, Longitude, roadWork.coordinate.coordinates[1], roadWork.coordinate.coordinates[0]);
+                var distance = CalculateDistanceBetweenCoordinates(Latitude, Longitude, roadWork.Coordinate.coordinates[1], roadWork.Coordinate.coordinates[0]);
 
                 // Sometimes Gipod returns a roadwork that's out of the specified range
                 if (distance < SliderValue)
                 {
                     RoadWorks.Add(roadWork);
-                    roadWork.distanceToDevice = distance;
+                    roadWork.DistanceToDevice = distance;
 
                     Pin pin = new Pin
                     {
-                        Address = roadWork.description,
-                        Label = roadWork.cities[0],
-                        Position = new Position(roadWork.coordinate.coordinates[1], roadWork.coordinate.coordinates[0])
+                        Address = roadWork.Description,
+                        Label = roadWork.Cities[0],
+                        Position = new Position(roadWork.Coordinate.coordinates[1], roadWork.Coordinate.coordinates[0])
                     };
                     pin.MarkerClicked += RoadWorkTapped;
 
@@ -154,6 +165,8 @@ namespace Signawel.Mobile.ViewModels
                 SearchbarText = "Mijn Locatie";
                 SearchbarIsEnabled = false;
                 LocationButtonOpacity = (float)0.5;
+
+                await ShowRoadWorks();
             }
             else
             {
@@ -167,7 +180,7 @@ namespace Signawel.Mobile.ViewModels
         private async Task NavigateToList()
         {
             await _navigationService.NavigateToAsync<ListViewRoadWorksPageViewModel>(
-                RoadWorks.OrderBy(r => r.distanceToDevice).ToList());
+                RoadWorks.OrderBy(r => r.DistanceToDevice).ToList());
         }
 
         // When a pin is tapped, add a row to the grid with the details of the roadwork
@@ -175,9 +188,14 @@ namespace Signawel.Mobile.ViewModels
         {
             Pin pin = (Pin)sender;
             
-            SelectedItem = RoadWorks.Where(r => r.description.Equals(pin.Address)).FirstOrDefault();
+            SelectedItem = RoadWorks.FirstOrDefault(r => r.Description.Equals(pin.Address));
             DetailsWorkRowHeight = new GridLength(1.2, GridUnitType.Star);
             e.HideInfoWindow = true;
+        }
+
+        private void OnAddRoadworkToReport()
+        {
+            _navigationService.NavigateToAsync<ReportViewModel>(SelectedItem);
         }
 
         #region PrivateMethods
@@ -185,10 +203,10 @@ namespace Signawel.Mobile.ViewModels
         // Method to make Http-requests
         private async Task<string> AccessTheWebAsync(string url)
         {
-            return await _httpService.GetAsync(url)
-                .Result
-                .Content
-                .ReadAsStringAsync();
+            var service = await _httpService.GetAsync(url);
+            var content = service.Content;
+            var text = content.ReadAsStringAsync();
+            return text.Result;
         }
 
         #endregion

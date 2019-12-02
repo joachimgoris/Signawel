@@ -52,5 +52,17 @@
             $"{BaseApiAddress}roadwork-schemas/{roadworkSchemaId}";
 
         #endregion
+
+        #region Reporting
+
+        public static string PostReport => BaseApiAddress + "reports";
+
+        #endregion
+
+        #region Issues
+
+        public static string GetDefaultIssues => BaseApiAddress + "issues/default";
+
+        #endregion
     }
 }

@@ -2,17 +2,17 @@
 {
     public class RoadWork
     {
-        public int gipodId { get; set; }
-        public string owner { get; set; }
-        public string description { get; set; }
-        public string startDateTime { get; set; }
-        public string endDateTime { get; set; }
-        public bool importantHindrance { get; set; }
-        public Coordinates coordinate { get; set; }
-        public string detail { get; set; }
-        public string[] cities { get; set; }
-        public string latestUpdate { get; set; }
-        public double distanceToDevice { get; set; }
+        public int GipodId { get; set; }
+        public string Owner { get; set; }
+        public string Description { get; set; }
+        public string StartDateTime { get; set; }
+        public string EndDateTime { get; set; }
+        public bool ImportantHindrance { get; set; }
+        public Coordinates Coordinate { get; set; }
+        public string Detail { get; set; }
+        public string[] Cities { get; set; }
+        public string LatestUpdate { get; set; }
+        public double DistanceToDevice { get; set; }
 
     }
 
