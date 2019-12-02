@@ -39,6 +39,14 @@ namespace Signawel.Mobile.Bootstrap
             return Navigate(viewModelType, parameter);
         }
 
+        public async Task PopAsync()
+        {
+            if(Application.Current.MainPage is MainView mainPage && mainPage.Detail is SignawelNavigationPage navigationPage)
+            {
+                await navigationPage.PopAsync();
+            }
+        }
+
         protected virtual async Task Navigate(Type viewmodelType, object parameter)
         {
             var pageName = viewmodelType.Name.Replace("ViewModel", "View");

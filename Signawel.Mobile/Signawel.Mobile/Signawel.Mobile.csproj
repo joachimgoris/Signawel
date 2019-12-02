@@ -11,6 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Exceptions\**" />
+    <EmbeddedResource Remove="Exceptions\**" />
+    <None Remove="Exceptions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Polly" Version="7.2.0" />
@@ -79,9 +85,5 @@
     <ProjectReference Include="..\..\Signawel.Domain\Signawel.Domain.csproj" />
     <ProjectReference Include="..\..\Signawel.Dto\Signawel.Dto.csproj" />
     <ProjectReference Include="..\..\Signawel.MobileData\Signawel.MobileData.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
   </ItemGroup>
 </Project>

@@ -58,15 +58,11 @@ namespace Signawel.Mobile.ViewModels
 
             MenuItems.Add(new MainMenuItem
             {
-                MenuText = "About",
+                MenuText = "Over",
                 ViewModelType = typeof(AboutViewModel)
             });
 
-            MenuItems.Add(new MainMenuItem
-            {
-                MenuText = "Login",
-                ViewModelType = typeof(LoginViewModel)
-            });
+            // TODO add login back in
 
             MenuItems.Add(new MainMenuItem
             {

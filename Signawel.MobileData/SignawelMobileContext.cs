@@ -1,33 +1,35 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.IO;
-using Xamarin.Forms;
 
 namespace Signawel.MobileData
 {
     public class SignawelMobileContext : DbContext
     {
 
-        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<DbToken> DbToken { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public SignawelMobileContext(DbContextOptions<SignawelMobileContext> options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            string databaseName = "SignawelMobile";
-            string databasePath = "";
+            base.OnModelCreating(modelBuilder);
 
-            switch (Device.RuntimePlatform)
+            modelBuilder.Entity<DbToken>(entity =>
             {
-                case Device.iOS:
-                    SQLitePCL.Batteries_V2.Init();
-                    databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "..", "Library", databaseName); ;
-                    break;
-                case Device.Android:
-                    databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), databaseName);
-                    break;
-                default:
-                    throw new NotImplementedException("Platform not supported");
-            }
-            optionsBuilder.UseSqlite($"Filename={databasePath}");
+                entity.ToTable("auth_token");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Token)
+                    .HasColumnName("token")
+                    .IsRequired();
+
+                entity.Property(e => e.RefreshToken)
+                    .HasColumnName("refresh_token")
+                    .IsRequired();
+            });
         }
     }
 }

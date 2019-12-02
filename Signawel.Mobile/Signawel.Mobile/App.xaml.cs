@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using Signawel.Mobile.Bootstrap;
 using Signawel.Mobile.Bootstrap.Abstract;
+using Signawel.MobileData;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -14,7 +16,20 @@ namespace Signawel.Mobile
             _dependencyResolver = AppContainer.Instance;
 
             InitializeComponent();
-            InitializeNavigation();
+            InitializeDatabase().Wait();
+            InitializeNavigation().Wait();
+        }
+
+        private async Task InitializeDatabase()
+        {
+            var context = _dependencyResolver.Resolve<SignawelMobileContext>();
+            context.Database.EnsureCreated();
+            context.Database.Migrate();
+
+            var dbTokens = await context.DbToken.FirstOrDefaultAsync();
+
+            if (dbTokens != null)
+                _dependencyResolver.Resolve<IHttpService>().InitAuthHeader(dbTokens);
         }
 
         private async Task InitializeNavigation()

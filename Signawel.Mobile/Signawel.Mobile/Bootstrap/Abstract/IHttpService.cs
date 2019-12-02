@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using Signawel.Dto.Authentication;
+using Signawel.MobileData;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Signawel.Mobile.Bootstrap.Abstract
@@ -17,7 +19,9 @@ namespace Signawel.Mobile.Bootstrap.Abstract
         Task<HttpResponseMessage> PutAsync(string url, HttpContent content);
 
         Task<byte[]> GetByteArrayAsync(string url);
-        
-        void SetToken(string token);
+
+        Task SetTokens(TokenResponseDto dto);
+
+        void InitAuthHeader(DbToken dbToken);
     }
 }

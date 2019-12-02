@@ -6,12 +6,12 @@
              mc:Ignorable="d"
              x:Class="Signawel.Mobile.Views.LoginView"
              Visual="Material"
-             Title="Authentication Page">
+             Title="Aanmelden">
     <ContentPage.Content>
         <StackLayout>
             <Entry Placeholder="Email" Text="{Binding Email}" Margin="10" />
-            <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password}" Margin="10" />
-            <Button Command="{Binding ButtonTappedCommand}" Text="Login" Margin="10" BackgroundColor="Accent"/>
+            <Entry Placeholder="Wachtwoord" IsPassword="True" Text="{Binding Password}" Margin="10" />
+            <Button Command="{Binding ButtonTappedCommand}" Text="Aanmelden" Margin="10" BackgroundColor="Accent"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

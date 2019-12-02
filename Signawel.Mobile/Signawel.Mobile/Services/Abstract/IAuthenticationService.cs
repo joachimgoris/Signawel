@@ -1,7 +1,7 @@
 ﻿using Signawel.Dto.Authentication;
 using System.Threading.Tasks;
 
-namespace Signawel.Mobile.Bootstrap.Abstract
+namespace Signawel.Mobile.Services.Abstract
 {
     public interface IAuthenticationService
     {
@@ -35,5 +35,18 @@ namespace Signawel.Mobile.Bootstrap.Abstract
         ///     Returns an instance of <see cref="RegisterResponseDto"/>.
         /// </returns>
         Task<RegisterResponseDto> RegisterAsync(string email, string password, string passwordRepeat);
+
+        /// <summary>
+        ///     Check if someone is authenticated
+        /// </summary>
+        /// <returns>
+        ///     True if the application is authenticated.
+        /// </returns>
+        Task<bool> IsAuthenticatedAsync();
+
+        /// <summary>
+        ///     Logout
+        /// </summary>
+        Task Logout();
     }
 }

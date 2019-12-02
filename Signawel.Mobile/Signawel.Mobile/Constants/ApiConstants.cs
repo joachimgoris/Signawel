@@ -2,7 +2,7 @@
 {
     public static class ApiConstants
     {
-        public static string BaseApiAddress => "https://10.95.133.233:5005/api/";
+        public static string BaseApiAddress => "https://192.168.0.100:5005/api/";
 
         #region Authentication
 

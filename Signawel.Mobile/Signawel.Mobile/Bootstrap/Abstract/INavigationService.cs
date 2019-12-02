@@ -16,5 +16,6 @@ namespace Signawel.Mobile.Bootstrap.Abstract
 
         Task NavigateToAsync<TViewModel>(object parameter) where TViewModel : ViewModelBase;
 
+        Task PopAsync();
     }
 }

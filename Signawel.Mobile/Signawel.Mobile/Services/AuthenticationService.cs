@@ -1,20 +1,29 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Signawel.Dto.Authentication;
 using Signawel.Mobile.Bootstrap.Abstract;
 using Signawel.Mobile.Constants;
+using Signawel.Mobile.Services.Abstract;
+using Signawel.Mobile.ViewModels;
+using Signawel.MobileData;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Signawel.Mobile.Bootstrap
+namespace Signawel.Mobile.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IHttpService _httpService;
+        private readonly SignawelMobileContext _context;
+        private readonly INavigationService _navigationService;
 
-        public AuthenticationService(IHttpService httpService)
+        public AuthenticationService(IHttpService httpService, SignawelMobileContext context, INavigationService navigationService)
         {
             _httpService = httpService;
+            _context = context;
+            _navigationService = navigationService;
         }
 
         /// <inheritdoc cref="IAuthenticationService.LoginAsync(string, string)"/>
@@ -31,9 +40,11 @@ namespace Signawel.Mobile.Bootstrap
 
             var response = await PostAuthAsync(ApiConstants.LoginEndpoint, model);
 
-            TokenResponseDto tokenResponseDto = JsonConvert.DeserializeObject<TokenResponseDto>(response);
+            if (response == null)
+                return null;
 
-            _httpService.SetToken(tokenResponseDto.Token);
+            var tokenResponseDto = JsonConvert.DeserializeObject<TokenResponseDto>(response);
+            await _httpService.SetTokens(tokenResponseDto);
 
             return tokenResponseDto;
         }
@@ -53,8 +64,38 @@ namespace Signawel.Mobile.Bootstrap
 
             var response = await PostAuthAsync(ApiConstants.RegisterEndpoint, model);
 
+            if (response == null)
+                return null;
+
             RegisterResponseDto registerResponseDto = JsonConvert.DeserializeObject<RegisterResponseDto>(response);
             return registerResponseDto;
+        }
+
+        /// <inheritdoc cref="IAuthenticationService.IsAuthenticatedAsync"/>
+        public async Task<bool> IsAuthenticatedAsync()
+        {
+            var token = (await _context.DbToken.FirstOrDefaultAsync())?.Token;
+
+            if(token == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        public async Task Logout()
+        {
+            var tokens = await _context.DbToken.FirstOrDefaultAsync();
+
+            if(tokens == null)
+            {
+                return;
+            }
+
+            _context.DbToken.Remove(tokens);
+            await _context.SaveChangesAsync();
+
+            await _navigationService.NavigateToAsync<MainViewModel>();
         }
 
         #region Private Methods
@@ -64,6 +105,12 @@ namespace Signawel.Mobile.Bootstrap
             var json = JsonConvert.SerializeObject(body);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpService.PostAsync(endpoint, content);
+
+            if(response == null || (response.StatusCode != HttpStatusCode.OK && response.StatusCode != HttpStatusCode.NoContent))
+            {
+                return null;
+            }
+
             return await response.Content.ReadAsStringAsync();
         }
 

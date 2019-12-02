@@ -5,7 +5,7 @@
              xmlns:behaviours="clr-namespace:Signawel.Mobile.Behaviours;assembly=Signawel.Mobile"
              xmlns:converter="clr-namespace:Signawel.Mobile.Converter;assembly=Signawel.Mobile"
              x:Class="Signawel.Mobile.Views.DeterminationGraphView"
-             Title="Determinatie">
+             Title="Determineren">
     <ContentPage.Resources>
         <converter:AnswerSelectedConverter x:Key="AnswerSelectedConverter"/>
     </ContentPage.Resources>
