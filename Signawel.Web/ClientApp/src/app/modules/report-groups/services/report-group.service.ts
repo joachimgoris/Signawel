@@ -20,6 +20,13 @@ export class ReportGroupService {
     return this.http.post<ReportGroupCreationRequestModel>(REPORT_GROUPS, model);
   }
 
+  modifyReportGroup(
+    id: string,
+    model: ReportGroupCreationRequestModel
+  ): Observable<ReportGroupResponseModel> {
+    return this.http.put<ReportGroupResponseModel>(REPORT_GROUPS + `/${id}`, model);
+  }
+
   getCities(): Observable<CityResponseModel[]> {
     return this.http.get<CityResponseModel[]>(CITIES);
   }

@@ -62,7 +62,7 @@ namespace Signawel.Api.Tests.Controllers
             var response = await _sutReportGroupController.GetReportGroupById(It.IsAny<string>()) as NotFoundObjectResult;
 
             _iReportGroupServiceMock.Verify(repo => repo.GetReportGroupByIdAsync(It.IsAny<string>()), Times.Once);
-            Assert.That(response?.StatusCode, Is.EqualTo(404));
+            Assert.That(response, Is.TypeOf<NotFoundObjectResult>());
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace Signawel.Api.Tests.Controllers
             var response = await _sutReportGroupController.AddReportGroup(reportGroup) as BadRequestObjectResult;
 
             _iReportGroupServiceMock.Verify(repo => repo.SetReportGroupAsync(reportGroup), Times.Once);
-            Assert.That(response?.StatusCode, Is.EqualTo(400));
+            Assert.That(response, Is.TypeOf<BadRequestObjectResult>());
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace Signawel.Api.Tests.Controllers
             var response = await _sutReportGroupController.DeleteReportGroup(It.IsAny<string>()) as NotFoundObjectResult;
 
             _iReportGroupServiceMock.Verify(repo => repo.DeleteReportGroupAsync(It.IsAny<string>()), Times.Once);
-            Assert.That(response?.StatusCode, Is.EqualTo(404));
+            Assert.That(response, Is.TypeOf<NotFoundObjectResult>());
         }
 
         [Test]
@@ -131,6 +131,31 @@ namespace Signawel.Api.Tests.Controllers
 
             _iReportGroupServiceMock.Verify(repo => repo.DeleteReportGroupAsync(It.IsAny<string>()), Times.Once);
             Assert.That(response?.Value, Is.TypeOf<DataResult<ReportGroupResponseDto>>());
+        }
+
+        [Test]
+        public async Task ModifyReportGroup_ShouldReturnBadRequest_WhenReportGroupIsEmpty()
+        {
+            _iReportGroupServiceMock.Setup(repo => repo.ModifyReportGroupAsync(It.IsAny<string>(),(ReportGroupCreationRequestDto)null)).ReturnsAsync(DataResult<ReportGroupResponseDto>.WithPublicError(ErrorCodes.InvalidOperationError, "The given Dto is empty."));
+
+            var response = await _sutReportGroupController.ModifyReportGroup(null, (ReportGroupCreationRequestDto) null) as BadRequestObjectResult;
+
+            _iReportGroupServiceMock.Verify(repo => repo.ModifyReportGroupAsync(It.IsAny<string>(), (ReportGroupCreationRequestDto)null), Times.Once);
+            Assert.That(response, Is.TypeOf<BadRequestObjectResult>());
+        }
+
+        [Test]
+        public async Task ModifyReportGroup_ShouldReturnReportGroupResponseDto_WhenReportGroupIsNotEmpty()
+        {
+            _iReportGroupServiceMock.Setup(repo => repo.ModifyReportGroupAsync(It.IsAny<string>(), It.IsAny<ReportGroupCreationRequestDto>())).ReturnsAsync(new DataResult<ReportGroupResponseDto>
+            {
+                Entity = new ReportGroupResponseDto()
+            });
+
+            var response = await _sutReportGroupController.ModifyReportGroup(null, new ReportGroupCreationRequestDto()) as OkObjectResult;
+
+            _iReportGroupServiceMock.Verify(repo => repo.ModifyReportGroupAsync(It.IsAny<string>(), It.IsAny<ReportGroupCreationRequestDto>() ), Times.Once);
+            Assert.That(response?.Value, Is.TypeOf<ReportGroupResponseDto>());
         }
     }
 }

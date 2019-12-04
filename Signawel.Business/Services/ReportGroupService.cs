@@ -177,6 +177,26 @@ namespace Signawel.Business.Services
 
         #endregion
 
+        #region ModifyReportGroup
+
+        /// <inheritdoc cref="IReportGroupService.ModifyReportGroupAsync(ReportGroupResponseDto)"/>
+        public async Task<DataResult<ReportGroupResponseDto>> ModifyReportGroupAsync(string id, ReportGroupCreationRequestDto reportGroup)
+        {
+            if (reportGroup == null)
+                return DataResult<ReportGroupResponseDto>.WithPublicError(ErrorCodes.ParameterEmptyError, "The given Dto is empty.");
+
+            ReportGroup oldReportGroup = await _context.ReportGroups.FindAsync(id);
+
+            _context.ReportGroups.Remove(oldReportGroup);
+            await _context.SaveChangesAsync();
+
+            var newReportGroup = await this.SetReportGroupAsync(reportGroup);
+
+            return DataResult<ReportGroupResponseDto>.WithEntityOrError(newReportGroup.Entity, ErrorCodes.ReportModificationError, "Something went wrong when updating the reportGroup.");
+        }
+
+        #endregion
+
         private bool CheckEqual(ReportGroup reportGroup1, ReportGroup reportGroup2)
         {
             if (reportGroup1.CityReportGroups.Count != reportGroup2.CityReportGroups.Count)

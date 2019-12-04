@@ -42,16 +42,17 @@
 
         <button mat-raised-button (click)="addEmail()">Voeg een emailadres toe</button>
 
+        <div class="littleWhiteSpace"></div>
 
         <div class="form-row">
           <button mat-raised-button type="submit" [disabled]="!addReportGroup.valid" class="submitButton"
-            (click)="onSubmit()">Opslagen</button>
+            (click)="onSubmit()">Opslaan</button>
         </div>
       </form>
       <mat-spinner [style.display]="isLoading ? 'block' : 'none'"></mat-spinner>
     </mat-card-content>
   </mat-card>
-  
+
   <div class="whiteSpace"></div>
 
   <mat-card>
@@ -72,36 +73,34 @@
         <mat-grid-tile><button mat-raised-button (click)="GetReportGroups()">Zoek</button></mat-grid-tile>
       </mat-grid-list>
       <mat-spinner [style.display]="isRequestLoading ? 'block' : 'none'"></mat-spinner>
-      
-      <mat-card *ngFor="let report of reportGroupResponses;let i = index">
-        <mat-card-header>
-          <mat-card-title>Report groep {{i + 1}}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <mat-grid-list cols="4">
-            <mat-grid-tile>
-              <mat-nav-list>
-                <mat-list-item *ngFor="let city of report.cityReportGroups">
+
+      <div *ngIf="!isRequestLoading">
+        <mat-card *ngFor="let report of reportGroupResponses;let i = index">
+          <mat-card-header>
+            <mat-card-title>Report groep {{i + 1}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+              <div class="grid-container">
+                <mat-nav-list>
+                  <mat-list-item *ngFor="let city of report.cityReportGroups">
                     <mat-icon>play_arrow</mat-icon>
-                  {{city.name}}
-                </mat-list-item>
-              </mat-nav-list>
-            </mat-grid-tile>
-            <mat-grid-tile>
-              <mat-nav-list>
-                <mat-list-item *ngFor="let email of report.emailReportGroups">
+                    {{city.name}}
+                  </mat-list-item>
+                </mat-nav-list>
+                <mat-nav-list>
+                  <mat-list-item *ngFor="let email of report.emailReportGroups">
                     <mat-icon>play_arrow</mat-icon>
-                  {{email.emailAddress}}
-                </mat-list-item>
-              </mat-nav-list>
-            </mat-grid-tile>
-          </mat-grid-list>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-icon-button (click)="editReportGroup(i)">EDIT</button>
-          <button mat-icon-button (click)="deleteReportGroup(i)">DELETE</button>
-        </mat-card-actions>
-      </mat-card>
+                    {{email.emailAddress}}
+                  </mat-list-item>
+                </mat-nav-list>
+                </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-icon-button (click)="editReportGroup(i)">EDIT</button>
+            <button mat-icon-button (click)="deleteReportGroup(i)">DELETE</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>

@@ -85,5 +85,19 @@ namespace Signawel.API.Controllers
             }
             return Ok(response.Entity);
         }
+
+        [HttpPut("{id}")]
+        [SwaggerOperation("modifyReportGroup")]
+        [SwaggerResponse(StatusCodes.Status200OK, "ReportGroup modified.", typeof(ReportGroupResponseDto))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Error, Something went wrong!", typeof(IList<DataError>))]
+        public async Task<ActionResult> ModifyReportGroup(string id,[FromBody] ReportGroupCreationRequestDto reportGroup)
+        {
+            var response = await _reportGroupService.ModifyReportGroupAsync(id,reportGroup);
+            if (response.Errors.Any())
+            {
+                return BadRequest(response.Errors);
+            }
+            return Ok(response.Entity);
+        }
     }
 }

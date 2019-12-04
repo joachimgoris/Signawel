@@ -8,9 +8,11 @@ import { SharedModule } from '../shared/shared.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatGridListModule } from '@angular/material';
 import { ConfirmationDialogComponent } from '../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { EditReportGroupDialogComponent } from './dialogs/edit-report-group-dialog/edit-report-group-dialog.component';
+import { MatDialogModule } from '@angular/material';
 
 @NgModule({
-  declarations: [AddReportGroupComponent],
+  declarations: [AddReportGroupComponent, EditReportGroupDialogComponent],
   imports: [
     CommonModule,
     ReportGroupsRoutingModule,
@@ -19,10 +21,12 @@ import { ConfirmationDialogComponent } from '../shared/components/confirmation-d
     FormsModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
-    MatGridListModule
+    MatGridListModule,
+    MatDialogModule
   ],
   entryComponents:[
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    EditReportGroupDialogComponent
   ]
 })
 export class ReportGroupsModule { }

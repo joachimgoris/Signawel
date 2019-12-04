@@ -11,6 +11,7 @@ import { ReportGroupResponseModel } from '../../models/report-group-response-mod
 import { MatSnackBar } from '@angular/material';
 import { MatDialog } from '@angular/material';
 import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { EditReportGroupDialogComponent } from '../../dialogs/edit-report-group-dialog/edit-report-group-dialog.component';
 
 
 @Component({
@@ -96,8 +97,30 @@ export class AddReportGroupComponent implements OnInit {
   }
 
   editReportGroup(index: any){
+    const dialogRef = this.dialog.open(EditReportGroupDialogComponent, {
+      width: '450px',
+      data: {reportGroup: this.reportGroupResponses[index],cities: this.cities}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.isRequestLoading = true;
 
-  }
+        this.reportGroupService.modifyReportGroup(result.id,result.model).subscribe(data=>{
+          this.reportGroupResponses[index] = data;
+          this.snackBar.open("Melding groep is aangepast","",{
+            duration: 2000
+          });
+        },
+        errors=>{
+          this.snackBar.open("Error, melding groep is niet aangepast","",{
+            duration: 2000
+          });
+        })
+        .add(()=>{
+          this.isRequestLoading = false;
+        });
+    }})
+      }
 
   deleteReportGroup(index: any){
     var id = this.reportGroupResponses[index].id;

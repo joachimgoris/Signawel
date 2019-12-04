@@ -3,6 +3,7 @@ using Moq;
 using NUnit.Framework;
 using Signawel.Business.Services;
 using Signawel.Data;
+using Signawel.Domain.Constants;
 using Signawel.Domain.DataResults;
 using Signawel.Domain.ReportGroups;
 using Signawel.Dto.ReportGroup;
@@ -279,6 +280,54 @@ namespace Signawel.Business.Tests.Services
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Succeeded, Is.True);
         }
+
+        [Test]
+        public async Task ModifyReportGroupAsync_ShouldReturnError_WhenTheReportGroupIsEmpty()
+        {
+
+            // Act
+            var result = await _service.ModifyReportGroupAsync(It.IsAny<string>(),(ReportGroupCreationRequestDto)null);
+
+            // Assert
+            Assert.That(result.Errors, Is.Not.Empty);
+            Assert.That(result.HasError(ErrorCodes.ParameterEmptyError), Is.True);
+        }
+
+        [Test]
+        public async Task ModifyReportGroupAsync_ShouldReturnReportGroupResponseDto_WhenTheReportGroupIsNotEmpty()
+        {
+
+            // Arrange
+            var report = new ReportGroup();
+
+            _context.ReportGroups.Add(report);
+            _context.SaveChanges();
+
+            var newReportGroup = new ReportGroupCreationRequestDto();
+            newReportGroup.CityReportGroups = new List<CityCreationRequestDto>();
+            newReportGroup.EmailReportGroups = new List<EmailCreationRequestDto>();
+
+            _mockMapper
+                .Setup(m => m.Map<City>(It.IsAny<CityCreationRequestDto>()))
+                .Returns(new City());
+
+            _mockMapper
+                .Setup(m => m.Map<Email>(It.IsAny<EmailCreationRequestDto>()))
+                .Returns(new Email());
+
+            _mockMapper
+                .Setup(m => m.Map<ReportGroupResponseDto>(It.IsAny<ReportGroup>()))
+                .Returns(new ReportGroupResponseDto());
+
+            // Act
+            var result = await _service.ModifyReportGroupAsync(report.Id, newReportGroup);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Succeeded, Is.True);
+        }
+
+
 
     }
 }

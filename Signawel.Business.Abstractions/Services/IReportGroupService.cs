@@ -64,12 +64,25 @@ namespace Signawel.Business.Abstractions.Services
         #region Delete
 
         /// <summary>
-        ///     Delete the <see cref="ReportGrup"/> from the database.
+        ///     Delete the <see cref="ReportGroup"/> from the database.
         /// </summary>
         /// <param name="id">
         ///     The id of the <see cref="ReportGroup"/> to be deleted.
         /// </param>
         Task<DataResult> DeleteReportGroupAsync(string id);
+        #endregion
+
+        #region Modify
+        /// <summary>
+        ///     Modifies the reportGroup in the database with the changes in the new reportGroup.
+        /// </summary>
+        /// <param name="reportGroup">
+        ///     An instance of <see cref="ReportGroup"/> containing all the data to change a <see cref="ReportGroup"/> in the database.
+        /// </param>
+        /// <returns>
+        ///     An instance of <see cref="DataResult{TEntity}"/> containing an instance of <see cref="ReportGroupResponseDto"/> with all the data of the modified <see cref="ReportGroup"/>.
+        /// </returns>
+        Task<DataResult<ReportGroupResponseDto>> ModifyReportGroupAsync(string id,ReportGroupCreationRequestDto reportGroup);
         #endregion
     }
 }

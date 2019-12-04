@@ -1,0 +1,44 @@
+<div mat-dialog-content>
+
+    <form [formGroup]="form">
+        <div formArrayName="cityControls" *ngFor="let order of form.controls.cityControls.controls; let i = index" class="form-row">
+          <mat-form-field>
+            <mat-grid-list cols="2" rowHeight="5:1">
+              <mat-grid-tile>
+                  <mat-select [formControlName]="i">
+                      <mat-option *ngFor="let cityName of cities" [value]="cityName.name">
+                        {{cityName.name}}
+                      </mat-option>
+                    </mat-select>
+              </mat-grid-tile>
+              <mat-grid-tile><button mat-icon-button *ngIf="form.controls.cityControls.length>1" (click)="RemoveCityFromForm(i)">
+                  <mat-icon>delete_outline</mat-icon>
+                </button></mat-grid-tile>
+            </mat-grid-list>
+          </mat-form-field>
+        </div>
+
+        <button mat-raised-button (click)="addCity()">Voeg een stad toe</button>
+        <div class="whiteSpace"></div>
+
+        <div formArrayName="emailControls" *ngFor="let order of form.controls.emailControls.controls; let i = index" class="form-row">
+          <mat-form-field>
+            <mat-grid-list cols="2" rowHeight="5:1">
+              <mat-grid-tile><input matInput placeholder="emailadres" type="email" [formControlName]="i"
+                  name="emailInput"></mat-grid-tile>
+              <mat-grid-tile *ngIf="i>0"><button mat-icon-button (click)="RemoveEmailFromForm(i)">
+                  <mat-icon>delete_outline</mat-icon>
+                </button></mat-grid-tile>
+            </mat-grid-list>
+          </mat-form-field>
+        </div>
+
+        <button mat-raised-button (click)="addEmail()">Voeg een emailadres toe</button>
+        <div class="whiteSpace"></div>
+
+      </form>
+   </div>
+   <div mat-dialog-actions>
+     <button mat-button (click)="onNoClick()">Cancel</button>
+     <button mat-button (click)="saveData()">Opslagen</button>
+   </div>
