@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Signawel.Mobile.Bootstrap;
 using Xamarin.Forms;
 
 namespace Signawel.Mobile.ViewModels
@@ -28,9 +29,10 @@ namespace Signawel.Mobile.ViewModels
         public string Description { get; set; }
         public ObservableCollection<Image> Images { get; set; }
 
-        public ICommand AddImageCommand => new Command(async () => await OnAddImage());
-        public ICommand SendReportCommand => new Command(async () => await OnSendReport());
+        public ICommand AddImageCommand => new AsyncCommand(OnAddImage);
+        public ICommand SendReportCommand => new AsyncCommand(OnSendReport);
         public ICommand SearchRoadworkCommand => new Command(OnRoadworkSearch);
+        public ICommand ImageClickedCommand => new AsyncCommand<Image>(OnImageClicked);
 
         public ReportViewModel(INavigationService navigationService, 
             IMessageBoxService messageBoxService,
@@ -68,7 +70,7 @@ namespace Signawel.Mobile.ViewModels
             }
         }
 
-        #region AddImages
+        #region Images
         // Command used by the view to open a action sheet
         // giving the user the option to add from local storage or take a picture
         // the resulting action is then used to determine what to do
@@ -142,6 +144,17 @@ namespace Signawel.Mobile.ViewModels
                 Source = imagesource
             };
             Images.Add(image);
+        }
+
+        private async Task OnImageClicked(Image image)
+        {
+            var action = await _messageBoxService.ShowActionSheet(TextConstants.DeleteImage, TextConstants.CancelButton,
+                TextConstants.DeleteButton);
+
+            if (action == TextConstants.DeleteButton)
+            {
+                Images.Remove(image);
+            }
         }
         #endregion
 

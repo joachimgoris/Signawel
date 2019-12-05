@@ -3,9 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converter="clr-namespace:Signawel.Mobile.Converter;assembly=Signawel.Mobile"
+             xmlns:behaviours="clr-namespace:Signawel.Mobile.Behaviours;assembly=Signawel.Mobile"
              mc:Ignorable="d"
              x:Class="Signawel.Mobile.Views.ReportView"
-             Title="Rapport">
+             Title="Rapport"
+             x:Name="ContentPage">
     <ContentPage.Content>
         <Grid Padding="10">
             <Grid.ColumnDefinitions>
@@ -23,6 +26,7 @@
             <Entry Placeholder="Werk"
                    Grid.Row="0"
                    Grid.Column="0"
+                   Grid.ColumnSpan="2"
                    IsEnabled="False"
                    VerticalOptions="CenterAndExpand"
                    Text="{Binding Roadwork.Description}"
@@ -33,7 +37,7 @@
                          HeightRequest="40"
                          WidthRequest="50"
                          VerticalOptions="Center"
-                         HorizontalOptions="Start"
+                         HorizontalOptions="End"
                          BackgroundColor="Transparent"
                          Opacity="0.5"
                          Command="{Binding SearchRoadworkCommand}"/>
@@ -62,27 +66,31 @@
                          Grid.Column="0"
                          Grid.ColumnSpan="2"
                          Orientation="Horizontal">
-                <ScrollView Orientation="Horizontal">
-                    <StackLayout Orientation="Horizontal">
-                        <StackLayout BindableLayout.ItemsSource="{Binding Images}"
-                                     Orientation="Horizontal"
-                                     Padding="5">
-                            <BindableLayout.ItemTemplate>
+                <StackLayout Orientation="Horizontal">
+                        <CollectionView ItemsSource="{Binding Images}">
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Orientation="Horizontal"/>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <Image Source="{Binding Source}"
-                                           Aspect="AspectFill"
-                                           WidthRequest="100"/>
+                                    <Grid>
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.ImageClickedCommand, Source={x:Reference ContentPage}}"
+                                                                  CommandParameter="{Binding}"/>
+                                        </Grid.GestureRecognizers>
+                                        <Image Source="{Binding Source}"
+                                               Aspect="AspectFill"/>
+                                    </Grid>
                                 </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </StackLayout>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
                         <ImageButton Margin="5"
                                      Padding="5"
                                      BackgroundColor="LightGray"
                                      Opacity="0.5"
                                      Source="add.png"
                                      Command="{Binding AddImageCommand}"/>
-                    </StackLayout>
-                </ScrollView>
+                </StackLayout>
             </StackLayout>
             <Button Text="Verstuur"
                     HorizontalOptions="End"

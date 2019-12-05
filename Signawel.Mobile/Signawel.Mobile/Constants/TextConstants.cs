@@ -15,12 +15,13 @@
         public const string CancelButton = "Annuleren";
         #endregion
 
-        #region Adding pictures
+        #region Pictures
         public const string AddPictureTitle = "Foto toevoegen";
         public const string LocalStorage = "Lokale opslag";
         public const string Camera = "Camera";
         public const string NoCameraAvailableMessage = "Geen camera beschikbaar.";
         public const string NoCameraAvailableTitle = "Geen Camera";
+        public const string DeleteImage = "Foto verwijderen";
         #endregion
 
         #region Sending report
