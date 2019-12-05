@@ -6,6 +6,7 @@ import { ButtonBarButtonComponent } from "./components/button-bar-button/button-
 import { SignawelMaterialModule } from "../signawel-material/signawel-material.module";
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { MatDialogModule } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { MatDialogModule } from '@angular/material';
     BladeModalComponent,
     ConfirmationDialogComponent
   ],
-  imports: [CommonModule, SignawelMaterialModule,MatDialogModule],
-  exports: [ButtonBarComponent, ButtonBarButtonComponent, BladeModalComponent]
+  imports: [CommonModule, SignawelMaterialModule, MatDialogModule],
+  exports: [ButtonBarComponent, FlexLayoutModule, ButtonBarButtonComponent, BladeModalComponent]
 })
 export class SharedModule {}

@@ -9,6 +9,7 @@ import { BoundingBox } from "../../../models/boundingbox.model";
 export class BoundingboxListComponent implements OnInit {
   @Input() finishedBoundingBoxes: Array<BoundingBox>;
   @Output() onRemoved: EventEmitter<number> = new EventEmitter();
+  @Output() onNameChanged: EventEmitter<{ index: number, boundingBox: BoundingBox }> = new EventEmitter();
 
   constructor() {}
 
@@ -16,5 +17,19 @@ export class BoundingboxListComponent implements OnInit {
 
   onRemove(boundingBoxId: number) {
     this.onRemoved.emit(boundingBoxId);
+  }
+
+  onNameChange(index: number, boundingbox: BoundingBox) {
+    if(!boundingbox.name) {
+      boundingbox.name = "";
+    }
+    this.onNameChanged.emit({ index: index, boundingBox: boundingbox});
+  }
+
+  onInputLeave(index: number, boundingbox: BoundingBox) {
+    if(!boundingbox.name) {
+      boundingbox.name = null;
+    }
+    this.onNameChanged.emit({ index: index, boundingBox: boundingbox});
   }
 }

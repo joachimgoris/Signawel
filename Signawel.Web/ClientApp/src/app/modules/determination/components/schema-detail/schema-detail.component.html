@@ -9,15 +9,14 @@
     afbeelding</button>
 </div>
 
-<div [ngStyle]="{'display': getImageUrl() != '' ? 'block' : 'none'}">
-
-  <div class="output" (click)="clicked($event)" oncontextmenu="return false;">
+<div fxLayout='row' [ngStyle]="{'display': getImageUrl() != '' ? 'block' : 'none'}">
+  <div fxFlex="70" class="output" (click)="clicked($event)" oncontextmenu="return false;">
     <img #schema [src]="getImageUrl()" (load)="render()" alt="schema">
     <div #pointOutput></div>
     <svg #linesOutput class="line-output"></svg>
   </div>
 
-  <determination-boundingbox-list (onRemoved)="removeBoundingBox($event)"
-    [finishedBoundingBoxes]="roadworkSchema.boundingBoxes">
+  <determination-boundingbox-list fxFlex="30" (onNameChanged)="changeBoundingBoxName($event)"
+    (onRemoved)="removeBoundingBox($event)" [finishedBoundingBoxes]="roadworkSchema.boundingBoxes">
   </determination-boundingbox-list>
 </div>

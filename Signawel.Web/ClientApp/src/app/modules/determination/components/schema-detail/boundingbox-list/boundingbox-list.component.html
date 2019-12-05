@@ -1,7 +1,7 @@
-<div class="listcolumn">
-  <ul>
-    <li *ngFor="let box of finishedBoundingBoxes; let i = index;" class="list-item">
-      {{ !box.name ? 'Box ' + (i + 1) :  box.name }} <button class="remove" (click)="onRemove(i)">X</button>
-    </li>
-  </ul>
-</div>
+<ul class="list">
+  <h3>Boxen</h3>
+  <li *ngFor="let box of finishedBoundingBoxes; let i = index;" class="list-item">
+    <input (keyup)="onNameChange(i, box)" (focusout)="onInputLeave(i, box)" [(ngModel)]="box.name" type="text" />
+    <button class="remove" (click)="onRemove(i)">X</button>
+  </li>
+</ul>

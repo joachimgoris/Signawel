@@ -105,10 +105,15 @@ export class SchemaDetailComponent implements OnInit {
 
     if (finished) {
       const firstPoint = this.getPointsOrdened(boundingbox)[0];
+      
+      if(boundingbox.name == null) {
+        boundingbox.name = `Box ${this.roadworkSchema.boundingBoxes.indexOf(boundingbox) + 1}`;
+      }
+
       this.drawName(
+        boundingbox,
         this.getXCord(firstPoint.x),
-        this.getYCord(firstPoint.y),
-        this.roadworkSchema.boundingBoxes.indexOf(boundingbox)
+        this.getYCord(firstPoint.y)
       );
       const lastPoint = this.getPointsOrdened(boundingbox)[
         boundingbox.points.length - 1
@@ -117,19 +122,14 @@ export class SchemaDetailComponent implements OnInit {
     }
   }
 
-  drawName(xCoord: number, yCoord: number, index: number) {
+  drawName(boundingBox: BoundingBox, xCoord: number, yCoord: number) {
     const nameParagraph = this.renderer.createElement("p");
     this.renderer.addClass(nameParagraph, "boundingbox-name");
-    this.renderer.setProperty(nameParagraph, "innerHTML", `Box ${index + 1}`);
+    this.renderer.setProperty(nameParagraph, "innerHTML", `${boundingBox.name}`);
     this.renderer.setStyle(nameParagraph, "left", `${xCoord}px`);
     this.renderer.setStyle(nameParagraph, "top", `${yCoord - 35}px`);
 
     this.renderer.appendChild(this.pointOutput.nativeElement, nameParagraph);
-
-    this.renderer.listen(nameParagraph, 'click', event => {
-      event.stopPropagation();
-      console.log('test');
-    })
   }
 
   drawPoint(point: Point) {
@@ -264,6 +264,12 @@ export class SchemaDetailComponent implements OnInit {
   removeBoundingBox(event) {
     this.roadworkSchema.boundingBoxes.splice(event, 1);
     this.render();
+  }
+
+  changeBoundingBoxName(event: {index: number, boundingBox: BoundingBox}) {
+     let bbox = this.roadworkSchema.boundingBoxes[event.index]
+     bbox.name = event.boundingBox.name;
+     this.render();
   }
 
   getPointsOrdened(bbox: BoundingBox): Point[] {
