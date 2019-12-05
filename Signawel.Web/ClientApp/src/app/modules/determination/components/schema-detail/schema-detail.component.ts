@@ -60,9 +60,8 @@ export class SchemaDetailComponent implements OnInit {
         order
       )
     );
-    this.render();
 
-    console.log(`new point -> x: ${xCoord}, y: ${yCoord}, order: ${order}`);
+    this.render();
   }
 
   render() {
@@ -106,7 +105,7 @@ export class SchemaDetailComponent implements OnInit {
 
     if (finished) {
       const firstPoint = this.getPointsOrdened(boundingbox)[0];
-      this.drawNumber(
+      this.drawName(
         this.getXCord(firstPoint.x),
         this.getYCord(firstPoint.y),
         this.roadworkSchema.boundingBoxes.indexOf(boundingbox)
@@ -118,14 +117,19 @@ export class SchemaDetailComponent implements OnInit {
     }
   }
 
-  drawNumber(xCoord: number, yCoord: number, index: number) {
-    const numberParagraph = this.renderer.createElement("p");
-    this.renderer.addClass(numberParagraph, "number");
-    this.renderer.setProperty(numberParagraph, "innerHTML", `Box ${index + 1}`);
-    this.renderer.setStyle(numberParagraph, "left", `${xCoord}px`);
-    this.renderer.setStyle(numberParagraph, "top", `${yCoord - 30}px`);
+  drawName(xCoord: number, yCoord: number, index: number) {
+    const nameParagraph = this.renderer.createElement("p");
+    this.renderer.addClass(nameParagraph, "boundingbox-name");
+    this.renderer.setProperty(nameParagraph, "innerHTML", `Box ${index + 1}`);
+    this.renderer.setStyle(nameParagraph, "left", `${xCoord}px`);
+    this.renderer.setStyle(nameParagraph, "top", `${yCoord - 35}px`);
 
-    this.renderer.appendChild(this.pointOutput.nativeElement, numberParagraph);
+    this.renderer.appendChild(this.pointOutput.nativeElement, nameParagraph);
+
+    this.renderer.listen(nameParagraph, 'click', event => {
+      event.stopPropagation();
+      console.log('test');
+    })
   }
 
   drawPoint(point: Point) {
@@ -148,24 +152,31 @@ export class SchemaDetailComponent implements OnInit {
 
   pointClick(event) {
     event.stopPropagation();
-
+    
     if (this.currentBoundingBox) {
       var startPoint = this.getPointsOrdened(this.currentBoundingBox)[0];
 
       if (
-        this.getXCord(startPoint.x).toFixed(3) ==
-          parseFloat(event.target.style.left).toFixed(3) &&
-        this.getYCord(startPoint.y).toFixed(3) ==
-          parseFloat(event.target.style.top).toFixed(3) &&
+        this.isWithinMargin(1, this.getXCord(startPoint.x),  parseFloat(event.target.style.left)) &&
+        this.isWithinMargin(1, this.getYCord(startPoint.y),  parseFloat(event.target.style.top)) &&
         this.currentBoundingBox.points.length > 2
       ) {
         this.roadworkSchema.boundingBoxes.push(this.currentBoundingBox);
         this.currentBoundingBox = null;
         this.render();
         this.unregisterCurrentSelectedPoint(startPoint);
-        console.log("bounding box finished");
       }
     }
+  }
+
+  isWithinMargin(margin: number, coord: number, eventCoord: number): boolean {
+    let lowerMargin = coord - margin;
+    let upperMargin = coord + margin;
+
+    if(eventCoord >= lowerMargin && eventCoord <= upperMargin) {
+      return true;
+    }
+    return false;
   }
 
   pointMouseDown(event: MouseEvent, point: Point) {
@@ -173,10 +184,9 @@ export class SchemaDetailComponent implements OnInit {
       case 1:
         if (this.currentSelectedPoint) {
           this.unregisterCurrentSelectedPoint(point);
-          console.log("unregistered selected point to start dragging");
         } else {
           this.registerCurrentSelectedPoint(point, event);
-          console.log("registered selected point to start dragging");
+
         }
         break;
       case 3:
