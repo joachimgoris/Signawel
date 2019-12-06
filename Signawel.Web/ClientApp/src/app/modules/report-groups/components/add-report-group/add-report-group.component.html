@@ -1,8 +1,8 @@
 <div class="container">
   <mat-card class="addReportGroupCard">
     <mat-card-header>
-      <mat-card-title>Voeg een reportgroep toe</mat-card-title>
-      <mat-card-subtitle>Geef emailadressen op die verbonden worden met de rapporten van bepaalde steden
+      <mat-card-title>Voeg een meldingsgroep toe</mat-card-title>
+      <mat-card-subtitle>Geef e-mailadressen op die verbonden worden met de rapporten van bepaalde steden
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
@@ -31,7 +31,7 @@
         <div *ngFor="let email of reportGroupCreationRequest.emailReportGroups; let i = index" class="form-row">
           <mat-form-field>
             <mat-grid-list cols="2" rowHeight="5:1">
-              <mat-grid-tile><input matInput placeholder="emailadres" type="email" [formControl]="emailControl"
+              <mat-grid-tile><input matInput placeholder="e-mailadres" type="email" [formControl]="emailControl"
                   name="emailInput"></mat-grid-tile>
               <mat-grid-tile *ngIf="i>0"><button mat-icon-button (click)="RemoveEmailFromForm(i)">
                   <mat-icon>delete_outline</mat-icon>
@@ -57,7 +57,7 @@
 
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Alle Report groepen</mat-card-title>
+      <mat-card-title>Alle meldingsgroepen</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <mat-grid-list cols="5" rowHeight="5:1">
@@ -66,7 +66,7 @@
           <mat-form-field>
             <mat-select [(ngModel)]="selectedSearch">
               <mat-option value="city">Stad</mat-option>
-              <mat-option value="email">Email</mat-option>
+              <mat-option value="email">E-mail</mat-option>
             </mat-select>
           </mat-form-field>
         </mat-grid-tile>

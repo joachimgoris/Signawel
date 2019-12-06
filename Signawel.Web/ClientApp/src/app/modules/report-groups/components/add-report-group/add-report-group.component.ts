@@ -54,7 +54,7 @@ export class AddReportGroupComponent implements OnInit {
       this.cityNames = this.cities.map(c=>c.name);
     }).add(()=> {
       if(this.cities == undefined){
-        this.snackBar.open("Kan server niet bereiken","",{
+        this.snackBar.open("Server onbereikbaar","",{
           duration: 2000
         });
       }
@@ -127,18 +127,18 @@ export class AddReportGroupComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
-      data: "Weet u zeker dat u deze report groep wilt verwijderen?"
+      data: "Weet u zeker dat u deze meldingsgroep wilt verwijderen?"
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         this.reportGroupService.deleteReport(id).subscribe(data=>{
-          this.snackBar.open("Report groep is verwijdert","",{
+          this.snackBar.open("Meldingsgroep verwijderd","",{
             duration: 2000
           });
           this.reportGroupResponses.splice(index,1);
       },
       error=>{
-        this.snackBar.open("Error , report groep is niet verwijdert!","",{
+        this.snackBar.open("Error, meldingsgroep niet verwijderd!","",{
           duration: 2500
         });
       })
@@ -166,7 +166,7 @@ export class AddReportGroupComponent implements OnInit {
     .add(()=>{
       this.isRequestLoading = false;
       if(this.reportGroupResponses.length == 0){
-        this.snackBar.open("Geen report groepen gevonden","",{
+        this.snackBar.open("Geen meldingsgroepen gevonden","",{
           duration: 2000
         });
       }
@@ -184,18 +184,18 @@ export class AddReportGroupComponent implements OnInit {
       this.reportGroupCreationRequest = new ReportGroupCreationRequestModel();
       this.reportGroupCreationRequest.cityReportGroups.push(new CityCreationRequestModel());
     this.reportGroupCreationRequest.emailReportGroups.push(new EmailCreationRequestModel());
-    this.snackBar.open("Niew report groep is aangemaakt","",{
+      this.snackBar.open("Nieuwe meldingsgroep is toegevoegd","",{
       duration: 2000
     });
     },
     error=>{
       if(error.status == 0){
-      this.snackBar.open("Error, kan server niet bereiken, report groep is niet opgeslagen","",{
+        this.snackBar.open("Error, server onbereikbaar, meldingsgroep niet opgeslagen","",{
         duration: 2500
       });
     }
     if(error.status == 404){
-      this.snackBar.open("report groep niet opgeslagen, de report groep bestaat al","",{
+      this.snackBar.open("Meldingsgroep niet opgeslagen, meldingsgroep bestaat al","",{
         duration: 2500
       });
     }

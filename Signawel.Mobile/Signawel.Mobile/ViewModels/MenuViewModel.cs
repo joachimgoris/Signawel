@@ -59,24 +59,6 @@ namespace Signawel.Mobile.ViewModels
 
             MenuItems.Add(new MainMenuItem
             {
-                MenuText = "Temp-Determination",
-                ViewModelType = typeof(DeterminationGraphViewModel)
-            });
-
-            MenuItems.Add(new MainMenuItem
-            {
-                MenuText = "Temp-Map",
-                ViewModelType = typeof(MapPageViewModel)
-            });
-
-            MenuItems.Add(new MainMenuItem
-            {
-                MenuText = "Temp-Report",
-                ViewModelType = typeof(ReportViewModel)
-            });
-
-            MenuItems.Add(new MainMenuItem
-            {
                 MenuText = "Login",
                 ViewModelType = typeof(LoginViewModel)
             });
