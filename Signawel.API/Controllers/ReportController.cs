@@ -1,14 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Signawel.API.Attributes;
 using Signawel.Business.Abstractions.Services;
+using Signawel.Domain;
 using Signawel.Domain.Constants;
 using Signawel.Domain.DataResults;
 using Signawel.Dto;
@@ -35,12 +36,13 @@ namespace Signawel.API.Controllers
         #region GetReports
 
         [HttpGet]
+        [Authorize(Roles = Role.Constants.Instance)]
         [SwaggerOperation("getReports")]
         [SwaggerResponse(StatusCodes.Status200OK, "Reports overview", typeof(DataResult<ReportResponseDto>))]
         public IActionResult GetReports([FromQuery] string search = null, [FromQuery] int page = 0, [FromQuery] int limit = 20)
         {
             var reports = _reportService.GetAllReports();
-            
+
             var result = new ReportGetPaginationResponseDto()
             {
                 Total = reports.Count()
@@ -71,6 +73,7 @@ namespace Signawel.API.Controllers
         #region GetReport
 
         [HttpGet("{id}")]
+        [Authorize(Roles = Role.Constants.Instance)]
         [SwaggerOperation("getReport")]
         [SwaggerResponse(StatusCodes.Status200OK, "Report found.", typeof(DataResult<ReportResponseDto>))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Report not found.", typeof(IList<DataError>))]
@@ -110,7 +113,7 @@ namespace Signawel.API.Controllers
                         await formFile.CopyToAsync(copyMemoryStream);
                         try
                         {
-                            var bitmap = Image.FromStream(copyMemoryStream);
+                            var bitmap = System.Drawing.Image.FromStream(copyMemoryStream);
 
                             bitmap.Save(changeFormatMemoryStream, ImageFormat.Png);
                             bitmap.Dispose();

@@ -25,7 +25,16 @@ export class LoginComponent implements OnInit {
       .login(formData["email"], formData["password"])
       .subscribe(
         result => {
-          this.router.navigate(["/"]);
+          if(this.authenticationService.getIsAdmin()) {
+            this.router.navigate(["/"]);
+          } else {
+            this.authenticationService.logout();
+            this.matSnackbar.open(
+              "U heeft niet voldoende rechten om te kunnen aanmelden.",
+              null,
+              { duration: 3000 }
+            );
+          }
         },
         error => {
           this.matSnackbar.open(

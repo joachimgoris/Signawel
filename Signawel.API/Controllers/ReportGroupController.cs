@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Signawel.API.Attributes;
 using Signawel.Business.Abstractions.Services;
+using Signawel.Domain;
 using Signawel.Domain.Constants;
 using Signawel.Domain.DataResults;
 using Signawel.Dto.ReportGroup;
@@ -13,6 +15,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Signawel.API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Role.Constants.Admin)]
     [JwtTokenAuthorize]
     [Route("api/reportgroups")]
     public class ReportGroupController : BaseController

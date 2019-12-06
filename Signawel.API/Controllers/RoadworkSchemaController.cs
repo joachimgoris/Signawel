@@ -12,10 +12,10 @@ using Signawel.API.Attributes;
 using System.Collections.Generic;
 using Signawel.Domain.DataResults;
 using System.IO;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System;
 using Signawel.Domain.Enums;
+using Signawel.Domain;
 
 namespace Signawel.API.Controllers
 {
@@ -85,6 +85,7 @@ namespace Signawel.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Role.Constants.Admin)]
         [SwaggerOperation("createRoadworkSchema")]
         [SwaggerResponse(StatusCodes.Status200OK, "The created roadwork schema", typeof(RoadworkSchemaResponseDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Something whent wrong", typeof(IList<ErrorResponseDto>))]
@@ -105,7 +106,7 @@ namespace Signawel.API.Controllers
                 await image.CopyToAsync(copyMemoryStream);
                 try
                 {
-                    var bitmap = Image.FromStream(copyMemoryStream);
+                    var bitmap = System.Drawing.Image.FromStream(copyMemoryStream);
 
                     bitmap.Save(changeFormatMemoryStream, ImageFormat.Png);
                     bitmap.Dispose();
@@ -137,6 +138,7 @@ namespace Signawel.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = Role.Constants.Admin)]
         [SwaggerOperation("putUpdateRoadworkSchema")]
         [SwaggerResponse(StatusCodes.Status200OK, "The updated roadwork schema", typeof(RoadworkSchemaResponseDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Something whent wrong")]
@@ -157,7 +159,7 @@ namespace Signawel.API.Controllers
                     await image.CopyToAsync(copyMemoryStream);
                     try
                     {
-                        var bitmap = Image.FromStream(copyMemoryStream);
+                        var bitmap = System.Drawing.Image.FromStream(copyMemoryStream);
 
                         bitmap.Save(changeFormatMemoryStream, ImageFormat.Png);
                         bitmap.Dispose();
@@ -184,6 +186,7 @@ namespace Signawel.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = Role.Constants.Admin)]
         [SwaggerOperation("deleteRoadworkSchema")]
         [SwaggerResponse(StatusCodes.Status204NoContent, "Deleted roadwork schema successfully")]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Something whent wrong")]

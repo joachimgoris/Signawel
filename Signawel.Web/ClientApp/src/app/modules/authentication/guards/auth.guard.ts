@@ -10,7 +10,7 @@ export class AuthenticationGuard {
   ) {}
 
   canActivate() {
-    if (this.authService.isLoggedIn()) {
+    if (this.authService.isLoggedIn() && this.authService.getIsAdmin()) {
       return true;
     }
 

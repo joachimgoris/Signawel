@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Signawel.API.Attributes;
 using Signawel.Business.Abstractions.Services;
+using Signawel.Domain;
 using Signawel.Dto;
 using Signawel.Dto.PriorityEmail;
 using Swashbuckle.AspNetCore.Annotations;
@@ -12,6 +14,7 @@ using System.Threading.Tasks;
 namespace Signawel.API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Role.Constants.Admin)]
     [JwtTokenAuthorize]
     [Route("api/priority-emails")]
     public class PriorityEmailController : BaseController
@@ -39,7 +42,7 @@ namespace Signawel.API.Controllers
         {
             var result = await _priorityEmailService.AddPriorityEmailAsync(dto);
 
-            if(!result.Succeeded)
+            if (!result.Succeeded)
                 return BadRequest(result);
 
             return Ok(result.Entity);
@@ -53,7 +56,7 @@ namespace Signawel.API.Controllers
         {
             var result = await _priorityEmailService.RemovePriorityEmailAsync(id);
 
-            if(!result.Succeeded)
+            if (!result.Succeeded)
                 return BadRequest(result);
 
             return NoContent();
