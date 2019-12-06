@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 using Signawel.Dto.RoadworkSchema;
 using Signawel.Mobile.Bootstrap.Abstract;
 using Signawel.Mobile.Constants;
+using Signawel.Domain.Enums;
+using System.Collections.Generic;
 
 namespace Signawel.Mobile.Services
 {
-    public class DeterminationSchemaService : IDeterminationSchemaService
+    public class RoadworkSchemaService : IRoadworkSchemaService
     {
         private readonly IHttpService _httpService;
 
-        public DeterminationSchemaService(IHttpService httpService)
+        public RoadworkSchemaService(IHttpService httpService)
         {
             this._httpService = httpService;
         }
@@ -39,6 +41,14 @@ namespace Signawel.Mobile.Services
             }
 
             return null;
+        }
+
+        public async Task<IList<RoadworkSchemaResponseDto>> GetRoadworkSchemaByCategory(RoadworkCategory category)
+        {
+            var response = await _httpService.GetAsync(ApiConstants.GetAllRoadworkSchemasByCategory(category));
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var paginationResponse = JsonConvert.DeserializeObject<RoadworkSchemaPaginationResponseDto>(responseContent);
+            return paginationResponse.Schemas;
         }
     }
 }

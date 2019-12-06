@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Signawel.Mobile.Bootstrap.Abstract;
-using Signawel.Mobile.Services.Abstract;
 using Xamarin.Forms;
 using System.Threading.Tasks;
 using Signawel.Mobile.Bootstrap;
@@ -12,7 +11,6 @@ namespace Signawel.Mobile.ViewModels
     public class MenuViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
-        private readonly IDeterminationGraphService _determinationGraphService;
 
         public ObservableCollection<MainMenuItem> MenuItems { get; set; }
 
@@ -20,10 +18,9 @@ namespace Signawel.Mobile.ViewModels
 
         public ICommand MenuItemTappedCommand => new AsyncCommand<object>(OnMenuItemTapped);
 
-        public MenuViewModel(INavigationService navigationService, IDeterminationGraphService determinationGraphService)
+        public MenuViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
-            _determinationGraphService = determinationGraphService;
 
             MenuItems = new ObservableCollection<MainMenuItem>();
             LoadMenuItems();
@@ -39,13 +36,9 @@ namespace Signawel.Mobile.ViewModels
             if(type == null)
                 return;
 
-            if(type == typeof(DeterminationGraphViewModel))
-            {
-                var graph = await _determinationGraphService.GetDeterminationGraph();
-                parameters = graph.Start;
-            }
-
+#pragma warning disable CS0618 // Type or member is obsolete
             await _navigationService.NavigateToAsync(type, parameters);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         private void LoadMenuItems()
@@ -53,7 +46,7 @@ namespace Signawel.Mobile.ViewModels
             MenuItems.Add(new MainMenuItem
             {
                 MenuText = "Home",
-                ViewModelType = typeof(CategoryViewModel)
+                ViewModelType = typeof(MainViewModel)
             });
 
             MenuItems.Add(new MainMenuItem
@@ -80,6 +73,18 @@ namespace Signawel.Mobile.ViewModels
             {
                 MenuText = "Temp-Report",
                 ViewModelType = typeof(ReportViewModel)
+            });
+
+            MenuItems.Add(new MainMenuItem
+            {
+                MenuText = "Login",
+                ViewModelType = typeof(LoginViewModel)
+            });
+
+            MenuItems.Add(new MainMenuItem
+            {
+                MenuText = "Register",
+                ViewModelType = typeof(RegisterViewModel)
             });
         }
 

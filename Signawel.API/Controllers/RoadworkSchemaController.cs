@@ -15,6 +15,7 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System;
+using Signawel.Domain.Enums;
 
 namespace Signawel.API.Controllers
 {
@@ -54,7 +55,7 @@ namespace Signawel.API.Controllers
         [AllowAnonymous]
         [SwaggerOperation("getAllRoadworkSchemas")]
         [SwaggerResponse(StatusCodes.Status200OK, "All roadwork schema", typeof(RoadworkSchemaPaginationResponseDto))]
-        public async Task<IActionResult> GetAllRoadworkSchemas([FromQuery] string search = null, [FromQuery] int page = 0, [FromQuery] int limit = 20)
+        public async Task<IActionResult> GetAllRoadworkSchemas([FromQuery] string search = null, [FromQuery] int page = 0, [FromQuery] int limit = 20, [FromQuery] RoadworkCategory roadworkCategory = RoadworkCategory.NoCategory)
         {
             var schemas = _schemaService.GetAllRoadworkSchemas();
 
@@ -76,8 +77,10 @@ namespace Signawel.API.Controllers
             if(!string.IsNullOrEmpty(search))
                 schemaResult = schemaResult.Where(x => x.Name.Contains(search));
 
-            result.Schemas = await schemaResult.ToListAsync();
+            if (roadworkCategory != RoadworkCategory.NoCategory)
+                schemaResult = schemaResult.Where(x => x.RoadworkCategory == roadworkCategory);
 
+            result.Schemas = await schemaResult.ToListAsync();
             return Ok(result);
         }
 

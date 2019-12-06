@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Signawel.Mobile.Views.HomeView"
+             x:Name="homePageName">
+    <ContentPage.Content>
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0"
+                   Text="Kies een categorie van wegenwerken"
+                   FontSize="Title"
+                   HorizontalTextAlignment="Center"
+                   Margin="2, 10, 2, 10"/>
+
+            <CollectionView Grid.Row="1" ItemsSource="{Binding Categories}">
+                
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" />
+                </CollectionView.ItemsLayout>
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+
+                        <Grid Padding="10" Margin="12">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.SelectCategoryCommand, Source={x:Reference homePageName}}"
+                                                      CommandParameter="{Binding Category}" />
+                            </Grid.GestureRecognizers>
+
+                            <Image Grid.Row="0"
+                                   Aspect="AspectFill"
+                                   WidthRequest="345"
+                                   HeightRequest="120"
+                                   Source="{Binding ImageSource}" />
+                            
+                            <Label Grid.Row="1"
+                                   Text="{Binding Name}"
+                                   FontAttributes="Bold"
+                                   TextColor="Black"
+                                   HorizontalTextAlignment="Center"/>
+                            
+                        </Grid>
+                        
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                
+            </CollectionView>
+
+            <StackLayout Grid.Row="2">
+
+                <Button Text="Ik weet het niet"
+                        Margin="10, 15, 10, 10"
+                        FontSize="Medium"
+                        BackgroundColor="{StaticResource Red}"
+                        Command="{Binding SelectDeterminationCommand}" />
+
+                <Label Text="Druk hier voor meer informatie over de verschillende categoriën van wegenwerken."
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       FontSize="Medium"
+                       Margin="10, 10, 10, 15">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectCategoryInformationCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+            </StackLayout>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

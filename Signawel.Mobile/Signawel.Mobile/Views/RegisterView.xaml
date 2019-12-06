@@ -1,17 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             x:Class="Signawel.Mobile.Views.LoginView"
+             x:Class="Signawel.Mobile.Views.RegisterView"
              Visual="Material"
-             Title="Aanmelden">
+             Title="Registreren">
     <ContentPage.Content>
         <StackLayout>
             <Entry Placeholder="E-mail" Text="{Binding Email}" Margin="10" />
             <Entry Placeholder="Wachtwoord" IsPassword="True" Text="{Binding Password}" Margin="10" />
-            <Button Command="{Binding ButtonTappedCommand}" Text="Aanmelden" Margin="10" BackgroundColor="Accent"/>
+            <Entry Placeholder="Herhaal wachtwoord" IsPassword="True" Text="{Binding PasswordRepeat}" Margin="10" />
+            <Button Command="{Binding ButtonTappedCommand}" Text="Registreren" Margin="10" BackgroundColor="Accent" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

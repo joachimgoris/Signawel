@@ -1,8 +1,10 @@
-﻿namespace Signawel.Mobile.Constants
+﻿using Signawel.Domain.Enums;
+
+namespace Signawel.Mobile.Constants
 {
     public static class ApiConstants
     {
-        public static string BaseApiAddress => "https://192.168.0.100:5005/api/";
+        public static string BaseApiAddress => "https://signawel-api.azurewebsites.net/api/";
 
         #region Authentication
 
@@ -42,6 +44,8 @@
             $"{BaseApiAddress}roadwork-schemas/{roadworkSchemaId}";
 
         public static string GetAllRoadworkSchemas => BaseApiAddress + "roadwork-schemas";
+
+        public static string GetAllRoadworkSchemasByCategory(RoadworkCategory category) => $"{ BaseApiAddress }roadwork-schemas?roadworkCategory={ category }";
 
         public static string PostRoadworkSchema => BaseApiAddress + "roadwork-schemas";
 

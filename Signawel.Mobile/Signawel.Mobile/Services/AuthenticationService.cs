@@ -64,11 +64,18 @@ namespace Signawel.Mobile.Services
 
             var response = await PostAuthAsync(ApiConstants.RegisterEndpoint, model);
 
-            if (response == null)
+            if(response == null)
+            {
                 return null;
-
-            RegisterResponseDto registerResponseDto = JsonConvert.DeserializeObject<RegisterResponseDto>(response);
-            return registerResponseDto;
+            }
+            else
+            {
+                return new RegisterResponseDto
+                {
+                    Email = email
+                };
+            }
+            
         }
 
         /// <inheritdoc cref="IAuthenticationService.IsAuthenticatedAsync"/>
@@ -76,7 +83,7 @@ namespace Signawel.Mobile.Services
         {
             var token = (await _context.DbToken.FirstOrDefaultAsync())?.Token;
 
-            if(token == null)
+            if (token == null)
             {
                 return false;
             }
@@ -87,7 +94,7 @@ namespace Signawel.Mobile.Services
         {
             var tokens = await _context.DbToken.FirstOrDefaultAsync();
 
-            if(tokens == null)
+            if (tokens == null)
             {
                 return;
             }
@@ -106,7 +113,7 @@ namespace Signawel.Mobile.Services
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpService.PostAsync(endpoint, content);
 
-            if(response == null || (response.StatusCode != HttpStatusCode.OK && response.StatusCode != HttpStatusCode.NoContent))
+            if (response == null || (response.StatusCode != HttpStatusCode.OK && response.StatusCode != HttpStatusCode.NoContent))
             {
                 return null;
             }

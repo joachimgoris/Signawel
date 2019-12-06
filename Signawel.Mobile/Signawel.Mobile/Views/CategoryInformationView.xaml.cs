@@ -1,12 +1,13 @@
-﻿using Xamarin.Forms;
+﻿
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Signawel.Mobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class CategoriesView : ContentPage
+    public partial class CategoryInformationView : ContentPage
     {
-        public CategoriesView()
+        public CategoryInformationView()
         {
             InitializeComponent();
         }

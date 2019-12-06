@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Signawel.Domain;
+using Signawel.Domain.Enums;
 
 namespace Signawel.Data.Configurations
 {
@@ -19,6 +20,10 @@ namespace Signawel.Data.Configurations
 
             builder.Property(e => e.ImageId)
                 .HasColumnName("image_id");
+
+            builder.Property(e => e.RoadworkCategory)
+                .HasColumnName("category")
+                .HasDefaultValue(RoadworkCategory.NoCategory);
 
             builder.HasOne(e => e.Image)
                 .WithMany()

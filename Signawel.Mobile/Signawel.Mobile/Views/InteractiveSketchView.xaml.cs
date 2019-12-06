@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Signawel.Dto.BBox;
 using Signawel.Dto.RoadworkSchema;
 using Signawel.Mobile.ViewModels;
 using SkiaSharp;
@@ -16,12 +17,12 @@ namespace Signawel.Mobile.Views
     {
         private bool _loaded;
         private SKBitmap _sketchBitmap;
-        private IList<SKPath> _paths; 
+        private Dictionary<BBoxResponseDto, SKPath> _paths; 
         public InteractiveSketchView()
         {
             InitializeComponent();
 
-            _paths = new List<SKPath>();
+            _paths = new Dictionary<BBoxResponseDto, SKPath>();
             _loaded = false;
         }
 
@@ -56,13 +57,13 @@ namespace Signawel.Mobile.Views
 
             foreach (var path in _paths)
             {
-                canvas.DrawPath(path, paint);
+                canvas.DrawPath(path.Value, paint);
             }
         }
 
-        private IList<SKPath> CalculatePaths(float canvasHeight, float canvasWidth, RoadworkSchemaResponseDto schema)
+        private Dictionary<BBoxResponseDto, SKPath> CalculatePaths(float canvasHeight, float canvasWidth, RoadworkSchemaResponseDto schema)
         {
-            var paths = new List<SKPath>();
+            var paths = new Dictionary<BBoxResponseDto, SKPath>();
 
             foreach (var bbox in schema.BoundingBoxes)
             {
@@ -79,7 +80,7 @@ namespace Signawel.Mobile.Views
 
                 var calculatedPath = new SKPath();
                 calculatedPath.AddPoly(pathPointsList.ToArray());
-                paths.Add(calculatedPath);
+                paths.Add(bbox, calculatedPath);
             } 
 
             return paths;
@@ -130,9 +131,9 @@ namespace Signawel.Mobile.Views
             {
                 foreach (var path in _paths)
                 {
-                    if (path.Contains(e.Location.X, e.Location.Y))
+                    if (path.Value.Contains(e.Location.X, e.Location.Y))
                     {
-                        
+                        ((InteractiveSketchViewModel)BindingContext).SelectedBoudingBoxCommand.Execute(path.Key.Id);
                     }
                 }
             }

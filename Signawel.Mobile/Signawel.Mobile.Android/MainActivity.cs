@@ -7,6 +7,7 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
 using Plugin.CurrentActivity;
+using Android.Content.Res;
 
 namespace Signawel.Mobile.Droid
 {
@@ -33,6 +34,7 @@ namespace Signawel.Mobile.Droid
             global::Xamarin.Forms.FormsMaterial.Init(this, savedInstanceState);
             LoadApplication(new App());
         }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -61,6 +63,12 @@ namespace Signawel.Mobile.Droid
                     PickImageTaskCompletionSource.SetResult(null);
                 }
             }
+        }
+
+        public override void OnConfigurationChanged(Configuration newConfig)
+        {
+            base.OnConfigurationChanged(newConfig);
+            RequestedOrientation = ScreenOrientation.Portrait;
         }
     }
 }

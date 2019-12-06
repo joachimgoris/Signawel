@@ -31,23 +31,23 @@ namespace Signawel.Mobile.Bootstrap
             // ViewModels
             services.AddScoped<MainViewModel>();
             services.AddScoped<MenuViewModel>();
-            services.AddScoped<CategoryViewModel>();
-            services.AddScoped<LoginViewModel>();
+            services.AddScoped<HomeViewModel>();
+            services.AddScoped<AboutViewModel>();
             services.AddScoped<AboutViewModel>();
             services.AddScoped<InteractiveSketchViewModel>();
             services.AddScoped<MapPageViewModel>();
             services.AddScoped<ListViewRoadWorksPageViewModel>();
             services.AddScoped<ReportViewModel>();
+            services.AddScoped<CategoryInformationViewModel>();
+            services.AddScoped<RoadworkSchemaListViewModel>();
             services.AddTransient<DeterminationGraphViewModel>();
             services.AddTransient<LoginViewModel>();
+            services.AddTransient<RegisterViewModel>();
 
-            services.AddSingleton<AboutViewModel>();
-            
 
             // Services
             services.AddScoped<IDeterminationGraphService, DeterminationGraphService>();
-            services.AddScoped<IDeterminationSchemaService, DeterminationSchemaService>();
-            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IRoadworkSchemaService, RoadworkSchemaService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IIssueService, IssueService>();
             services.AddSingleton<IMessageBoxService, MessageBoxService>();

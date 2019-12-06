@@ -19,7 +19,7 @@ namespace Signawel.Mobile.ViewModels
         {
             await Task.WhenAll(
                 MenuViewModel.InitializeAsync(data),
-                _navigationService.NavigateToAsync<CategoryViewModel>()
+                _navigationService.NavigateToAsync<HomeViewModel>()
             );
         }
 

@@ -54,20 +54,7 @@ namespace Signawel.Mobile.ViewModels
             }
 
             var issues = await _issueService.GetAllDefaultIssues();
-            if (issues != null && issues.Count > 0)
-            {
-                IssueTypes = issues.Select(issue => issue.Name).ToList();
-            }
-            else
-            {
-                IssueTypes = new List<string>
-                {
-                    "Vuil",
-                    "Ontbrekend",
-                    "Kapot",
-                    "Andere"
-                };
-            }
+            IssueTypes = issues.Select(issue => issue.Name).ToList();
         }
 
         #region Images

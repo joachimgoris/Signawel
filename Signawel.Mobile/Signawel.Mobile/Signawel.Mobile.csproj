@@ -17,6 +17,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\cat1.png" />
+    <None Remove="Resources\Images\cat2.png" />
+    <None Remove="Resources\Images\cat3.png" />
+    <None Remove="Resources\Images\cat4.png" />
+    <None Remove="Resources\Images\cat5.png" />
+    <None Remove="Resources\Images\cat6.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Images\cat1.png" />
+    <EmbeddedResource Include="Resources\Images\cat2.png" />
+    <EmbeddedResource Include="Resources\Images\cat3.png" />
+    <EmbeddedResource Include="Resources\Images\cat4.png" />
+    <EmbeddedResource Include="Resources\Images\cat5.png" />
+    <EmbeddedResource Include="Resources\Images\cat6.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Polly" Version="7.2.0" />
@@ -35,9 +53,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\CategoryView.xaml.cs">
-      <DependentUpon>CategoryView.xaml</DependentUpon>
-    </Compile>
     <Compile Update="Views\ListViewRoadWorksPageView.xaml.cs">
       <DependentUpon>ListViewRoadWorksPageView.xaml</DependentUpon>
     </Compile>
@@ -47,6 +62,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Views\CategoryInformationView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\HomeView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\ListViewRoadWorksPageView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -62,9 +83,6 @@
     <EmbeddedResource Update="Views\AboutView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\CategoryView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Views\InteractiveSketchView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -78,6 +96,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ReportView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\RoadworkSchemaListView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\SignawelNavigationPage.xaml">

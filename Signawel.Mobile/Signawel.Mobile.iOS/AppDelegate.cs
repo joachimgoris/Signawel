@@ -1,5 +1,6 @@
 ﻿
 using Foundation;
+using ObjCRuntime;
 using UIKit;
 
 namespace Signawel.Mobile.iOS
@@ -25,6 +26,11 @@ namespace Signawel.Mobile.iOS
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
+        }
+
+        public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations(UIApplication application, [Transient] UIWindow forWindow)
+        {
+            return UIInterfaceOrientationMask.Portrait;
         }
     }
 }

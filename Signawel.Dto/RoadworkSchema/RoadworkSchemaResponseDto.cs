@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Signawel.Domain.Enums;
 using Signawel.Dto.BBox;
 
 namespace Signawel.Dto.RoadworkSchema
@@ -12,6 +13,8 @@ namespace Signawel.Dto.RoadworkSchema
         public string ImageId { get; set; }
 
         public ICollection<BBoxResponseDto> BoundingBoxes { get; set; }
+
+        public RoadworkCategory RoadworkCategory { get; set; }
 
     }
 }

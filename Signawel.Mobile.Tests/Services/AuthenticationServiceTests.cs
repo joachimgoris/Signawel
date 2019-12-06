@@ -211,8 +211,7 @@ namespace Signawel.Mobile.Tests.Services
 
             var response = new RegisterResponseDto
             {
-                Email = "a@email.com",
-                UserName = "a"
+                Email = "a@email.com"
             };
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(response));

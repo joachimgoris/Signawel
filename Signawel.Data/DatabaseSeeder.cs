@@ -70,14 +70,16 @@ namespace Signawel.Data
                 return false;
             }
 
-            await userManager.CreateAsync(new User
+            var user = new User
             {
                 Email = "admin@signawel.be",
-                EmailConfirmed = true
-            }, "Password@001");
+                UserName = "admin",
+                EmailConfirmed = true,
+            };
+            await userManager.CreateAsync(user, "Password@001");
+            await userManager.AddToRoleAsync(user, Role.Constants.Admin);
 
             return true;
         }
-
     }
 }

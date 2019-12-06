@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using Signawel.Business.Services;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Moq;
