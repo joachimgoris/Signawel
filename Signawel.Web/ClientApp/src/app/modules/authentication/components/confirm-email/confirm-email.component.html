@@ -1,0 +1,12 @@
+<div class="auth-form" *ngIf="!loading">
+
+    <div *ngIf="success; else failed">
+        <h1 class="title">Succesvol! Je kan nu inloggen op de applicatie.</h1>
+    </div>
+
+    <ng-template #failed>
+        <h1 class="title">Mislukt!</h1>
+    </ng-template>
+</div>
+
+<mat-spinner *ngIf="loading"></mat-spinner>

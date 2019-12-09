@@ -9,9 +9,10 @@ import { AuthenticationGuard } from "./guards/auth.guard";
 import { TokenInterceptor } from "./intercepters/token-interceptor";
 import { AuthenticationService } from "./services/authentication.service";
 import { SignawelMaterialModule } from "../signawel-material/signawel-material.module";
+import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.component';
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, ConfirmEmailComponent],
   imports: [
     CommonModule,
     FormsModule,

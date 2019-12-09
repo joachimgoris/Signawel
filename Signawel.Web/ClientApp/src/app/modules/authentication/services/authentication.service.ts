@@ -1,14 +1,11 @@
-import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import {
-  AUTHENTICATE_REFRESH_URL,
-  AUTHENTICATE_LOGIN_URL
-} from "src/app/constants/api.constants";
-import { tap, catchError, mapTo } from "rxjs/operators";
-import { TokenModel } from "../models/token.model";
-import { Observable, of, throwError } from "rxjs";
 import * as jwt_decode from 'jwt-decode';
+import { Observable, of, throwError } from "rxjs";
+import { catchError, map, mapTo, tap } from "rxjs/operators";
+import { AUTHENTICATE_CONFIRMEMAIL_URL, AUTHENTICATE_LOGIN_URL, AUTHENTICATE_REFRESH_URL } from "src/app/constants/api.constants";
+import { TokenModel } from "../models/token.model";
 import { UserModel } from '../models/user.model';
 
 @Injectable()
@@ -73,6 +70,28 @@ export class AuthenticationService {
       .pipe(
         tap((tokens: TokenModel) => {
           this.storeTokens(tokens);
+        })
+      );
+  }
+
+  public confirmEmail(userId: string, token: string): Observable<boolean> {
+
+    return this.httpClient
+      .post(AUTHENTICATE_CONFIRMEMAIL_URL,
+        {
+          userId: userId,
+          token: token
+        }, { observe: 'response' })
+      .pipe(
+        map((response) => {
+          if (response.status === 204) {
+            return true;
+          }
+
+          return false;
+        }),
+        catchError(() => {
+          return of(false);
         })
       );
   }

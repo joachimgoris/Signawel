@@ -34,7 +34,7 @@ namespace Signawel.Business.Services
         {
             var tokenString = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
             string frontEndUrl = _configuration.FrontEndUrl;
-            var callbackUri = new Uri(frontEndUrl + $"authentication/confirmemail?userId={user.Id}&token={tokenString}");
+            var callbackUri = new Uri(frontEndUrl + $"authentication/confirm-email?userId={user.Id}&token={tokenString}");
 
             var mailDto = new SendMailDto
             {
