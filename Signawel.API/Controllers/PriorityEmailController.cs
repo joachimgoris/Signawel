@@ -14,8 +14,7 @@ using System.Threading.Tasks;
 namespace Signawel.API.Controllers
 {
     [ApiController]
-    [Authorize(Roles = Role.Constants.Admin)]
-    [JwtTokenAuthorize]
+    [JwtTokenAuthorize(Roles = Role.Constants.Admin)]
     [Route("api/priority-emails")]
     public class PriorityEmailController : BaseController
     {
@@ -28,7 +27,7 @@ namespace Signawel.API.Controllers
 
         [HttpGet]
         [SwaggerOperation(nameof(GetAllPriorityEmails))]
-        [SwaggerResponse(StatusCodes.Status200OK, "A list of all priority emails.", typeof(IList<PriorityEmailReponseDto>))]
+        [SwaggerResponse(StatusCodes.Status200OK, "A list of all priority emails.", typeof(IList<PriorityEmailResponseDto>))]
         public async Task<IActionResult> GetAllPriorityEmails()
         {
             return Ok(await _priorityEmailService.GetPriorityEmails().ToListAsync());
@@ -36,7 +35,7 @@ namespace Signawel.API.Controllers
 
         [HttpPost]
         [SwaggerOperation(nameof(AddPriorityEmail))]
-        [SwaggerResponse(StatusCodes.Status200OK, "Newly added priority email.", typeof(PriorityEmailReponseDto))]
+        [SwaggerResponse(StatusCodes.Status200OK, "Newly added priority email.", typeof(PriorityEmailResponseDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Failed to add new priority email.", typeof(IList<ErrorResponseDto>))]
         public async Task<IActionResult> AddPriorityEmail(PriorityEmailCreationRequestDto dto)
         {
@@ -51,7 +50,7 @@ namespace Signawel.API.Controllers
         [HttpDelete("{id}")]
         [SwaggerOperation(nameof(DeletePriorityEmail))]
         [SwaggerResponse(StatusCodes.Status204NoContent, "Deleted successfully")]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, "Failed to add new priority email.", typeof(IList<ErrorResponseDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Failed to delete priority email.", typeof(IList<ErrorResponseDto>))]
         public async Task<IActionResult> DeletePriorityEmail(string id)
         {
             var result = await _priorityEmailService.RemovePriorityEmailAsync(id);

@@ -10,7 +10,7 @@ namespace Signawel.Business.MapperProfiles
         public PriorityEmailProfile()
         {
             CreateMap<PriorityEmailCreationRequestDto, PriorityEmail>();
-            CreateMap<PriorityEmail, PriorityEmailReponseDto>();
+            CreateMap<PriorityEmail, PriorityEmailResponseDto>();
         }
 
     }

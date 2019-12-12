@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Signawel.Mobile.Bootstrap.Abstract;

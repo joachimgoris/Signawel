@@ -72,6 +72,14 @@
 
         #endregion PriorityEmails
 
+        #region BlacklistEmails
+
+        public const string BlacklistEmailCreationError = nameof(BlacklistEmailCreationError);
+
+        public const string BlacklistEmailDeletionError = nameof(BlacklistEmailDeletionError);
+
+        #endregion
+
         #region Images
 
         public const string FailedToSaveImage = "FailedToSaveImage";

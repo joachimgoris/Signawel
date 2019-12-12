@@ -35,7 +35,7 @@ namespace Signawel.Api.Tests.Controllers
             // Arrange
             _serviceMock
                 .Setup(_ => _.AddPriorityEmailAsync(It.IsAny<PriorityEmailCreationRequestDto>()))
-                .ReturnsAsync(DataResult<PriorityEmailReponseDto>.WithPublicError(ErrorCodes.PriorityEmailCreationError, "creation failed"));
+                .ReturnsAsync(DataResult<PriorityEmailResponseDto>.WithPublicError(ErrorCodes.PriorityEmailCreationError, "creation failed"));
 
             // Act
             var result = await _controller.AddPriorityEmail(new PriorityEmailCreationRequestDto()) as BadRequestObjectResult;
@@ -52,14 +52,14 @@ namespace Signawel.Api.Tests.Controllers
             // Arrange
             _serviceMock
                 .Setup(_ => _.AddPriorityEmailAsync(It.IsAny<PriorityEmailCreationRequestDto>()))
-                .ReturnsAsync(DataResult<PriorityEmailReponseDto>.Success(new PriorityEmailReponseDto()));
+                .ReturnsAsync(DataResult<PriorityEmailResponseDto>.Success(new PriorityEmailResponseDto()));
 
             // Act
             var result = await _controller.AddPriorityEmail(new PriorityEmailCreationRequestDto()) as OkObjectResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Value, Is.InstanceOf<PriorityEmailReponseDto>());
+            Assert.That(result.Value, Is.InstanceOf<PriorityEmailResponseDto>());
         }
 
         [Test]

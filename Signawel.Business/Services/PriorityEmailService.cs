@@ -28,18 +28,18 @@ namespace Signawel.Business.Services
             return await _context.PriorityEmails.AnyAsync(pe => pe.EmailSuffix.Equals(emailSuffix));
         }
 
-        public IQueryable<PriorityEmailReponseDto> GetPriorityEmails()
+        public IQueryable<PriorityEmailResponseDto> GetPriorityEmails()
         {
-            return _mapper.ProjectTo<PriorityEmailReponseDto>(_context.PriorityEmails.AsQueryable());
+            return _mapper.ProjectTo<PriorityEmailResponseDto>(_context.PriorityEmails.AsQueryable());
         }
 
-        public async Task<DataResult<PriorityEmailReponseDto>> AddPriorityEmailAsync(PriorityEmailCreationRequestDto dto)
+        public async Task<DataResult<PriorityEmailResponseDto>> AddPriorityEmailAsync(PriorityEmailCreationRequestDto dto)
         {
             if(string.IsNullOrEmpty(dto.EmailSuffix) || dto.EmailSuffix.Contains("@") || !dto.EmailSuffix.Contains("."))
-                return DataResult<PriorityEmailReponseDto>.WithPublicError(ErrorCodes.PriorityEmailCreationError, "Invalid PriorityEmailReponseDto");
+                return DataResult<PriorityEmailResponseDto>.WithPublicError(ErrorCodes.PriorityEmailCreationError, "Invalid PriorityEmailCreationRequestDto");
 
             if(await CheckPriorityEmailAsync(dto.EmailSuffix))
-                return DataResult<PriorityEmailReponseDto>.WithPublicError(ErrorCodes.PriorityEmailCreationError, "EmailSuffix is already a priority email.");
+                return DataResult<PriorityEmailResponseDto>.WithPublicError(ErrorCodes.PriorityEmailCreationError, $"{dto.EmailSuffix} is already a priority email.");
 
             var priorityEmail = _mapper.Map<PriorityEmail>(dto);
 
@@ -48,10 +48,10 @@ namespace Signawel.Business.Services
                 await _context.PriorityEmails.AddAsync(priorityEmail);
                 await _context.SaveChangesAsync();
 
-                return DataResult<PriorityEmailReponseDto>.Success(_mapper.Map<PriorityEmailReponseDto>(priorityEmail));
+                return DataResult<PriorityEmailResponseDto>.Success(_mapper.Map<PriorityEmailResponseDto>(priorityEmail));
             } catch (Exception)
             {
-                return DataResult<PriorityEmailReponseDto>.WithPublicError(ErrorCodes.PriorityEmailCreationError, "Failed to add priority email");
+                return DataResult<PriorityEmailResponseDto>.WithPublicError(ErrorCodes.PriorityEmailCreationError, "Failed to add priority email");
             }
         }
 

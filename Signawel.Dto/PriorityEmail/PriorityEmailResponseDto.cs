@@ -1,6 +1,6 @@
 ﻿namespace Signawel.Dto.PriorityEmail
 {
-    public class PriorityEmailReponseDto
+    public class PriorityEmailResponseDto
     {
 
         public string Id { get; set; }

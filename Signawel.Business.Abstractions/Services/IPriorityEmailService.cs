@@ -22,9 +22,9 @@ namespace Signawel.Business.Abstractions.Services
         ///     Get all priority emails
         /// </summary>
         /// <returns>
-        ///     Instance of <see cref="IQueryable{T}"/> of type <see cref="PriorityEmailReponseDto"/>
+        ///     Instance of <see cref="IQueryable{T}"/> of type <see cref="PriorityEmailResponseDto"/>
         /// </returns>
-        IQueryable<PriorityEmailReponseDto> GetPriorityEmails();
+        IQueryable<PriorityEmailResponseDto> GetPriorityEmails();
 
         /// <summary>
         ///     Add a priority email suffix
@@ -33,9 +33,9 @@ namespace Signawel.Business.Abstractions.Services
         ///     Instance of <see cref="PriorityEmailCreationRequestDto"/> containing details about the suffix to add.
         /// </param>
         /// <returns>
-        ///     Instance of <see cref="DataResult{TEntity}"/> of type <see cref="PriorityEmailReponseDto"/> containing the newly added priorityemail or errors.
+        ///     Instance of <see cref="DataResult{TEntity}"/> of type <see cref="PriorityEmailResponseDto"/> containing the newly added priorityemail or errors.
         /// </returns>
-        Task<DataResult<PriorityEmailReponseDto>> AddPriorityEmailAsync(PriorityEmailCreationRequestDto dto);
+        Task<DataResult<PriorityEmailResponseDto>> AddPriorityEmailAsync(PriorityEmailCreationRequestDto dto);
 
         /// <summary>
         ///     Remove a priority email.
