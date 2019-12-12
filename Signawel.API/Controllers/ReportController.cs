@@ -36,7 +36,7 @@ namespace Signawel.API.Controllers
         #region GetReports
 
         [HttpGet]
-        [Authorize(Roles = Role.Constants.Instance)]
+        [JwtTokenAuthorize(Roles = Role.Constants.Instance)]
         [SwaggerOperation("getReports")]
         [SwaggerResponse(StatusCodes.Status200OK, "Reports overview", typeof(DataResult<ReportResponseDto>))]
         public IActionResult GetReports([FromQuery] string search = null, [FromQuery] int page = 0, [FromQuery] int limit = 20)
@@ -73,7 +73,7 @@ namespace Signawel.API.Controllers
         #region GetReport
 
         [HttpGet("{id}")]
-        [Authorize(Roles = Role.Constants.Instance)]
+        [JwtTokenAuthorize(Roles = Role.Constants.Instance)]
         [SwaggerOperation("getReport")]
         [SwaggerResponse(StatusCodes.Status200OK, "Report found.", typeof(DataResult<ReportResponseDto>))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Report not found.", typeof(IList<DataError>))]

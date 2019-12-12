@@ -36,6 +36,8 @@ namespace Signawel.API.Controllers
             _imageService = imageService;
         }
 
+        #region GetRoadworkSchema
+        
         [HttpGet("{id}")]
         [AllowAnonymous]
         [SwaggerOperation("getRoadworkSchema")]
@@ -50,6 +52,10 @@ namespace Signawel.API.Controllers
 
             return Ok(result.Entity);
         }
+        
+        #endregion
+        
+        #region GetAllRoadworkSchemas
 
         [HttpGet]
         [AllowAnonymous]
@@ -83,9 +89,13 @@ namespace Signawel.API.Controllers
             result.Schemas = await schemaResult.ToListAsync();
             return Ok(result);
         }
+        
+        #endregion
 
+        #region AddRoadworkSchema
+        
         [HttpPost]
-        [Authorize(Roles = Role.Constants.Admin)]
+        [JwtTokenAuthorize(Roles = Role.Constants.Admin)]
         [SwaggerOperation("createRoadworkSchema")]
         [SwaggerResponse(StatusCodes.Status200OK, "The created roadwork schema", typeof(RoadworkSchemaResponseDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Something whent wrong", typeof(IList<ErrorResponseDto>))]
@@ -137,8 +147,12 @@ namespace Signawel.API.Controllers
             return Ok(creationResult.Entity);
         }
 
+        #endregion
+        
+        #region PutRoadworkSchema
+
         [HttpPut("{id}")]
-        [Authorize(Roles = Role.Constants.Admin)]
+        [JwtTokenAuthorize(Roles = Role.Constants.Admin)]
         [SwaggerOperation("putUpdateRoadworkSchema")]
         [SwaggerResponse(StatusCodes.Status200OK, "The updated roadwork schema", typeof(RoadworkSchemaResponseDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Something whent wrong")]
@@ -176,7 +190,7 @@ namespace Signawel.API.Controllers
                     }
                 }
             }
-
+            
             var updated = await _schemaService.PutRoadworkSchema(id, value);
 
             if(!updated.Succeeded)
@@ -184,9 +198,13 @@ namespace Signawel.API.Controllers
 
             return Ok(updated.Entity);
         }
+        
+        #endregion
+        
+        #region DeleteRoadworkSchema
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = Role.Constants.Admin)]
+        [JwtTokenAuthorize(Roles = Role.Constants.Admin)]
         [SwaggerOperation("deleteRoadworkSchema")]
         [SwaggerResponse(StatusCodes.Status204NoContent, "Deleted roadwork schema successfully")]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Something whent wrong")]
@@ -199,6 +217,7 @@ namespace Signawel.API.Controllers
 
             return NoContent();
         }
-
+        
+        #endregion
     }
 }

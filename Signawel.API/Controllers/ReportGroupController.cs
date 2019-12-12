@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Signawel.API.Attributes;
@@ -15,8 +14,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Signawel.API.Controllers
 {
     [ApiController]
-    [Authorize(Roles = Role.Constants.Admin)]
-    [JwtTokenAuthorize]
+    [JwtTokenAuthorize(Roles = Role.Constants.Admin)]
     [Route("api/reportgroups")]
     public class ReportGroupController : BaseController
     {
@@ -27,6 +25,8 @@ namespace Signawel.API.Controllers
             _reportGroupService = reportGroupService;
         }
 
+        #region GetAllCities
+        
         [HttpGet("cities")]
         [SwaggerOperation("getCities")]
         [SwaggerResponse(StatusCodes.Status200OK, "Cities found!", typeof(List<CityResponseDto>))]
@@ -35,6 +35,10 @@ namespace Signawel.API.Controllers
             var response = await _reportGroupService.GetAllCitiesAsync();
             return Ok(response.Entity);
         }
+        
+        #endregion
+        
+        #region DeleteReportGroup
 
         [HttpDelete]
         [SwaggerOperation("deleteReportGroup")]
@@ -50,7 +54,10 @@ namespace Signawel.API.Controllers
             
             return Ok(response);
         }
+        
+        #endregion
 
+        #region GetReportGroupsByParameters
 
         [HttpGet]
         [SwaggerOperation("getReportGroupsByParameters")]
@@ -60,6 +67,10 @@ namespace Signawel.API.Controllers
             var response = await _reportGroupService.GetReportGroupsAsync(city, mail);
             return Ok(response.Entity);
         }
+        
+        #endregion
+        
+        #region GetReportGroupById
 
         [HttpGet("{id}")]
         [SwaggerOperation("getReportGroupById")]
@@ -74,6 +85,10 @@ namespace Signawel.API.Controllers
             }
             return Ok(response.Entity);
         }
+        
+        #endregion
+        
+        #region AddReportGroup
 
         [HttpPost]
         [SwaggerOperation("addReportGroup")]
@@ -88,7 +103,11 @@ namespace Signawel.API.Controllers
             }
             return Ok(response.Entity);
         }
+        
+        #endregion
 
+        #region ModifyReportGroup
+        
         [HttpPut("{id}")]
         [SwaggerOperation("modifyReportGroup")]
         [SwaggerResponse(StatusCodes.Status200OK, "ReportGroup modified.", typeof(ReportGroupResponseDto))]
@@ -102,5 +121,7 @@ namespace Signawel.API.Controllers
             }
             return Ok(response.Entity);
         }
+        
+        #endregion
     }
 }
