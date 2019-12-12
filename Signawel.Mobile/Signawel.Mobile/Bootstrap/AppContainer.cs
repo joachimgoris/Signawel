@@ -39,7 +39,7 @@ namespace Signawel.Mobile.Bootstrap
             services.AddScoped<ListViewRoadWorksPageViewModel>();
             services.AddScoped<ReportViewModel>();
             services.AddScoped<CategoryInformationViewModel>();
-            services.AddScoped<RoadworkSchemaListViewModel>();
+            services.AddTransient<RoadworkSchemaListViewModel>();
             services.AddTransient<DeterminationGraphViewModel>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<RegisterViewModel>();
