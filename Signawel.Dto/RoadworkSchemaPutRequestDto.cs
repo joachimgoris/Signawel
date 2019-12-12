@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Signawel.Domain.Enums;
+using System.Collections.Generic;
 
 namespace Signawel.Dto
 {
@@ -11,6 +12,8 @@ namespace Signawel.Dto
         public string ImageId { get; set; }
 
         public ICollection<BBoxPutRequestDto> BoundingBoxes { get; set; }
+
+        public RoadworkCategory RoadworkCategory { get; set; }
 
     }
 }

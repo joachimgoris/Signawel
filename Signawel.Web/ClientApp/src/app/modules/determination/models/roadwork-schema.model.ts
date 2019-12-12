@@ -10,6 +10,8 @@ export class RoadworkSchemaModel {
 
   image: File;
 
+  roadworkCategory: string;
+
   constructor() {
     this.boundingBoxes = new Array<BoundingBox>();
   }
