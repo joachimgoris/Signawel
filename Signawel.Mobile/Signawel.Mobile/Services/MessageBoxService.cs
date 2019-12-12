@@ -17,6 +17,12 @@ namespace Signawel.Mobile.Services
             onClosed?.Invoke();
         }
 
+        public async Task<bool> ShowYesNoAlert(string title, string message, string accept, string deny)
+        {
+            var response = await CurrentMainPage.DisplayAlert(title, message, accept,deny);
+            return response;
+        }
+
         public async Task<string> ShowActionSheet(string title, string cancel, string destruction, string[] buttons = null)
         {
             var displayButtons = buttons ?? new string[] { };

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Windows.Input;
 using Signawel.Mobile.Bootstrap.Abstract;
 using Signawel.Mobile.Bootstrap;
+using Signawel.Mobile.Services.Abstract;
 
 namespace Signawel.Mobile.ViewModels
 {
@@ -18,6 +19,7 @@ namespace Signawel.Mobile.ViewModels
     {
         private readonly INavigationService _navigationService;
         private readonly IHttpService _httpService;
+        private readonly IMessageBoxService _messageService;
 
         public double Latitude { get; set; }
 
@@ -37,43 +39,50 @@ namespace Signawel.Mobile.ViewModels
 
         public int SliderValue { get; set; }
 
-        public string SliderText => $"Zoeken werken in een straal van {SliderValue}km rond de gegeven locatie.";
-
-        public bool SeeListButtonIsVisible { get; set; }
-
-        public float LocationButtonOpacity { get; set; }
-
-        public ICommand SetMyLocationCommand => new AsyncCommand(SetMyLocation);
-
-        public ICommand ShowRoadWorksCommand => new AsyncCommand(ShowRoadWorks);
+        public int LastRadius { get; set; }
 
         public ICommand NavigateToListCommand => new AsyncCommand(NavigateToList);
 
-        public ICommand AddRoadworkToReportCommand => new Command(OnAddRoadworkToReport);
+        public ICommand MyLocationResultsCommand => new AsyncCommand(MyLocationResults);
 
-        public MapPageViewModel(INavigationService navigationService, IHttpService httpService)
+        public ICommand PickerValueChangedCommand => new AsyncCommand(PickerValueChanged);
+
+        private ICommand _ShowRoadWorksCommand;
+
+        public ICommand ShowRoadWorksCommand => _ShowRoadWorksCommand ?? (_ShowRoadWorksCommand = new Command<string>(async (text) =>
+        {
+            await ShowRoadWorks(text);
+        }));
+
+        public bool Loading { get; set; }
+        public bool RequestValid { get; set; }
+        public double MapOpacity { get; set; }
+
+        public MapPageViewModel(INavigationService navigationService, IHttpService httpService,IMessageBoxService messageService)
         {
             _navigationService = navigationService;
             _httpService = httpService;
+            _messageService = messageService;
 
             ClearMap();
         }
 
         public void ClearMap()
         {
-            SliderValue = 3;
+            MapOpacity = 1;
+            RequestValid = false;
+            SliderValue = 0;
             SearchbarText = "";
             DetailsWorkRowHeight = 0;
-            LocationButtonOpacity = 1;
-            SeeListButtonIsVisible = false;
             SearchbarIsEnabled = true;
+            Loading = false;
             RoadWorks = new List<RoadWork>();
             Map = new Xamarin.Forms.Maps.Map
             {
                 MapType = MapType.Street,
                 HasZoomEnabled = true
             };
-            Map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(50.932196, 5.343894), Distance.FromKilometers(3)));
+            Map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(50.928047, 5.336753), Distance.FromKilometers(30)));
         }
 
         // Calculate distance between two coordinates
@@ -85,8 +94,22 @@ namespace Signawel.Mobile.ViewModels
         }
 
         // Search for roadworks and place them on the map
-        public async Task ShowRoadWorks()
+        public async Task ShowRoadWorks(Object seachbarText)
         {
+            Loading = true;
+            MapOpacity = 0.2;
+
+            var seachbar = (string)seachbarText;
+            if(seachbar.Equals("Mijn locatie"))
+            {
+                await SetMyLocation();
+                if(Latitude == 0 && Longitude == 0)
+                {
+                    Loading = false;
+                    MapOpacity = 1;
+                    return;
+                }
+            }
             // Everytime the user searches at a new place, the previous pins are removed
             foreach (Pin pin in Map.Pins.ToList())
             {
@@ -96,14 +119,17 @@ namespace Signawel.Mobile.ViewModels
             RoadWorks.Clear();
 
             // When the searchbar is enabled the user searchers roadworks by address
-            if (SearchbarIsEnabled)
+            if (!seachbar.Equals("Mijn locatie"))
             {
                 var coordinates = JsonConvert.DeserializeObject<AddressToCoordinate>(
                     await AccessTheWebAsync($"http://loc.geopunt.be/v4/Location?q={SearchbarText}"));
 
                 if (coordinates.locationResult.Count == 0)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Fout adres!", "Het opgegeven adres bestaat niet of is in een fout formaat ingegeven, zorg ervoor dat u het adres in dit formaat ingeeft : straat nr, stad of enkel een straat/stad", "OK");
+                    _messageService.ShowAlert("Fout adres!", "Het opgegeven adres bestaat niet of is in een fout formaat ingegeven, zorg ervoor dat u het adres in dit formaat ingeeft : straat nr, stad of enkel een straat/stad");
+                    Loading = false;
+                    RequestValid = false;
+                    MapOpacity = 1;
                     return;
                 }
 
@@ -115,14 +141,14 @@ namespace Signawel.Mobile.ViewModels
             var lngString = Longitude.ToString(CultureInfo.InvariantCulture);
 
             var roadWorksBeforeCheck = JsonConvert.DeserializeObject<List<RoadWork>>(
-                await AccessTheWebAsync($"http://api.gipod.vlaanderen.be/ws/v1/WorkAssignment?point={lngString},{latString}&radius={(SliderValue*1000)}"));
+                await AccessTheWebAsync($"http://api.gipod.vlaanderen.be/ws/v1/WorkAssignment?point={lngString},{latString}&radius={((SliderValue+1)*1000)}"));
 
             foreach (var roadWork in roadWorksBeforeCheck)
             {
                 var distance = CalculateDistanceBetweenCoordinates(Latitude, Longitude, roadWork.Coordinate.coordinates[1], roadWork.Coordinate.coordinates[0]);
 
                 // Sometimes Gipod returns a roadwork that's out of the specified range
-                if (distance < SliderValue)
+                if (distance < (SliderValue+1))
                 {
                     RoadWorks.Add(roadWork);
                     roadWork.DistanceToDevice = distance;
@@ -141,40 +167,50 @@ namespace Signawel.Mobile.ViewModels
 
             if (Map.Pins.Count == 0)
             {
-                await Application.Current.MainPage.DisplayAlert("Geen werken gevonden", "Er zijn geen werken in de buurt van de gegeven locatie", "OK");
+                _messageService.ShowAlert("Geen werken gevonden", "Er zijn geen werken in de buurt van de gegeven locatie");
+                Loading = false;
+                RequestValid = true;
+                MapOpacity = 1;
                 return;
             }
+            Map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(Latitude, Longitude), Distance.FromKilometers(SliderValue +1)));
 
-            SeeListButtonIsVisible = true;
-            Map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(Latitude, Longitude), Distance.FromKilometers(6)));
+            DetailsWorkRowHeight = new GridLength(1.2, GridUnitType.Star);
+            LastRadius = SliderValue;
+            Loading = false;
+            RequestValid = true;
+            MapOpacity = 1;
         }
 
         // Get the devices location
         public async Task SetMyLocation()
         {
-            if (SearchbarIsEnabled)
-            {
-                var request = new GeolocationRequest(GeolocationAccuracy.Best);
-                var location = await Geolocation.GetLocationAsync(request);
+
+                GeolocationRequest request;
+                Location location;
+                try
+                {
+                    request = new GeolocationRequest(GeolocationAccuracy.Best);
+                    location = await Geolocation.GetLocationAsync(request);
+                }
+                catch (PermissionException)
+                {
+                _messageService.ShowAlert("Geen toegang", "De app heeft toegang nodig tot u locatie om werken in u buurt te vinden");
+                    return;
+                }
 
                 Latitude = location.Latitude;
                 Longitude = location.Longitude;
 
-                Map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(Latitude, Longitude), Distance.FromKilometers(2)));
 
-                SearchbarText = "Mijn Locatie";
-                SearchbarIsEnabled = false;
-                LocationButtonOpacity = (float)0.5;
-
-                await ShowRoadWorks();
-            }
-            else
-            {
-                SearchbarText = "";
-                SearchbarIsEnabled = true;
-                LocationButtonOpacity = 1;
-            }
         }
+
+        private async Task MyLocationResults()
+        {
+            SearchbarText = "Mijn locatie";
+            await ShowRoadWorks("Mijn locatie");
+        }
+
 
         // Navigate to ListViewRoadWorksPage and pass the RoadWork objects
         private async Task NavigateToList()
@@ -184,19 +220,28 @@ namespace Signawel.Mobile.ViewModels
         }
 
         // When a pin is tapped, add a row to the grid with the details of the roadwork
-        private void RoadWorkTapped(object sender, PinClickedEventArgs e)
+        private async void RoadWorkTapped(object sender, PinClickedEventArgs e)
         {
             Pin pin = (Pin)sender;
-            
             SelectedItem = RoadWorks.FirstOrDefault(r => r.Description.Equals(pin.Address));
-            DetailsWorkRowHeight = new GridLength(1.2, GridUnitType.Star);
+
             e.HideInfoWindow = true;
+
+            var ans = await _messageService.ShowYesNoAlert($"Werk: {SelectedItem.GipodId}", $"Wilt u dit werk aan uw report toevoegen?\nbeschrijving: {SelectedItem.Description}", "Ja", "Nee");
+            if (ans)
+            {
+                await _navigationService.NavigateToAsync<ReportViewModel>(SelectedItem);
+            }
         }
 
-        private void OnAddRoadworkToReport()
+        private async Task PickerValueChanged()
         {
-            _navigationService.NavigateToAsync<ReportViewModel>(SelectedItem);
+            if(RequestValid && SliderValue != LastRadius)
+            {
+                await ShowRoadWorks(SearchbarText);
+            }
         }
+
 
         #region PrivateMethods
 

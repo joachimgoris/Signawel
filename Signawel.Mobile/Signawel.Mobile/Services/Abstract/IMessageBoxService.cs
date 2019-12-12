@@ -38,5 +38,25 @@ namespace Signawel.Mobile.Services.Abstract
         ///     An instance of <see cref="Task{TResult}"/> containing an instance of <see cref="string"/>. Can be used to determine what options was clicked by the user.
         /// </returns>
         Task<string> ShowActionSheet(string title, string cancel, string destruction, string[] buttons = null);
+
+        /// <summary>
+        ///     Creates a pop up with options the user can choose from
+        /// </summary>
+        /// <param name="title">
+        ///     Title that displays at the top of the pop up.
+        /// </param>
+        /// <param name="message">
+        ///     Text that displays below the title
+        /// </param>
+        /// <param name="accept">
+        ///     The text to display for the button to accept the condition
+        /// </param>
+        /// <param name="deny">
+        ///     The text to display for the button to deny the condition
+        /// </param>
+        /// <returns>
+        ///     An instance of <see cref="Task{TResult}"/> containing an instance of <see cref="bool"/>. Can be used to determine what options was clicked by the user.
+        /// </returns>
+        Task<bool> ShowYesNoAlert(string title, string message, string accept, string deny);
     }
 }
