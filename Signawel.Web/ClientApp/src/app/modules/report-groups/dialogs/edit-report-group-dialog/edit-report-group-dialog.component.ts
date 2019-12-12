@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ReportGroupResponseModel } from '../../models/report-group-response-model';
 import { CityResponseModel } from '../../models/city-response-model';
 import { EmailResponseModel } from '../../models/email-response-model';
-import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
 import { ReportGroupCreationRequestModel } from '../../models/report-group-creation-request-model';
 import { CityCreationRequestModel } from '../../models/city-creation-request-model';
 import { EmailCreationRequestModel } from '../../models/email-creation-request-model';
@@ -37,12 +37,12 @@ export class EditReportGroupDialogComponent {
 
   addData() {
     this.reportGroup.cityReportGroups.forEach((o, i) => {
-      const control = new FormControl(o.name);
+      const control = new FormControl(o.name,[Validators.required]);
       (this.form.controls.cityControls as FormArray).push(control);
     });
 
     this.reportGroup.emailReportGroups.forEach((o, i) => {
-      const control = new FormControl(o.emailAddress);
+      const control = new FormControl(o.emailAddress, [Validators.required, Validators.email]);
       (this.form.controls.emailControls as FormArray).push(control);
     });
   }
@@ -52,12 +52,12 @@ export class EditReportGroupDialogComponent {
   }
 
   addCity() {
-    const control = new FormControl();
+    const control = new FormControl([], [Validators.required]);
     (this.form.controls.cityControls as FormArray).push(control);
   }
 
   addEmail() {
-    const control = new FormControl();
+    const control = new FormControl([], [Validators.required, Validators.email]);
     (this.form.controls.emailControls as FormArray).push(control);
   }
 

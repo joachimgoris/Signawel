@@ -4,7 +4,7 @@ import {CityCreationRequestModel} from '../../models/city-creation-request-model
 import {EmailCreationRequestModel} from '../../models/email-creation-request-model';
 import{ReportGroupService} from "../../services/report-group.service";
 import { CityResponseModel } from '../../models/city-response-model';
-import { FormControl, Form } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map, delay } from 'rxjs/operators';
 import { ReportGroupResponseModel } from '../../models/report-group-response-model';
@@ -28,23 +28,34 @@ export class AddReportGroupComponent implements OnInit {
   selectedSearch: string;
   searchText: string;
 
-  @ViewChild('addReportGroup',{ static: false }) form;
-
   public reportGroupCreationRequest: ReportGroupCreationRequestModel = new ReportGroupCreationRequestModel();
   public reportGroupResponses: Array<ReportGroupResponseModel>;
 
   public cities: Array<CityResponseModel>;
   public cityNames: Array<string>;
+  public newCityNames: Array<string>;
   private isLoading: boolean;
   private isRequestLoading: boolean;
+
+  form: FormGroup;
 
   constructor(private reportGroupService: ReportGroupService,
     private cd: ChangeDetectorRef,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog) { 
+    private dialog: MatDialog,
+    private formBuilder: FormBuilder) { 
+      
   }
 
   ngOnInit() {
+    this.form = this.formBuilder.group({
+      cityControls: new FormArray([]),
+      emailControls: new FormArray([])
+    });
+
+    this.addCity();
+    this.addEmail();
+
     this.selectedSearch = "city";
     this.isLoading = true;
 
@@ -52,12 +63,19 @@ export class AddReportGroupComponent implements OnInit {
       this.cities = result;
       this.cities.sort((a,b) => a.name.localeCompare(b.name));
       this.cityNames = this.cities.map(c=>c.name);
-    }).add(()=> {
-      if(this.cities == undefined){
-        this.snackBar.open("Server onbereikbaar","",{
-          duration: 2000
+    },
+    error=>{
+      if(error.status == 0){
+        this.snackBar.open("Error, kan server niet bereiken","",{
+          duration: 2500
         });
       }
+      if(error.status == 401){
+        this.snackBar.open("Error, Gelieve opnieuw in te loggen","",{
+          duration: 2500
+        });
+      }
+    }).add(()=> {
       this.isLoading = false;
       this.filteredOptions = this.cityControl.valueChanges.pipe(
         startWith(''),
@@ -65,9 +83,6 @@ export class AddReportGroupComponent implements OnInit {
         map(value => this._filter(value))
       );
     });
-
-    this.reportGroupCreationRequest.cityReportGroups.push(new CityCreationRequestModel());
-    this.reportGroupCreationRequest.emailReportGroups.push(new EmailCreationRequestModel());
   }
 
   private _filter(value: string): string[] {
@@ -77,23 +92,21 @@ export class AddReportGroupComponent implements OnInit {
   }
 
   addCity(){
-    this.reportGroupCreationRequest.cityReportGroups[this.reportGroupCreationRequest.cityReportGroups.length - 1].name = this.cityControl.value;
-    this.reportGroupCreationRequest.cityReportGroups.push(new CityCreationRequestModel());
-    this.cityControl.setValue("", {emitModelToViewChange: false});
+    const control = new FormControl([], [Validators.required]);
+    (this.form.controls.cityControls as FormArray).push(control);
   }
 
   addEmail(){
-    this.reportGroupCreationRequest.emailReportGroups[this.reportGroupCreationRequest.emailReportGroups.length - 1].emailAddress = this.emailControl.value;
-    this.reportGroupCreationRequest.emailReportGroups.push(new EmailCreationRequestModel());
-    this.emailControl.setValue("", {emitModelToViewChange: false});
+    const control = new FormControl([], [Validators.required, Validators.email]);
+    (this.form.controls.emailControls as FormArray).push(control);
   }
 
   RemoveCityFromForm(index: any){
-    this.reportGroupCreationRequest.cityReportGroups.splice(index,1);
+    (this.form.controls.cityControls as FormArray).removeAt(index);
   }
 
   RemoveEmailFromForm(index: any){
-    this.reportGroupCreationRequest.emailReportGroups.splice(index,1);
+    (this.form.controls.emailControls as FormArray).removeAt(index);
   }
 
   editReportGroup(index: any){
@@ -174,17 +187,68 @@ export class AddReportGroupComponent implements OnInit {
 
   }
 
+  checkForDuplicates(): boolean{
+    let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index)
+
+    this.newCityNames = new Array<string>();
+    let cityLength = (this.form.controls.cityControls as FormArray).length;
+
+    for(let i = 0;i<cityLength;i++){
+      let formControl = (this.form.controls.cityControls as FormArray).get(i.toString());
+      this.newCityNames.push(formControl.value);
+    }
+
+    let duplicates = findDuplicates(this.newCityNames);
+    return duplicates.length > 0;
+  }
+
+  checkIfCitiesExist(): boolean{
+    var response = false;
+    this.newCityNames.forEach(city => {
+      if(!this.cityNames.includes(city)){
+        response =  true;
+      }
+    });
+    return response;
+  }
+
   onSubmit(){
-    this.reportGroupCreationRequest.emailReportGroups[this.reportGroupCreationRequest.emailReportGroups.length - 1].emailAddress = this.emailControl.value;
-    this.reportGroupCreationRequest.cityReportGroups[this.reportGroupCreationRequest.cityReportGroups.length - 1].name = this.cityControl.value;
+    if(this.checkForDuplicates()){
+      this.snackBar.open("Er zijn één of meerdere steden dubbel toegevoegd","",{
+        duration: 3000
+      });
+      return;
+    }
+
+    if(this.checkIfCitiesExist()){
+      this.snackBar.open("Er zijn één of meerdere onbestaande steden toegevoegd","",{
+        duration: 3000
+      });
+      return;
+    }
+
+    let reportGroupCreation = new ReportGroupCreationRequestModel();
+
+    let cityLength = (this.form.controls.cityControls as FormArray).length;
+    let emailLength = (this.form.controls.emailControls as FormArray).length;
+
+    for(let i = 0;i<cityLength;i++){
+      let formControl = (this.form.controls.cityControls as FormArray).get(i.toString());
+      let city = new CityCreationRequestModel();
+      city.name = formControl.value;
+      reportGroupCreation.cityReportGroups.push(city);
+    }
+    for(let i = 0;i<emailLength;i++){
+      let formControl = (this.form.controls.emailControls as FormArray).get(i.toString());
+      let email = new EmailCreationRequestModel();
+      email.emailAddress = formControl.value;
+      reportGroupCreation.emailReportGroups.push(email);
+    }
 
     this.isLoading = true;
-    this.reportGroupService.setReportGroup(this.reportGroupCreationRequest)
+    this.reportGroupService.setReportGroup(reportGroupCreation)
     .subscribe(response=>{
-      this.reportGroupCreationRequest = new ReportGroupCreationRequestModel();
-      this.reportGroupCreationRequest.cityReportGroups.push(new CityCreationRequestModel());
-    this.reportGroupCreationRequest.emailReportGroups.push(new EmailCreationRequestModel());
-      this.snackBar.open("Nieuwe meldingsgroep is toegevoegd","",{
+    this.snackBar.open("Niewe meldingsgroep is aangemaakt","",{
       duration: 2000
     });
     },
@@ -202,8 +266,10 @@ export class AddReportGroupComponent implements OnInit {
     })
     .add(()=>{
         this.isLoading = false;
-        this.cityControl.setValue("", {emitModelToViewChange: false});
-      this.emailControl.setValue("", {emitModelToViewChange: false});
+        (this.form.controls.emailControls as FormArray).clear();
+        (this.form.controls.cityControls as FormArray).clear();
+        this.addCity();
+        this.addEmail();
     });
   }
 

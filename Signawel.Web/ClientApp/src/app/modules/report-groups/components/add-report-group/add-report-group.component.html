@@ -6,47 +6,69 @@
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <form #addReportGroup="ngForm" class="addReportForm" *ngIf="!isLoading">
+      <form [formGroup]="form" class="addReportForm" *ngIf="!isLoading" #ReportGroupForm="ngForm">
 
-        <div *ngFor="let city of reportGroupCreationRequest.cityReportGroups; let i = index" class="form-row">
-          <mat-form-field>
-            <mat-grid-list cols="2" rowHeight="5:1">
-              <mat-grid-tile><input placeholder="Stad" type="search" matInput [formControl]="cityControl"
-                  [matAutocomplete]="auto">
-                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                  <mat-option *ngFor="let cityName of filteredOptions | async" [value]="cityName">
-                    {{ cityName }}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-grid-tile>
-              <mat-grid-tile *ngIf="i>0"><button mat-icon-button (click)="RemoveCityFromForm(i)">
-                  <mat-icon>delete_outline</mat-icon>
-                </button></mat-grid-tile>
-            </mat-grid-list>
-          </mat-form-field>
+        <div class="citiesEmailsContainer">
+          <div class="citiesLeft">
+            <div formArrayName="cityControls" *ngFor="let order of form.controls.cityControls.controls; let i = index"
+              class="form-row">
+              <mat-form-field>
+                <mat-grid-list cols="2" rowHeight="5:1">
+                  <mat-grid-tile><input placeholder="Stad" type="search" matInput [formControlName]="i"
+                      [matAutocomplete]="auto">
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                      <mat-option *ngFor="let cityName of filteredOptions | async" [value]="cityName">
+                        {{ cityName }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-grid-tile>
+                  <mat-grid-tile *ngIf="form.controls.cityControls.length>1"><button mat-icon-button
+                      (click)="RemoveCityFromForm(i)">
+                      <mat-icon>delete_outline</mat-icon>
+                    </button></mat-grid-tile>
+                </mat-grid-list>
+                <mat-error *ngIf="form.controls.cityControls.controls[i].errors?.required && (form.controls.cityControls.controls[i].dirty || form.controls.cityControls.controls[i].touched)">
+                  Gelieve alle verplichte velden in te vullen
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="veryLittleWhiteSpace"></div>
+
+            <button mat-raised-button (click)="addCity()">Voeg een stad toe</button>
+          </div>
+
+          <div class="emailsRight">
+            <div formArrayName="emailControls" *ngFor="let order of form.controls.emailControls.controls; let i = index"
+              class="form-row">
+              <mat-form-field>
+                <mat-grid-list cols="2" rowHeight="5:1">
+                  <mat-grid-tile><input matInput class="emailInput" placeholder="emailadres" type="email"
+                      [formControlName]="i" name="emailInput"></mat-grid-tile>
+                  <mat-grid-tile *ngIf="i>0"><button mat-icon-button (click)="RemoveEmailFromForm(i)">
+                      <mat-icon>delete_outline</mat-icon>
+                    </button></mat-grid-tile>
+                </mat-grid-list>
+                <mat-error *ngIf="form.controls.emailControls.controls[i].errors?.required && (form.controls.emailControls.controls[i].dirty || form.controls.emailControls.controls[i].touched)">
+                  Gelieve alle verplichte velden in te vullen
+                </mat-error>
+                <mat-error *ngIf="form.controls.emailControls.controls[i].errors?.email && (form.controls.emailControls.controls[i].dirty || form.controls.emailControls.controls[i].touched)">
+                  E-mailadres is niet geldig
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="veryLittleWhiteSpace"></div>
+
+            <button mat-raised-button (click)="addEmail()">Voeg een emailadres toe</button>
+          </div>
         </div>
-
-        <button mat-raised-button (click)="addCity()">Voeg een stad toe</button>
-
-        <div *ngFor="let email of reportGroupCreationRequest.emailReportGroups; let i = index" class="form-row">
-          <mat-form-field>
-            <mat-grid-list cols="2" rowHeight="5:1">
-              <mat-grid-tile><input matInput placeholder="e-mailadres" type="email" [formControl]="emailControl"
-                  name="emailInput"></mat-grid-tile>
-              <mat-grid-tile *ngIf="i>0"><button mat-icon-button (click)="RemoveEmailFromForm(i)">
-                  <mat-icon>delete_outline</mat-icon>
-                </button></mat-grid-tile>
-            </mat-grid-list>
-          </mat-form-field>
-        </div>
-
-        <button mat-raised-button (click)="addEmail()">Voeg een emailadres toe</button>
 
         <div class="littleWhiteSpace"></div>
 
         <div class="form-row">
-          <button mat-raised-button type="submit" [disabled]="!addReportGroup.valid" class="submitButton"
-            (click)="onSubmit()">Opslaan</button>
+          <button mat-raised-button type="submit" class="submitButton" (click)="onSubmit()"
+            [disabled]="!ReportGroupForm.valid">Opslaan</button>
         </div>
       </form>
       <mat-spinner [style.display]="isLoading ? 'block' : 'none'"></mat-spinner>
@@ -74,26 +96,28 @@
       </mat-grid-list>
       <mat-spinner [style.display]="isRequestLoading ? 'block' : 'none'"></mat-spinner>
 
+      <div class="littleWhiteSpace"></div>
+
       <div *ngIf="!isRequestLoading">
         <mat-card *ngFor="let report of reportGroupResponses;let i = index">
           <mat-card-header>
             <mat-card-title>Report groep {{i + 1}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-              <div class="grid-container">
-                <mat-nav-list>
-                  <mat-list-item *ngFor="let city of report.cityReportGroups">
-                    <mat-icon>play_arrow</mat-icon>
-                    {{city.name}}
-                  </mat-list-item>
-                </mat-nav-list>
-                <mat-nav-list>
-                  <mat-list-item *ngFor="let email of report.emailReportGroups">
-                    <mat-icon>play_arrow</mat-icon>
-                    {{email.emailAddress}}
-                  </mat-list-item>
-                </mat-nav-list>
-                </div>
+            <div class="grid-container">
+              <mat-nav-list>
+                <mat-list-item *ngFor="let city of report.cityReportGroups">
+                  <mat-icon>play_arrow</mat-icon>
+                  {{city.name}}
+                </mat-list-item>
+              </mat-nav-list>
+              <mat-nav-list>
+                <mat-list-item *ngFor="let email of report.emailReportGroups">
+                  <mat-icon>play_arrow</mat-icon>
+                  {{email.emailAddress}}
+                </mat-list-item>
+              </mat-nav-list>
+            </div>
           </mat-card-content>
           <mat-card-actions>
             <button mat-icon-button (click)="editReportGroup(i)">EDIT</button>
