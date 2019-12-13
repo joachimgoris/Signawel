@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Signawel.Domain;
 using Signawel.Domain.Determination;
 using System.Threading.Tasks;
+using Signawel.Domain.Reports;
 
 namespace Signawel.Data
 {
@@ -22,13 +24,16 @@ namespace Signawel.Data
             if(await SeedUsers(userManager))
                 changes = true;
 
+            if(await SeedDefaultIssues(context))
+                changes = true;
+
             if(changes)
             {
                 await context.SaveChangesAsync();
             }
         }
 
-        private async static Task<bool> SeedDetermination(SignawelDbContext context)
+        private static async Task<bool> SeedDetermination(SignawelDbContext context)
         {
             if(await context.DeterminationGraphs.AnyAsync())
             {
@@ -63,7 +68,7 @@ namespace Signawel.Data
             return changes;
         }
 
-        private async static Task<bool> SeedUsers(UserManager<User> userManager)
+        private static async Task<bool> SeedUsers(UserManager<User> userManager)
         {
             if(await userManager.Users.AnyAsync())
             {
@@ -78,6 +83,34 @@ namespace Signawel.Data
             };
             await userManager.CreateAsync(user, "Password@001");
             await userManager.AddToRoleAsync(user, Role.Constants.Admin);
+
+            return true;
+        }
+
+        private static async Task<bool> SeedDefaultIssues(SignawelDbContext context)
+        {
+            if (await context.DefaultIssues.AnyAsync())
+            {
+                return false;
+            }
+
+            var defaultIssues = new List<ReportDefaultIssue>
+            {
+                new ReportDefaultIssue
+                {
+                    Name = "Vuil"
+                },
+                new ReportDefaultIssue
+                {
+                    Name = "Ontbrekend"
+                },
+                new ReportDefaultIssue
+                {
+                    Name = "Verkeerd geplaatst"
+                }
+            };
+
+            await context.AddRangeAsync(defaultIssues);
 
             return true;
         }

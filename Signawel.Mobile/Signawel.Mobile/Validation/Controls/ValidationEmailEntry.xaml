@@ -10,7 +10,8 @@
       <StackLayout Orientation="Vertical">
           <Entry x:Name="ValidationEntryEntry"
                  BackgroundColor="Transparent"/>
-          <Label x:Name="ValidationEntryLabel"/>
+          <Label x:Name="ValidationEntryLabel"
+                 IsVisible="False"/>
         </StackLayout>
   </ContentView.Content>
 </abstract:ValidationFormEntry>

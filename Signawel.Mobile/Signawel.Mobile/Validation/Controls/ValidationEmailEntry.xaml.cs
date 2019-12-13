@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Signawel.Mobile.Constants;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -33,7 +34,7 @@ namespace Signawel.Mobile.Validation.Controls
             ValidationEntryEntry.Text = EntryText;
             ValidationEntryEntry.Placeholder = PlaceHolder;
 
-            ValidationEntryLabel.Text = ErrorMessage;
+            ValidationEntryLabel.Text = TextConstants.EmailInvalid;
             ValidationEntryLabel.TextColor = ErrorColor;
             ValidationEntryLabel.IsVisible = false;
 
