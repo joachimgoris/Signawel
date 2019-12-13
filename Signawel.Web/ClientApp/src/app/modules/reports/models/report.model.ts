@@ -3,6 +3,7 @@ import { ReportIssueModel } from './report-issue.model';
 
 export class ReportModel {
     id: string;
+    roadworkId: number;
     senderEmail: string;
     creationTime: string;
     issue: ReportIssueModel

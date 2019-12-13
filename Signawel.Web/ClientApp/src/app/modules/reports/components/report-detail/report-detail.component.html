@@ -10,10 +10,42 @@
     </mat-form-field>
 
     <mat-form-field>
-        <input matInput placeholder="Aangemaakt op" name="creationTime" [ngModel]="report.creationTime | date:'dd/MM/yyyy hh:mm a'"
-        (ngModelChange)="report.creationTime=$event" disabled/>
+        <input matInput placeholder="Aangemaakt op" name="creationTime"
+            [ngModel]="report.creationTime | date:'dd/MM/yyyy hh:mm a'" (ngModelChange)="report.creationTime=$event"
+            disabled />
     </mat-form-field>
 
+    <h4>Info werk uit GiPod</h4>
+    <p *ngIf="!roadworkAssignment; else roadwork">Er kon geen info gevonden geworden over het werk.</p>
+
+    <ng-template #roadwork>
+        <mat-form-field>
+            <input matInput placeholder="Omschrijving" name="roadworkDescription"
+                [ngModel]="roadworkAssignment.description" disabled />
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Opmerking" name="roadworkComment" [ngModel]="roadworkAssignment.comment"
+                disabled />
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Status" name="state" [ngModel]="roadworkAssignment.state" disabled />
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Werk gestart op" name="startDateTime"
+                [ngModel]="roadworkAssignment.startDateTime | date:'dd/MM/yyyy hh:mm a'" disabled />
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Werk eindigt op" name="endDateTime"
+                [ngModel]="roadworkAssignment.endDateTime | date:'dd/MM/yyyy hh:mm a'" disabled />
+        </mat-form-field>
+    </ng-template>
+
+    <h4>Afbeeldingen</h4>
+    <p *ngIf="report.images.length == 0">Er zijn geen afbeeldingen aan de melding toegevoegd.</p>
     <div class="card-deck">
         <mat-card *ngFor="let reportImage of report.images">
             <img mat-card-image [src]="getImageUrl(reportImage.imageId)" onerror="this.src='assets/image_not_found.png'" alt="report image">

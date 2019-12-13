@@ -95,6 +95,7 @@ namespace Signawel.API.Controllers
         #region AddReport
 
         [HttpPost]
+        [AllowAnonymous]
         [SwaggerOperation("uploadReport")]
         [SwaggerResponse(StatusCodes.Status200OK, "Report created.", typeof(DataResult<ReportResponseDto>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Something went wrong.", typeof(IList<ErrorResponseDto>))]

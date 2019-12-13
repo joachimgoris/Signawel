@@ -36,7 +36,7 @@ export class ReportsOverviewComponent implements AfterViewInit, OnInit {
   ngAfterViewInit(): void {
     fromEvent(this.searchInput.nativeElement, "keyup")
       .pipe(
-        debounceTime(2000),
+        debounceTime(1000),
         distinctUntilChanged(),
         tap(() => {
           this.paginator.pageIndex = 0;

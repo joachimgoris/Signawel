@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Signawel.Business.Abstractions.Services;
 using Signawel.Data;
@@ -8,6 +8,8 @@ using Signawel.Dto.Reports;
 using System.Linq;
 using System.Threading.Tasks;
 using Signawel.Domain.Reports;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Signawel.Business.Services
 {

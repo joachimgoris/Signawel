@@ -10,3 +10,7 @@ export const REPORT_GROUPS = BASE_URL + "/reportgroups";
 export const CITIES = REPORT_GROUPS + "/cities";
 export const PRIORITY_EMAILS = BASE_URL + "/priority-emails";
 export const REPORTS = BASE_URL + "/reports"
+
+// GIPOD
+export const GIPOD_BASE_URL = 'http://api.gipod.vlaanderen.be/ws/v1';
+export const ROADWORK_INFO = GIPOD_BASE_URL + '/WorkAssignment?Id=';

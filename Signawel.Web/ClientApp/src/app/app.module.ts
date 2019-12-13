@@ -14,7 +14,6 @@ import { DeterminationModule } from "./modules/determination/determination.modul
 import { ReportGroupsModule } from "./modules/report-groups/report-groups.module";
 import { SignawelMaterialModule } from "./modules/signawel-material/signawel-material.module";
 import { SharedModule } from "./modules/shared/shared.module";
-import { TokenInterceptor } from "./modules/authentication/intercepters/token-interceptor";
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent, HomeComponent],

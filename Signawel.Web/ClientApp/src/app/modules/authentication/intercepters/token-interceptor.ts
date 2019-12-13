@@ -10,6 +10,7 @@ import { Observable, BehaviorSubject, throwError } from "rxjs";
 import { tap, filter, switchMap, take, catchError } from "rxjs/operators";
 import { AuthenticationService } from "../services/authentication.service";
 import { TokenModel } from "../models/token.model";
+import { GIPOD_BASE_URL } from 'src/app/constants/api.constants';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -32,6 +33,10 @@ export class TokenInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    if(request.url.includes(GIPOD_BASE_URL)) {
+      return next.handle(request);
+    }
+
     if (this.authService.getJwtToken()) {
       request = this.addToken(request, this.authService.getJwtToken());
     }
