@@ -16,5 +16,7 @@ namespace Signawel.Domain.Reports
         public ICollection<ReportImage> Images { get; set; }
 
         public ReportDefaultIssue Issue { get; set; }
+
+        public string Cities { get; set; }
     }
 }

@@ -32,6 +32,9 @@ namespace Signawel.Data.Configurations
             builder.Property(e => e.Description)
                 .IsUnicode()
                 .HasColumnName("description");
+
+            builder.Property(e => e.Cities)
+                .HasColumnName("cities");
         }
     }
 }

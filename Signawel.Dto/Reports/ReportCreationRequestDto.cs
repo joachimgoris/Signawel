@@ -19,5 +19,7 @@ namespace Signawel.Dto.Reports
 
         [Required]
         public ReportDefaultIssue Issue { get; set; }
+
+        public string Cities { get; set; }
     }
 }

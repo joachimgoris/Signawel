@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Signawel.Mobile.Models
 {
@@ -9,5 +10,6 @@ namespace Signawel.Mobile.Models
         public string Description { get; set; }
         public DateTime CreationTime { get; set; }
         public string IssueType { get; set; }
+        public string Cities { get; set; }
     }
 }

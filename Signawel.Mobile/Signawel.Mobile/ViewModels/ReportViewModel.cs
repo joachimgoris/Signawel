@@ -208,7 +208,8 @@ namespace Signawel.Mobile.ViewModels
                         Description = Description,
                         RoadworkId = Roadwork.GipodId,
                         IssueType = IssueType,
-                        CreationTime = DateTime.Now
+                        CreationTime = DateTime.Now,
+                        Cities = string.Join(",", Roadwork.Cities)
                     }
             };
         }
