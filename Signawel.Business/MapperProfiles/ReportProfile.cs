@@ -10,6 +10,7 @@ namespace Signawel.Business.MapperProfiles
         {
             CreateMap<ReportCreationRequestDto, Report>();
             CreateMap<Report, ReportResponseDto>();
+            CreateMap<ReportImage, ReportImageResponseDto>();
         }
     }
 }

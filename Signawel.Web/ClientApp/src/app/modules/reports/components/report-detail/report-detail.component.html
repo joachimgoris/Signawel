@@ -16,7 +16,7 @@
 
     <div class="card-deck">
         <mat-card *ngFor="let reportImage of report.images">
-            <img mat-card-image src="{{ reportImage.imagePath }}" alt="report image">
+            <img mat-card-image [src]="getImageUrl(reportImage.imageId)" onerror="this.src='assets/image_not_found.png'" alt="report image">
             <mat-card-actions>
                 <button mat-icon-button>
                     <mat-icon (click)="onZoomIn(reportImage.imagePath)">zoom_in</mat-icon>

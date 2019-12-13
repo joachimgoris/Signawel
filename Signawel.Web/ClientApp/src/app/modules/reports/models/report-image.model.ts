@@ -1,3 +1,3 @@
 export class ReportImageModel {
-    imagePath: string;
+    imageId: string;
 }

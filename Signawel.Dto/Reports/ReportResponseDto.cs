@@ -16,7 +16,7 @@ namespace Signawel.Dto.Reports
 
         public string RoadworkId { get; set; }
 
-        public ICollection<ReportImage> Images { get; set; }
+        public ICollection<ReportImageResponseDto> Images { get; set; }
 
         public ReportDefaultIssue Issue { get; set; }
     }
