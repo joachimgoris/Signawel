@@ -1,5 +1,6 @@
 ﻿using Plugin.Media;
 using Plugin.Media.Abstractions;
+using Signawel.Mobile.Bootstrap;
 using Signawel.Mobile.Bootstrap.Abstract;
 using Signawel.Mobile.Constants;
 using Signawel.Mobile.Models;
@@ -10,7 +11,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Signawel.Mobile.Bootstrap;
 using Xamarin.Forms;
 
 namespace Signawel.Mobile.ViewModels
@@ -28,6 +28,10 @@ namespace Signawel.Mobile.ViewModels
         public string Email { get; set; }
         public string Description { get; set; }
         public ObservableCollection<Image> Images { get; set; }
+        public bool IsEmailValid { get; set; }
+        public bool IsRoadworkValid { get; set; }
+        public bool IsIssueSelected { get; set; }
+        public bool Navigated { get; set; }
 
         public ICommand AddImageCommand => new AsyncCommand(OnAddImage);
         public ICommand SendReportCommand => new AsyncCommand(OnSendReport);
@@ -52,7 +56,7 @@ namespace Signawel.Mobile.ViewModels
             {
                 Roadwork = data as RoadWork;
             }
-
+            
             var issues = await _issueService.GetAllDefaultIssues();
             IssueTypes = issues.Select(issue => issue.Name).ToList();
         }
@@ -145,14 +149,19 @@ namespace Signawel.Mobile.ViewModels
         }
         #endregion
 
+        #region Validation
+
+        #endregion
+
         private void OnRoadworkSearch()
         {
             _navigationService.NavigateToAsync<MapPageViewModel>();
+            Navigated = true;
         }
 
         private async Task OnSendReport()
         {
-            if (Roadwork != null)
+            if (ValidateReport())
             {
                 var report = ConvertValuesToReport();
                 var result = await _reportService.AddReport(report);
@@ -161,7 +170,7 @@ namespace Signawel.Mobile.ViewModels
                 {
                     if (result.Any(error => error.Code == "Failed to create a report."))
                     {
-                        _messageBoxService.ShowAlert(TextConstants.CreateReportFailedTitle, "Failed to create report");
+                        _messageBoxService.ShowAlert(TextConstants.CreateReportFailedTitle, TextConstants.CreateReportFailedMessage);
                     }
                     else
                     {
@@ -172,18 +181,19 @@ namespace Signawel.Mobile.ViewModels
                         }
                         _messageBoxService.ShowAlert(TextConstants.Success,
                             TextConstants.ReportAddedSuccessfullyMessage);
+                        await _navigationService.PopAsync();
                         ClearReportForm();
                     }
                 }
                 else
                 {
-                    _messageBoxService.ShowAlert(TextConstants.Alert, "No response from server");
+                    _messageBoxService.ShowAlert(TextConstants.Alert, TextConstants.NoResponseFromServer);
                 }
             }
             else
             {
                 _messageBoxService.ShowAlert(TextConstants.Alert, 
-                    TextConstants.NoRoadworkSelectedMessage);
+                    TextConstants.RequiredFieldsError);
             }
         }
 
@@ -197,9 +207,15 @@ namespace Signawel.Mobile.ViewModels
                         UserEmail = Email,
                         Description = Description,
                         RoadworkId = Roadwork.GipodId,
+                        IssueType = IssueType,
                         CreationTime = DateTime.Now
                     }
             };
+        }
+
+        private bool ValidateReport()
+        {
+            return IsEmailValid && IsRoadworkValid && IsIssueSelected;
         }
 
         public void ClearReportForm()
@@ -207,6 +223,7 @@ namespace Signawel.Mobile.ViewModels
             Roadwork = null;
             Email = null;
             Description = null;
+            Navigated = false;
             Images = new ObservableCollection<Image>();
         }
     }

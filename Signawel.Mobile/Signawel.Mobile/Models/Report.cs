@@ -8,5 +8,6 @@ namespace Signawel.Mobile.Models
         public string UserEmail { get; set; }
         public string Description { get; set; }
         public DateTime CreationTime { get; set; }
+        public string IssueType { get; set; }
     }
 }

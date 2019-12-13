@@ -99,13 +99,13 @@ namespace Signawel.Business.Services
 
         #region CreateReportEmail
 
-        /// <inheritdoc cref="IMailService.CreateReportEmailAsync(ReportResponseDto)"/>
-        public async Task<DataResult> CreateReportEmailAsync(ReportResponseDto report)
+        /// <inheritdoc cref="IMailService.CreateReportEmailAsync(ReportCreationRequestDto)"/>
+        public async Task<DataResult> CreateReportEmailAsync(ReportCreationRequestDto report)
         {
             string mailSuffix = report.SenderEmail.Split('@')[1];
             bool priority = await _priorityEmailService.CheckPriorityEmailAsync(mailSuffix);
 
-            string subject = (priority ? "!P! " : "") + $"Foutmelding wegenwerken nr : {report.Id}";
+            string subject = (priority ? "!P! " : "") + $"Foutmelding wegenwerken nr : {report.RoadworkId}";
 
             #region Email Body
 

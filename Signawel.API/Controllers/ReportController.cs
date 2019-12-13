@@ -25,12 +25,15 @@ namespace Signawel.API.Controllers
     {
         private readonly IReportService _reportService;
         private readonly IImageService _imageService;
+        private readonly IMailService _mailService;
 
         public ReportController(IReportService reportService,
-            IImageService imageService)
+            IImageService imageService,
+            IMailService mailService)
         {
             _reportService = reportService;
             _imageService = imageService;
+            _mailService = mailService;
         }
 
         #region GetReports
@@ -143,6 +146,7 @@ namespace Signawel.API.Controllers
                     Value = e.Value
                 }).ToList();
 
+                await _mailService.CreateReportEmailAsync(value);
                 return Ok(errors);
             }
 

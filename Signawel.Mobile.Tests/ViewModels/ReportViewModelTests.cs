@@ -1,6 +1,5 @@
 ﻿using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using Signawel.Mobile.Bootstrap.Abstract;
 using Signawel.Mobile.Constants;
 using Signawel.Mobile.Services.Abstract;

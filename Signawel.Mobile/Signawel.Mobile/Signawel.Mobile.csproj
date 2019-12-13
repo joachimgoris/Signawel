@@ -53,6 +53,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Validation\Controls\ValidationEmailEntry.xaml.cs">
+      <DependentUpon>ValidationEmailEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Validation\Controls\ValidationSearchbar.xaml.cs">
+      <DependentUpon>ValidationSearchBar.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\ListViewRoadWorksPageView.xaml.cs">
       <DependentUpon>ListViewRoadWorksPageView.xaml</DependentUpon>
     </Compile>
@@ -62,6 +68,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Validation\Controls\ValidationEmailEntry.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Validation\Controls\ValidationPicker.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Validation\Controls\ValidationSearchBar.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\CategoryInformationView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

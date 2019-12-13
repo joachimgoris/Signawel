@@ -24,13 +24,15 @@ namespace Signawel.Api.Tests.Controllers
         private ReportController _reportController;
         private Mock<IReportService> _reportServiceMock;
         private Mock<IImageService> _imageServiceMock;
+        private Mock<IMailService> _mailServiceMock;
 
         [SetUp]
         public void Setup()
         {
             _reportServiceMock = new Mock<IReportService>();
             _imageServiceMock = new Mock<IImageService>();
-            _reportController = new ReportController(_reportServiceMock.Object, _imageServiceMock.Object);
+            _mailServiceMock = new Mock<IMailService>();
+            _reportController = new ReportController(_reportServiceMock.Object, _imageServiceMock.Object, _mailServiceMock.Object);
         }
 
         [Test]

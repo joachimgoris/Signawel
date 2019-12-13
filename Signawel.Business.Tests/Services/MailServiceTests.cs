@@ -115,7 +115,7 @@ namespace Signawel.Business.Tests.Services
         public async Task CreateReportEmail_ShouldReturnSuccess()
         {
             // Arrange
-            var model = new ReportResponseDto
+            var model = new ReportCreationRequestDto
             {
                 SenderEmail = "test@test.com",
                 Issue = new ReportDefaultIssue

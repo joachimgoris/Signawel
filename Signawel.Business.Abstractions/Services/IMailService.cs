@@ -40,8 +40,8 @@ namespace Signawel.Business.Abstractions.Services
         ///     Creates an email for a report and sends it.
         /// </summary>
         /// <param name="report">
-        ///     An instance of <see cref="ReportResponseDto"/> containing all the data for a report email.
+        ///     An instance of <see cref="ReportCreationRequestDto"/> containing all the data for a report email.
         /// </param>
-        Task<DataResult> CreateReportEmailAsync(ReportResponseDto report);
+        Task<DataResult> CreateReportEmailAsync(ReportCreationRequestDto report);
     }
 }
