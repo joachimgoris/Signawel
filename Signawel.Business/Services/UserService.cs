@@ -3,11 +3,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Signawel.Business.Abstractions.Services;
 using Signawel.Domain;
-using Signawel.Domain.Authentication.Models;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Signawel.Domain.Constants;
+using Signawel.Domain.DataResults;
+using Signawel.Dto.Authentication;
 
 namespace Signawel.Business.Services
 {
@@ -28,47 +31,37 @@ namespace Signawel.Business.Services
 
         #region Get
 
-        public ICollection<GetUserDto> GetAllUsersAsync()
+        public DataResult<ICollection<UserResponseDto>> GetAllUsersAsync()
         {
-            ICollection<GetUserDto> users = new List<GetUserDto>();
-            foreach(var user in _userManager.Users)
-            {
-                users.Add(_mapper.Map<GetUserDto>(user));
-            }
-            return users;
+            ICollection<UserResponseDto> users = new List<UserResponseDto>();
+            
+            _userManager.Users.ForEachAsync(u => users.Add(_mapper.Map<UserResponseDto>(u)));
+            
+            return DataResult<ICollection<UserResponseDto>>.Success(users);
         }
 
-        public async Task<GetUserDto> GetUserAsync(string userId)
+        public async Task<DataResult<UserResponseDto>> GetUserAsync(string userId)
         {
             if (string.IsNullOrEmpty(userId))
-                return null;
+                return DataResult<UserResponseDto>.WithPublicError(ErrorCodes.ParameterEmptyError,
+                    $"{nameof(userId)} is empty.");
 
             User user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
             {
                 _logger.LogWarning("Unable to find user with id {userId}", userId);
-                return null;
+                return DataResult<UserResponseDto>.WithPublicError(ErrorCodes.NotFoundError,
+                    $"There was no user with the given id: {userId}");
             }
 
-            return _mapper.Map<GetUserDto>(user);
+            return DataResult<UserResponseDto>.Success(_mapper.Map<UserResponseDto>(user));
         }
 
         #endregion
 
-
-        public Task<GetUserDto> CreateUserAsync(CreateUserDto model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteUserasync(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
-
-
+        #region GetUserClaimsAsync
+        
         public async Task<ICollection<Claim>> GetUserClaimsAsync(string userId, bool includeRoles = true)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -114,10 +107,62 @@ namespace Signawel.Business.Services
 
             return claims;
         }
-
-        public Task<GetUserDto> ModifyUserAsync(string userId, ModifyUserDto modifiedUser)
+        
+        #endregion
+        
+        #region ModifyUser
+        
+        public async Task<DataResult> ModifyUserAsync(string userId, UserModifyRequestDto model)
         {
-            throw new NotImplementedException();
+            User user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return DataResult<UserResponseDto>.WithPublicError(ErrorCodes.NotFoundError,
+                    $"There was no user with the given id: {userId}");
+            }
+            
+            IdentityResult result = await _userManager.UpdateAsync(_mapper.Map<User>(model));
+            
+            return result.Succeeded ? DataResult.Success :
+                DataResult.WithPublicError(ErrorCodes.InvalidOperationError, "Something went wrong with updating a user.");
         }
+        
+        #endregion
+        
+        #region CreateUser
+        
+        public async Task<DataResult<UserResponseDto>> CreateUserAsync(UserCreateRequestDto model)
+        {
+            var user = _mapper.Map<User>(model);
+
+            await _userManager.CreateAsync(user);
+
+            var response = _mapper.Map<UserResponseDto>(user);
+
+            return DataResult<UserResponseDto>.Success(response);
+        }
+        
+        #endregion
+
+        #region DeleteUser
+
+        public async Task<DataResult> DeleteUserAsync(string userId)
+        {
+            User user = await _userManager.FindByIdAsync(userId);
+            
+            if (user == null)
+            {
+                return DataResult<UserResponseDto>.WithPublicError(ErrorCodes.NotFoundError,
+                    $"There was no user with the given id: {userId}");
+            }
+
+            IdentityResult result = await _userManager.DeleteAsync(user);
+
+            return result.Succeeded ? DataResult.Success :
+                DataResult.WithPublicError(ErrorCodes.InvalidOperationError, "Something went wrong with deleting a user.");
+        }
+        
+        #endregion
     }
 }

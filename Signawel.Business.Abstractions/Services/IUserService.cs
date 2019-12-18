@@ -1,9 +1,10 @@
 ﻿
 using Signawel.Domain;
-using Signawel.Domain.Authentication.Models;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Signawel.Domain.DataResults;
+using Signawel.Dto.Authentication;
 
 namespace Signawel.Business.Abstractions.Services
 {
@@ -16,9 +17,9 @@ namespace Signawel.Business.Abstractions.Services
         ///     Model containing all the data to create a new <see cref="User"/>.
         /// </param>
         /// <returns>
-        ///     An instance of <see cref="GetUserDto"/> containing the new <see cref="User"/>.
+        ///     An instance of <see cref="DataResult{UserResponseDto}"/> containing the new <see cref="User"/>.
         /// </returns>
-        Task<GetUserDto> CreateUserAsync(CreateUserDto model);
+        Task<DataResult<UserResponseDto>> CreateUserAsync(UserCreateRequestDto model);
 
         /// <summary>
         ///     Delete a <see cref="User"/>.
@@ -27,9 +28,9 @@ namespace Signawel.Business.Abstractions.Services
         ///     The id of the <see cref="User"/>.
         /// </param>
         /// <returns>
-        ///     A bool representing success or failure.
+        ///     An instance of <see cref="DataResult"/>.
         /// </returns>
-        Task<bool> DeleteUserasync(string userId);
+        Task<DataResult> DeleteUserAsync(string userId);
 
         /// <summary>
         ///     Get a <see cref="User"/>.
@@ -38,9 +39,9 @@ namespace Signawel.Business.Abstractions.Services
         ///     The id of the <see cref="User"/>.
         /// </param>
         /// <returns>
-        ///     The specified <see cref="GetUserDto"/>.
+        ///     The specified <see cref="UserResponseDto"/>.
         /// </returns>
-        Task<GetUserDto> GetUserAsync(string userId);
+        Task<DataResult<UserResponseDto>> GetUserAsync(string userId);
 
         // TODO: Filter/limit users output
         /// <summary>
@@ -49,7 +50,7 @@ namespace Signawel.Business.Abstractions.Services
         /// <returns>
         ///     An instance of <see cref="ICollection{GetUserDto}"/>.
         /// </returns>
-        ICollection<GetUserDto> GetAllUsersAsync();
+        DataResult<ICollection<UserResponseDto>> GetAllUsersAsync();
 
         /// <summary>
         ///     Modify a <see cref="User"/>.
@@ -58,12 +59,12 @@ namespace Signawel.Business.Abstractions.Services
         ///     The id of the <see cref="User"/>.
         /// </param>
         /// <param name="modifiedUser">
-        ///     <see cref="ModifyUserDto"/> containing all the changes to the user.
+        ///     <see cref="UserModifyRequestDto"/> containing all the changes to the user.
         /// </param>
         /// <returns>
-        ///     An instance of <see cref="GetUserDto"/> containing the modified user.
+        ///     An instance of <see cref="UserResponseDto"/> containing the modified user.
         /// </returns>
-        Task<GetUserDto> ModifyUserAsync(string userId, ModifyUserDto modifiedUser);
+        Task<DataResult> ModifyUserAsync(string userId, UserModifyRequestDto model);
 
         /// <summary>
         ///     Get all claims of a <see cref="User"/>.

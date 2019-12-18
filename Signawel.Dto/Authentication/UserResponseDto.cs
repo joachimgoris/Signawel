@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Signawel.Domain.Authentication.Models
+namespace Signawel.Dto.Authentication
 {
-    public class GetUserDto
+    public class UserResponseDto
     {
         public string Id { get; set; }
 

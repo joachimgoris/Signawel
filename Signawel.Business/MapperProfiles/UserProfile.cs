@@ -1,14 +1,16 @@
 ﻿using AutoMapper;
 using Signawel.Domain;
-using Signawel.Domain.Authentication.Models;
+using Signawel.Dto.Authentication;
 
 namespace Signawel.Business.MapperProfiles
 {
-    internal class UserProfile : Profile
+    public class UserProfile : Profile
     {
         public UserProfile()
         {
-            CreateMap<User, GetUserDto>();
+            CreateMap<UserCreateRequestDto, User>();
+            CreateMap<UserModifyRequestDto, User>();
+            CreateMap<User, UserResponseDto>();
         }
     }
 }

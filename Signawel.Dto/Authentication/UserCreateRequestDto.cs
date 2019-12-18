@@ -1,18 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace Signawel.Domain.Authentication.Models
+namespace Signawel.Dto.Authentication
 {
-    public class CreateUserDto
+    public class UserCreateRequestDto
     {
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
-        public string UserName { get; set; }
-
         public string Email { get; set; }
-
-        public string Password { get; set; }
 
         public IEnumerable<string> Roles { get; set; }
     }

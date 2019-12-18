@@ -1,6 +1,6 @@
-﻿namespace Signawel.Domain.Authentication.Models
+﻿namespace Signawel.Dto.Authentication
 {
-    public class ModifyUserDto
+    public class UserModifyRequestDto
     {
         public string FirstName { get; set; }
 
