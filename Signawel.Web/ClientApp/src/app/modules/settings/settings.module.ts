@@ -10,12 +10,14 @@ import { SignawelMaterialModule } from "../signawel-material/signawel-material.m
 import { FormsModule } from "@angular/forms";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { TokenInterceptor } from "../authentication/intercepters/token-interceptor";
+import { BlacklistEmailsComponent } from './components/blacklist-emails/blacklist-emails.component';
 
 @NgModule({
   declarations: [
     SettingsPageComponent,
     PriorityEmailsComponent,
-    DefaultIssuesComponent
+    DefaultIssuesComponent,
+    BlacklistEmailsComponent
   ],
   imports: [
     CommonModule,

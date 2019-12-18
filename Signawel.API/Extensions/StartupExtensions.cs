@@ -110,6 +110,7 @@ namespace Signawel.API.Extensions
             services.AddScoped<IRoadworkSchemaService, RoadworkSchemaService>();
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IPriorityEmailService, PriorityEmailService>();
+            services.AddScoped<IBlacklistEmailService, BlacklistEmailService>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IIssueService, IssueService>();
 
