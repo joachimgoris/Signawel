@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Moq;
 using NUnit.Framework;
 using Signawel.Business.Services;
 using Signawel.Data;
+using Signawel.Domain;
 using Signawel.Domain.Constants;
 using Signawel.Domain.DataResults;
 using Signawel.Domain.ReportGroups;
@@ -36,6 +38,7 @@ namespace Signawel.Business.Tests.Services
             var report = new ReportGroup();
             report.CityReportGroups = new List<CityReportGroup>();
             report.EmailReportGroups = new List<EmailReportGroup>();
+            report.UserReportGroups = new List<UserReportGroup>();
 
             _context.ReportGroups.Add(report);
             _context.SaveChanges();
@@ -52,6 +55,7 @@ namespace Signawel.Business.Tests.Services
             var reportGroupResponse = new ReportGroupResponseDto();
             reportGroupResponse.CityReportGroups = new List<CityResponseDto>();
             reportGroupResponse.EmailReportGroups = new List<EmailResponseDto>();
+            reportGroupResponse.UserReportGroups = new List<UserResponseDto>();
 
             list.Add(reportGroupResponse);
 
@@ -64,6 +68,7 @@ namespace Signawel.Business.Tests.Services
             var reportGroup = new ReportGroupCreationRequestDto();
             reportGroup.CityReportGroups = new List<CityCreationRequestDto>();
             reportGroup.EmailReportGroups = new List<EmailCreationRequestDto>();
+            reportGroup.UserReportGroups = new List<UserCreationRequestDto>();
 
             // Act
             var result = await _service.SetReportGroupAsync(reportGroup);
@@ -95,6 +100,7 @@ namespace Signawel.Business.Tests.Services
             var reportGroup = new ReportGroupCreationRequestDto();
             reportGroup.CityReportGroups = new List<CityCreationRequestDto>();
             reportGroup.EmailReportGroups = new List<EmailCreationRequestDto>();
+            reportGroup.UserReportGroups = new List<UserCreationRequestDto>();
 
             // Act
             var result = await _service.SetReportGroupAsync(reportGroup);
@@ -152,7 +158,7 @@ namespace Signawel.Business.Tests.Services
                 .Returns(new List<ReportGroupResponseDto>());
 
             // Act
-            var result = await _service.GetReportGroupsAsync("null", "null");
+            var result = await _service.GetReportGroupsAsync("null", "null","null");
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -182,7 +188,7 @@ namespace Signawel.Business.Tests.Services
                 .Returns(data);
 
             // Act
-            var result = await _service.GetReportGroupsAsync("null", "test");
+            var result = await _service.GetReportGroupsAsync("null", "test","null");
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -213,7 +219,38 @@ namespace Signawel.Business.Tests.Services
                 .Returns(data);
 
             // Act
-            var result = await _service.GetReportGroupsAsync("ha", "null");
+            var result = await _service.GetReportGroupsAsync("ha", "null","null");
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.TypeOf<DataResult<List<ReportGroupResponseDto>>>());
+            Assert.That(result.Entity.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task GetReportGroups_ShouldReturnReportGroupResponseDtoListWithCorrectUsers_WhenUserParameterIsGivenAsync()
+        {
+            // Arrange
+            List<ReportGroupResponseDto> data = new List<ReportGroupResponseDto>();
+            var report = new ReportGroupResponseDto();
+            var report2 = new ReportGroupResponseDto();
+            var user = new UserResponseDto();
+            var user2 = new UserResponseDto();
+            user.UserName = "John";
+            user2.UserName = "Maria";
+            report.UserReportGroups = new List<UserResponseDto>();
+            report2.UserReportGroups = new List<UserResponseDto>();
+            report.UserReportGroups.Add(user);
+            report2.UserReportGroups.Add(user2);
+            data.Add(report);
+            data.Add(report2);
+
+            _mockMapper
+                .Setup(m => m.Map<List<ReportGroupResponseDto>>(It.IsAny<List<ReportGroup>>()))
+                .Returns(data);
+
+            // Act
+            var result = await _service.GetReportGroupsAsync("null", "null", "joh");
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -306,6 +343,7 @@ namespace Signawel.Business.Tests.Services
             var newReportGroup = new ReportGroupCreationRequestDto();
             newReportGroup.CityReportGroups = new List<CityCreationRequestDto>();
             newReportGroup.EmailReportGroups = new List<EmailCreationRequestDto>();
+            newReportGroup.UserReportGroups = new List<UserCreationRequestDto>();
 
             _mockMapper
                 .Setup(m => m.Map<City>(It.IsAny<CityCreationRequestDto>()))
@@ -326,7 +364,6 @@ namespace Signawel.Business.Tests.Services
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Succeeded, Is.True);
         }
-
 
 
     }

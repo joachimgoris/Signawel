@@ -19,10 +19,12 @@ namespace Signawel.API.Controllers
     public class ReportGroupController : BaseController
     {
         private readonly IReportGroupService _reportGroupService;
+        private readonly IUserService _userService;
 
-        public ReportGroupController(IReportGroupService reportGroupService)
+        public ReportGroupController(IReportGroupService reportGroupService, IUserService userService)
         {
             _reportGroupService = reportGroupService;
+            _userService = userService;
         }
 
         #region GetAllCities
@@ -39,6 +41,20 @@ namespace Signawel.API.Controllers
         #endregion
         
         #region DeleteReportGroup
+
+        [HttpGet("users")]
+        [SwaggerOperation("getUsers")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Users found!", typeof(List<UserResponseDto>))]
+        public async Task<ActionResult> GetUsers([FromQuery] string user = null)
+        {
+            var response = await _userService.GetAllUsersAsync();
+            var filteredResponse = response.Entity.Where(u => u.UserName.ToLower().Contains(user.ToLower())).ToList();
+            if (response.HasError(ErrorCodes.InvalidOperationError))
+            {
+                return NotFound(response);
+            }
+            return Ok(filteredResponse);
+        }
 
         [HttpDelete]
         [SwaggerOperation("deleteReportGroup")]
@@ -62,9 +78,9 @@ namespace Signawel.API.Controllers
         [HttpGet]
         [SwaggerOperation("getReportGroupsByParameters")]
         [SwaggerResponse(StatusCodes.Status200OK, "ReportGroups is found!", typeof(List<ReportGroupResponseDto>))]
-        public async Task<ActionResult> GetReportGroupsByParameters([FromQuery] string city = null, [FromQuery] string mail = null)
+        public async Task<ActionResult> GetReportGroupsByParameters([FromQuery] string city = null, [FromQuery] string mail = null,[FromQuery] string user = null)
         {
-            var response = await _reportGroupService.GetReportGroupsAsync(city, mail);
+            var response = await _reportGroupService.GetReportGroupsAsync(city, mail,user);
             return Ok(response.Entity);
         }
         

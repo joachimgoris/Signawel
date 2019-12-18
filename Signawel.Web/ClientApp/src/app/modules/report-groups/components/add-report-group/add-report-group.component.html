@@ -2,7 +2,7 @@
   <mat-card class="addReportGroupCard">
     <mat-card-header>
       <mat-card-title>Voeg een meldingsgroep toe</mat-card-title>
-      <mat-card-subtitle>Geef e-mailadressen op die verbonden worden met de rapporten van bepaalde steden
+      <mat-card-subtitle>Geef e-mailadressen op die verbonden worden met de rapporten van bepaalde steden, enkel de opgegeven users zullen de meldingen van de opgegeven steden kunnen bekijken
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
@@ -17,7 +17,7 @@
                   <mat-grid-tile><input placeholder="Stad" type="search" matInput [formControlName]="i"
                       [matAutocomplete]="auto">
                     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                      <mat-option *ngFor="let cityName of filteredOptions | async" [value]="cityName">
+                      <mat-option *ngFor="let cityName of filteredOptions[i] | async" [value]="cityName">
                         {{ cityName }}
                       </mat-option>
                     </mat-autocomplete>
@@ -27,7 +27,8 @@
                       <mat-icon>delete_outline</mat-icon>
                     </button></mat-grid-tile>
                 </mat-grid-list>
-                <mat-error *ngIf="form.controls.cityControls.controls[i].errors?.required && (form.controls.cityControls.controls[i].dirty || form.controls.cityControls.controls[i].touched)">
+                <mat-error
+                  *ngIf="form.controls.cityControls.controls[i].errors?.required && (form.controls.cityControls.controls[i].dirty || form.controls.cityControls.controls[i].touched)">
                   Gelieve alle verplichte velden in te vullen
                 </mat-error>
               </mat-form-field>
@@ -35,7 +36,7 @@
 
             <div class="veryLittleWhiteSpace"></div>
 
-            <button mat-raised-button (click)="addCity()">Voeg een stad toe</button>
+            <button mat-raised-button *ngIf="form.controls.cityControls.controls.length <42" (click)="addCity()">Voeg een stad toe</button>
           </div>
 
           <div class="emailsRight">
@@ -49,10 +50,12 @@
                       <mat-icon>delete_outline</mat-icon>
                     </button></mat-grid-tile>
                 </mat-grid-list>
-                <mat-error *ngIf="form.controls.emailControls.controls[i].errors?.required && (form.controls.emailControls.controls[i].dirty || form.controls.emailControls.controls[i].touched)">
+                <mat-error
+                  *ngIf="form.controls.emailControls.controls[i].errors?.required && (form.controls.emailControls.controls[i].dirty || form.controls.emailControls.controls[i].touched)">
                   Gelieve alle verplichte velden in te vullen
                 </mat-error>
-                <mat-error *ngIf="form.controls.emailControls.controls[i].errors?.email && (form.controls.emailControls.controls[i].dirty || form.controls.emailControls.controls[i].touched)">
+                <mat-error
+                  *ngIf="form.controls.emailControls.controls[i].errors?.email && (form.controls.emailControls.controls[i].dirty || form.controls.emailControls.controls[i].touched)">
                   E-mailadres is niet geldig
                 </mat-error>
               </mat-form-field>
@@ -60,7 +63,41 @@
 
             <div class="veryLittleWhiteSpace"></div>
 
-            <button mat-raised-button (click)="addEmail()">Voeg een emailadres toe</button>
+            <button mat-raised-button *ngIf="form.controls.cityControls.controls.length <20" (click)="addEmail()">Voeg een emailadres toe</button>
+          </div>
+
+          <div class="usersRight">
+            <div formArrayName="userControls" *ngFor="let order of form.controls.userControls.controls; let i = index"
+              class="form-row">
+              <mat-form-field>
+                <mat-grid-list cols="2" rowHeight="5:1">
+                  <mat-grid-tile><input placeholder="User" type="search" matInput [formControlName]="i"
+                      [matAutocomplete]="auto">
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                      <mat-option *ngFor="let userName of filteredUserOptions[i]" [value]="userName">
+                        {{ userName }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-grid-tile>
+                  <mat-grid-tile><button mat-icon-button *ngIf="form.controls.userControls.length>1 && !isUserLoading"
+                      (click)="RemoveUserFromForm(i)">
+                      <mat-icon>delete_outline</mat-icon>
+                    </button>
+                    <div *ngIf="isUserLoading">
+                      <mat-spinner [diameter]="15"></mat-spinner>
+                    </div>
+                  </mat-grid-tile>
+                </mat-grid-list>
+                <mat-error
+                  *ngIf="form.controls.userControls.controls[i].errors?.required && (form.controls.userControls.controls[i].dirty || form.controls.userControls.controls[i].touched)">
+                  Selecteer een user
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="veryLittleWhiteSpace"></div>
+
+            <button mat-raised-button *ngIf="form.controls.cityControls.controls.length <50" (click)="addUser()">Voeg een user toe</button>
           </div>
         </div>
 
@@ -89,6 +126,7 @@
             <mat-select [(ngModel)]="selectedSearch">
               <mat-option value="city">Stad</mat-option>
               <mat-option value="email">E-mail</mat-option>
+              <mat-option value="user">User</mat-option>
             </mat-select>
           </mat-form-field>
         </mat-grid-tile>
@@ -107,14 +145,20 @@
             <div class="grid-container">
               <mat-nav-list>
                 <mat-list-item *ngFor="let city of report.cityReportGroups">
-                  <mat-icon>play_arrow</mat-icon>
+                  <mat-icon style="margin-right: 3%;">location_city</mat-icon>
                   {{city.name}}
                 </mat-list-item>
               </mat-nav-list>
               <mat-nav-list>
                 <mat-list-item *ngFor="let email of report.emailReportGroups">
-                  <mat-icon>play_arrow</mat-icon>
+                  <mat-icon style="margin-right: 3%;">email</mat-icon>
                   {{email.emailAddress}}
+                </mat-list-item>
+              </mat-nav-list>
+              <mat-nav-list>
+                <mat-list-item *ngFor="let user of report.userReportGroups">
+                  <mat-icon style="margin-right: 3%;">account_circle</mat-icon>
+                  {{user.userName}}
                 </mat-list-item>
               </mat-nav-list>
             </div>

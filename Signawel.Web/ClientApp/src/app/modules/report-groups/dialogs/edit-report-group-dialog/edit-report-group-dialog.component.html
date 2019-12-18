@@ -1,6 +1,7 @@
 <div mat-dialog-content>
 
   <form [formGroup]="form" #ReportGroupForm="ngForm">
+    <p style="font-style: oblique;">steden:</p>
     <div formArrayName="cityControls" *ngFor="let order of form.controls.cityControls.controls; let i = index"
       class="form-row">
       <mat-form-field>
@@ -25,7 +26,7 @@
 
     <div class="veryLittleWhiteSpace"></div>
 
-    <button mat-raised-button (click)="addCity()">Voeg een stad toe</button>
+    <button mat-raised-button *ngIf="form.controls.cityControls.controls.length <42" (click)="addCity()">Voeg een stad toe</button>
     <div class="whiteSpace"></div>
 
     <div class="emailInputs">
@@ -50,9 +51,41 @@
 
       <div class="veryLittleWhiteSpace"></div>
 
-      <button mat-raised-button (click)="addEmail()">Voeg een emailadres toe</button>
+      <button mat-raised-button *ngIf="form.controls.cityControls.controls.length <20" (click)="addEmail()">Voeg een emailadres toe</button>
       <div class="whiteSpace"></div>
     </div>
+
+    <div formArrayName="userControls" *ngFor="let order of form.controls.userControls.controls; let i = index"
+      class="form-row">
+      <mat-form-field>
+        <mat-grid-list cols="2" rowHeight="5:1">
+          <mat-grid-tile>
+            <input placeholder="User" type="search" matInput [formControlName]="i"
+                    [matAutocomplete]="auto">
+                  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                    <mat-option *ngFor="let userName of filteredUserOptions[i]" [value]="userName">
+                      {{ userName }}
+                    </mat-option>
+                  </mat-autocomplete>
+          </mat-grid-tile>
+          <mat-grid-tile><button mat-icon-button *ngIf="form.controls.userControls.length>1 && !isUserLoading"
+              (click)="RemoveUserFromForm(i)">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+            <div class="spinner-container" *ngIf="isUserLoading">
+            <mat-spinner [diameter]="15"></mat-spinner>
+          </div>
+        </mat-grid-tile>
+        </mat-grid-list>
+        <mat-error *ngIf="form.controls.userControls.controls[i].errors?.required && (form.controls.userControls.controls[i].dirty || form.controls.userControls.controls[i].touched)">
+          Selecteer een user
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="veryLittleWhiteSpace"></div>
+
+    <button mat-raised-button *ngIf="form.controls.cityControls.controls.length <50" (click)="addUser()">Voeg een user toe</button>
+    <div class="whiteSpace"></div>
 
   </form>
 </div>

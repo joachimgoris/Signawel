@@ -31,13 +31,13 @@ namespace Signawel.Business.Services
 
         #region Get
 
-        public DataResult<ICollection<UserResponseDto>> GetAllUsersAsync()
+        public async Task<DataResult<ICollection<Dto.ReportGroup.UserResponseDto>>> GetAllUsersAsync()
         {
-            ICollection<UserResponseDto> users = new List<UserResponseDto>();
+            ICollection<Dto.ReportGroup.UserResponseDto> users = new List<Dto.ReportGroup.UserResponseDto>();
             
-            _userManager.Users.ForEachAsync(u => users.Add(_mapper.Map<UserResponseDto>(u)));
+            await _userManager.Users.ForEachAsync(u => users.Add(_mapper.Map<Dto.ReportGroup.UserResponseDto>(u)));
             
-            return DataResult<ICollection<UserResponseDto>>.Success(users);
+            return DataResult<ICollection<Dto.ReportGroup.UserResponseDto>>.Success(users);
         }
 
         public async Task<DataResult<UserResponseDto>> GetUserAsync(string userId)

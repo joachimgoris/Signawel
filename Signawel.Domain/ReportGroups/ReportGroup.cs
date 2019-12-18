@@ -6,6 +6,7 @@ namespace Signawel.Domain.ReportGroups
     {
         public virtual List<CityReportGroup> CityReportGroups { get; set; } 
         public virtual List<EmailReportGroup> EmailReportGroups { get; set; }
+        public List<UserReportGroup> UserReportGroups { get; set; }
 
         public ReportGroup()
         {

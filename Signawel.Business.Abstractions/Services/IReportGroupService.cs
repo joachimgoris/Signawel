@@ -45,10 +45,13 @@ namespace Signawel.Business.Abstractions.Services
         /// <param name="email">
         ///     The address of the <see cref="Email"/> in <see cref="ReportGroup.EmailReportGroup"/> .
         /// </param>
+        /// <param name="user">
+        ///     The name of the <see cref="User"/> in <see cref="ReportGroup.UserReportGroup"/> .
+        /// </param>
         /// <returns>
         ///     An instance of <see cref="DataResult{TEntity}"/> containing a list of <see cref="ReportGroupResponseDto"/> instances containing all the data of the <see cref="ReportGroup"/> as it is in the database.
         /// </returns>
-        Task<DataResult<List<ReportGroupResponseDto>>> GetReportGroupsAsync(string city, string email);
+        Task<DataResult<List<ReportGroupResponseDto>>> GetReportGroupsAsync(string city, string email,string user);
         #endregion
 
         #region GetCities

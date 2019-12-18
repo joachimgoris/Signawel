@@ -63,6 +63,16 @@ namespace Signawel.Business.Services
                 _context.CityReportGroups.Add(link);
             }
 
+            foreach (UserCreationRequestDto userDto in reportGroupCreationRequest.UserReportGroups)
+            {
+                var link = new UserReportGroup
+                {
+                    ReportGroupId = reportGroup.Id,
+                    UserId = userDto.Id
+                };
+               _context.UserReportGroups.Add(link);
+            }
+
             foreach (EmailCreationRequestDto emailDto in reportGroupCreationRequest.EmailReportGroups)
             {
                 var email = _mapper.Map<Email>(emailDto);
@@ -124,9 +134,9 @@ namespace Signawel.Business.Services
         #region GetByParams
 
         /// <inheritdoc cref="IReportGroupService.GetReportGroupsAsync"/>
-        public async Task<DataResult<List<ReportGroupResponseDto>>> GetReportGroupsAsync(string city, string email)
+        public async Task<DataResult<List<ReportGroupResponseDto>>> GetReportGroupsAsync(string city, string email,string user)
         {
-            if (city.Equals("null") && email.Equals("null"))
+            if (city.Equals("null") && email.Equals("null") && user.Equals("null"))
             {
                 var responseNull =
                     _mapper.Map<List<ReportGroup>, List<ReportGroupResponseDto>>(
@@ -156,6 +166,17 @@ namespace Signawel.Business.Services
                                         e.EmailAddress.ToLower().Contains(email.ToLower()))
                                 where emails.Any()
                                 select report).ToList();
+            }
+
+            if (user != "null")
+            {
+
+                response = (from report in response
+                            let users =
+                                report.UserReportGroups.Where(e =>
+                                    e.UserName.ToLower().Contains(user.ToLower()))
+                            where users.Any()
+                            select report).ToList();
             }
 
 

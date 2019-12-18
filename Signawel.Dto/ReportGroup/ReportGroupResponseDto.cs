@@ -13,5 +13,8 @@ namespace Signawel.Dto.ReportGroup
         [Required]
         public List<EmailResponseDto> EmailReportGroups { get; set; }
 
+        [Required]
+        public List<UserResponseDto> UserReportGroups { get; set; }
+
     }
 }

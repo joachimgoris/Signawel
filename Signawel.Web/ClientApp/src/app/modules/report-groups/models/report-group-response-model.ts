@@ -1,8 +1,10 @@
-import { CityCreationRequestModel } from './city-creation-request-model';
-import { EmailCreationRequestModel } from './email-creation-request-model';
+import { EmailResponseModel } from './email-response-model';
+import { CityResponseModel } from './city-response-model';
+import { UserResponseModel } from './user-response-model';
 
 export class ReportGroupResponseModel {
     public id: string;
-    public cityReportGroups: Array<CityCreationRequestModel> = new Array<CityCreationRequestModel>();
-    public emailReportGroups: Array<EmailCreationRequestModel> = new Array<EmailCreationRequestModel>();
+    public cityReportGroups: Array<CityResponseModel> = new Array<CityResponseModel>();
+    public emailReportGroups: Array<EmailResponseModel> = new Array<EmailResponseModel>();
+    public userReportGroups: Array<UserResponseModel> = new Array<UserResponseModel>();
 }

@@ -8,6 +8,7 @@ using Signawel.Domain.DataResults;
 using Signawel.Dto.ReportGroup;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace Signawel.Api.Tests.Controllers
@@ -18,12 +19,14 @@ namespace Signawel.Api.Tests.Controllers
 
         private ReportGroupController _sutReportGroupController;
         private Mock<IReportGroupService> _iReportGroupServiceMock;
+        private Mock<IUserService> _iUserServiceMock;
 
         [SetUp]
         public void SetUp()
         {
             _iReportGroupServiceMock = new Mock<IReportGroupService>();
-            _sutReportGroupController = new ReportGroupController(_iReportGroupServiceMock.Object);
+            _iUserServiceMock = new Mock<IUserService>();
+            _sutReportGroupController = new ReportGroupController(_iReportGroupServiceMock.Object,_iUserServiceMock.Object);
         }
 
         [Test]
@@ -43,14 +46,14 @@ namespace Signawel.Api.Tests.Controllers
         [Test]
         public async Task GetReportGroupsByParameters_ShouldReturnReportGroupsAsync()
         {
-            _iReportGroupServiceMock.Setup(repo => repo.GetReportGroupsAsync("null","null")).ReturnsAsync(new DataResult<List<ReportGroupResponseDto>>
+            _iReportGroupServiceMock.Setup(repo => repo.GetReportGroupsAsync("null","null","null")).ReturnsAsync(new DataResult<List<ReportGroupResponseDto>>
             {
                 Entity = new List<ReportGroupResponseDto>()
             });
 
-            var response = await _sutReportGroupController.GetReportGroupsByParameters("null","null") as OkObjectResult;
+            var response = await _sutReportGroupController.GetReportGroupsByParameters("null","null","null") as OkObjectResult;
 
-            _iReportGroupServiceMock.Verify(repo => repo.GetReportGroupsAsync("null","null"), Times.Once);
+            _iReportGroupServiceMock.Verify(repo => repo.GetReportGroupsAsync("null","null","null"), Times.Once);
             Assert.That(response?.Value, Is.TypeOf<List<ReportGroupResponseDto>>());
         }
 
@@ -156,6 +159,23 @@ namespace Signawel.Api.Tests.Controllers
 
             _iReportGroupServiceMock.Verify(repo => repo.ModifyReportGroupAsync(It.IsAny<string>(), It.IsAny<ReportGroupCreationRequestDto>() ), Times.Once);
             Assert.That(response?.Value, Is.TypeOf<ReportGroupResponseDto>());
+        }
+
+        [Test]
+        public async Task GetUsers_ShouldReturnListOfUserResponseDtos()
+        {
+            var result = new DataResult<ICollection<UserResponseDto>>
+            {
+                Entity = new Collection<UserResponseDto>()
+            };
+
+            _iUserServiceMock.Setup(repo => repo.GetAllUsersAsync()).ReturnsAsync(result);
+
+
+            var response = await _sutReportGroupController.GetUsers("") as OkObjectResult;
+
+            _iUserServiceMock.Verify(repo => repo.GetAllUsersAsync(), Times.Once);
+            Assert.That(response?.Value, Is.TypeOf<List<UserResponseDto>>());
         }
     }
 }

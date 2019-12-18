@@ -50,7 +50,7 @@ namespace Signawel.Business.Abstractions.Services
         /// <returns>
         ///     An instance of <see cref="ICollection{GetUserDto}"/>.
         /// </returns>
-        DataResult<ICollection<UserResponseDto>> GetAllUsersAsync();
+        Task<DataResult<ICollection<Dto.ReportGroup.UserResponseDto>>> GetAllUsersAsync();
 
         /// <summary>
         ///     Modify a <see cref="User"/>.

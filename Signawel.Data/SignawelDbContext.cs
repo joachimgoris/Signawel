@@ -42,6 +42,7 @@ namespace Signawel.Data
             builder.ApplyConfiguration(new ReportGroupConfiguration());
             builder.ApplyConfiguration(new CityReportGroupConfiguration());
             builder.ApplyConfiguration(new EmailReportGroupConfiguration());
+            builder.ApplyConfiguration(new UserReportGroupConfiguration());
         }
 
         #endregion
@@ -67,6 +68,7 @@ namespace Signawel.Data
         public DbSet<Email> Emails { get; set; }
         public DbSet<CityReportGroup> CityReportGroups { get; set; }
         public DbSet<EmailReportGroup> EmailReportGroups { get; set; }
+        public DbSet<UserReportGroup> UserReportGroups { get; set; }
 
         #endregion
     }

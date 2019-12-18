@@ -92,14 +92,14 @@ namespace Signawel.Business.Tests.Services
         #region GetAllUsersAsync
 
         [Test]
-        public void GetAllUsersAsync_ShouldReturnSuccess()
+        public async Task GetAllUsersAsync_ShouldReturnSuccess()
         {
             // Arrange
             _userManager.Setup(_ => _.Users)
                 .Returns(new TestAsyncEnumerable<User>(new List<User>()));
             
             // Act
-            var result = _service.GetAllUsersAsync();
+            var result = await _service.GetAllUsersAsync();
 
             // Assert
             Assert.That(result, Is.Not.Null);
