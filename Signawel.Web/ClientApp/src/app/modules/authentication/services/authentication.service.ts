@@ -28,7 +28,8 @@ export class AuthenticationService {
           const userModel = new UserModel(
             decoded['user_id'],
             decoded['email'],
-            decoded['role'] === 'Admin'
+            decoded['role'] === 'Admin',
+            decoded['role'] === 'Instance'
           );
           this.doLoginuser(tokenModel, userModel);
         }),
@@ -59,6 +60,10 @@ export class AuthenticationService {
 
   getIsAdmin(): boolean {
     return this.getCurrentUser().isAdmin;
+  }
+
+  getIsInstance(): boolean {
+    return this.getCurrentUser().isInstance;
   }
 
   attemptRefreshToken(): Observable<TokenModel> {

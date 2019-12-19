@@ -33,6 +33,7 @@ namespace Signawel.Business.Services
                 return DataResult<ReportResponseDto>.WithError(ErrorCodes.ParameterEmptyError, "The given Dto is empty.", DataErrorVisibility.Public);
 
             var report = _mapper.Map<Report>(reportDto);
+
             await _context.Reports.AddAsync(report);
             await _context.SaveChangesAsync();
 

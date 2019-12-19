@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Signawel.Domain.Constants;
+using Microsoft.AspNetCore.Identity;
 
 namespace Signawel.Business.Services
 {
@@ -65,6 +66,20 @@ namespace Signawel.Business.Services
 
             foreach (UserCreationRequestDto userDto in reportGroupCreationRequest.UserReportGroups)
             {
+                var userRole = await _context.UserRoles.FirstOrDefaultAsync(ur => ur.UserId == userDto.Id);
+
+                if (userRole == null)
+                {
+                    var instanceRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "Instance");
+                    var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userDto.Id);
+
+
+                    var newUserRole = new IdentityUserRole<string>();
+                    newUserRole.RoleId = instanceRole.Id;
+                    newUserRole.UserId = user.Id;
+                    await _context.UserRoles.AddAsync(newUserRole);
+                }
+
                 var link = new UserReportGroup
                 {
                     ReportGroupId = reportGroup.Id,

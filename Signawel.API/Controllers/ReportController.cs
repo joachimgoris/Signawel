@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Signawel.API.Attributes;
 using Signawel.Business.Abstractions.Services;
@@ -26,14 +27,20 @@ namespace Signawel.API.Controllers
         private readonly IReportService _reportService;
         private readonly IImageService _imageService;
         private readonly IMailService _mailService;
+        private readonly IReportGroupService _reportGroupService;
+        private readonly UserManager<User> _userManager;
 
         public ReportController(IReportService reportService,
             IImageService imageService,
-            IMailService mailService)
+            IMailService mailService,
+            IReportGroupService reportGroupService,
+            UserManager<User> userManager)
         {
             _reportService = reportService;
             _imageService = imageService;
             _mailService = mailService;
+            _reportGroupService = reportGroupService;
+            _userManager = userManager;
         }
 
         #region GetReports
@@ -42,11 +49,47 @@ namespace Signawel.API.Controllers
         [JwtTokenAuthorize(Roles = Role.Constants.Admin + "," + Role.Constants.Instance)]
         [SwaggerOperation("getReports")]
         [SwaggerResponse(StatusCodes.Status200OK, "Reports overview", typeof(DataResult<ReportResponseDto>))]
-        public IActionResult GetReports([FromQuery] string search = null, [FromQuery] int page = 0, [FromQuery] int limit = 20)
+        public async Task<IActionResult> GetReportsAsync([FromQuery] string search = null, [FromQuery] int page = 0, [FromQuery] int limit = 20)
         {
-            var reports = _reportService.GetAllReports();
+            var userId = _userManager.GetUserId(User);
+            var user = await _userManager.FindByNameAsync(userId);
+            
 
-            var result = new ReportGetPaginationResponseDto()
+            var allReports = _reportService.GetAllReports();
+            var reports = new List<ReportResponseDto>();
+
+            if (await _userManager.IsInRoleAsync(user, Role.Constants.Instance))
+            { 
+                var reportGroups = await _reportGroupService.GetReportGroupsAsync("null", "null",user.UserName);
+                var cities = new List<string>();
+                foreach(var report in reportGroups.Entity)
+                {
+                    foreach(var city in report.CityReportGroups.Select(crg => crg.Name))
+                    {
+                        cities.Add(city);
+                    }
+                }
+
+                foreach(var report in allReports)
+                {
+                    var duplicates = report.Cities.Split(',').Intersect(cities);
+                    if (duplicates.Count() > 0)
+                    {
+                        reports.Add(report);
+                    }
+                }
+                
+            }
+
+            if (await _userManager.IsInRoleAsync(user, Role.Constants.Admin))
+            {
+                reports = allReports.ToList();
+            }
+
+
+
+
+                var result = new ReportGetPaginationResponseDto()
             {
                 Total = reports.Count()
             };

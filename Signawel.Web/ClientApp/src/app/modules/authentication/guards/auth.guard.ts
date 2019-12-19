@@ -6,7 +6,7 @@ export class AuthenticationGuard {
   constructor(private authService: AuthenticationService) {}
 
   canActivate() {
-    if (this.authService.isLoggedIn() && this.authService.getIsAdmin()) {
+    if (this.authService.isLoggedIn() && (this.authService.getIsAdmin() || this.authService.getIsInstance())) {
       return true;
     }
 

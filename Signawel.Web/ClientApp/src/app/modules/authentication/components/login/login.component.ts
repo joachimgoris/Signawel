@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
       .login(formData["email"], formData["password"])
       .subscribe(
         result => {
-          if(this.authenticationService.getIsAdmin()) {
+          if(this.authenticationService.getIsAdmin() || this.authenticationService.getIsInstance()) {
             this.router.navigate(["/"]);
           } else {
             this.authenticationService.logout();

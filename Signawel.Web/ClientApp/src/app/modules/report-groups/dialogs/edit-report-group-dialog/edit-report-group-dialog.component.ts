@@ -86,6 +86,7 @@ export class EditReportGroupDialogComponent {
     if(model != null){
     control = new FormControl(model.userName, [Validators.required]);
     this.userIds.push(model.id);
+    this.filteredUserOptions.push([model.userName]);
     }
 
     (this.form.controls.userControls as FormArray).push(control);
@@ -142,6 +143,7 @@ export class EditReportGroupDialogComponent {
 
   RemoveUserFromForm(index: any) {
     (this.form.controls.userControls as FormArray).removeAt(index);
+    this.userIds.splice(index,1);
   }
 
   findDuplicates(arr: any){

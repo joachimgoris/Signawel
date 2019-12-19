@@ -172,6 +172,7 @@ export class AddReportGroupComponent implements OnInit {
 
   RemoveUserFromForm(index: any) {
     (this.form.controls.userControls as FormArray).removeAt(index);
+    this.userIds.splice(index,1);
   }
 
   editReportGroup(index: any) {

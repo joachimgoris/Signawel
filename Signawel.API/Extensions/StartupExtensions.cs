@@ -53,6 +53,7 @@ namespace Signawel.API.Extensions
 
             services.AddIdentity<User, Role>(options =>
            {
+
                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
                options.Lockout.MaxFailedAccessAttempts = 8;
                options.Lockout.AllowedForNewUsers = true;

@@ -18,13 +18,25 @@ export class LayoutComponent implements OnInit {
     Breakpoints.Handset
   );
 
+  public IsAdmin: boolean;
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     private authService: AuthenticationService,
     private router: Router
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.IsAdmin = false;
+    
+    if(this.authService.getCurrentUser() == null){
+      this.logout();
+    }
+    
+    if(this.authService.getCurrentUser().isAdmin){
+      this.IsAdmin = true;
+    }
+  }
 
   logout() {
     this.authService.logout();

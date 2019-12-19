@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Moq;
 using NUnit.Framework;
 using Signawel.Business.Services;
 using Signawel.Data;
-using Signawel.Domain;
 using Signawel.Domain.Constants;
 using Signawel.Domain.DataResults;
 using Signawel.Domain.ReportGroups;
