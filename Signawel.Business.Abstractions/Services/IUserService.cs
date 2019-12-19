@@ -25,7 +25,7 @@ namespace Signawel.Business.Abstractions.Services
         ///     Delete a <see cref="User"/>.
         /// </summary>
         /// <param name="userId">
-        ///     The id of the <see cref="User"/>.
+        ///     The email of the <see cref="User"/>.
         /// </param>
         /// <returns>
         ///     An instance of <see cref="DataResult"/>.
