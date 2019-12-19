@@ -95,6 +95,25 @@ namespace Signawel.API.Controllers
 
         #endregion
 
+        #region DeleteReport
+
+        [HttpDelete("{id}")]
+        [JwtTokenAuthorize(Roles = Role.Constants.Admin)]
+        [SwaggerOperation("deleteReport")]
+        [SwaggerResponse(StatusCodes.Status204NoContent, "Deleted report successfully")]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Something went wrong")]
+        public async Task<IActionResult> DeleteReport(string id)
+        {
+            var result = await _reportService.DeleteReportAsync(id);
+
+            if (!result.Succeeded)
+                return BadRequest(result);
+
+            return NoContent();
+        }
+
+        #endregion
+
         #region AddReport
 
         [HttpPost]

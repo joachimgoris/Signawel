@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { REPORTS } from 'src/app/constants/api.constants';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ReportResult } from '../models/report-result.model';
+import { ReportModel } from '../models/report.model';
 
 @Injectable({
     providedIn: "root"
@@ -22,5 +23,9 @@ export class ReportService {
                 .set("page", pageIndex.toString())
                 .set("limit", pageLimit.toString())
         });
+    }
+
+    public deleteReport(id: string) {
+        return this.http.delete<ReportModel>(REPORTS + `/${id}`);
     }
 }

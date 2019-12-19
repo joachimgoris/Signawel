@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Signawel.Domain;
 using Signawel.Domain.Reports;
 
 namespace Signawel.Data.Configurations
@@ -23,8 +24,6 @@ namespace Signawel.Data.Configurations
             builder.HasOne(e => e.Report)
                 .WithMany(e => e.Images)
                 .HasForeignKey(e => e.ReportId);
-
-            builder.HasOne(e => e.Image).WithMany().HasForeignKey(e => e.ImageId);
         }
     }
 }

@@ -229,6 +229,26 @@ namespace Signawel.Api.Tests.Controllers
             Assert.That(errors.Any(error => error.Code.Equals("InvalidFileFormat")), Is.True);
         }
 
+        [Test]
+        public async Task DeleteReportShouldReturnNoContentWhenValidIdIsGiven()
+        {
+            // Arrange
+
+            var reportId = Guid.NewGuid().ToString();
+
+            _reportServiceMock.Setup(service => service.DeleteReportAsync(It.IsAny<string>()))
+                .ReturnsAsync(DataResult.Success);
+
+            // Act
+            var result = await _reportController.DeleteReport(reportId);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.TypeOf<NoContentResult>());
+
+            _reportServiceMock.Verify(service => service.DeleteReportAsync(reportId), Times.Once);
+        }
+
         #region Helper
 
         private IFormFile GetImageFormFile()

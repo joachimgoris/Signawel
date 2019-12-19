@@ -9,21 +9,6 @@
 </div>
 
 <mat-table [dataSource]="listData" matSort matSortActive="seqNo" matSortDirection="asc" matSortDisableClear>
-
-  <!-- Checkbox Column -->
-  <ng-container matColumnDef="select">
-    <mat-header-cell *matHeaderCellDef>
-      <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
-        [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
-      </mat-checkbox>
-    </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(element) : null"
-        [checked]="selection.isSelected(element)" [aria-label]="checkboxLabel(element)">
-      </mat-checkbox>
-    </mat-cell>
-  </ng-container>
-
   <!-- Sender Email Column -->
   <ng-container matColumnDef="senderEmail">
     <mat-header-cell *matHeaderCellDef mat-sort-header>E-mailadres melder</mat-header-cell>
@@ -56,6 +41,9 @@
     <mat-cell *matCellDef="let element">
       <button mat-icon-button (click)="doShow(element)">
         <mat-icon>open_in_new</mat-icon>
+      </button>
+      <button mat-icon-button (click)="doRemove(element)">
+        <mat-icon>delete</mat-icon>
       </button>
     </mat-cell>
   </ng-container>

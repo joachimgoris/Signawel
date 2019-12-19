@@ -66,6 +66,12 @@ export class ReportsOverviewComponent implements AfterViewInit, OnInit {
     this.modalService.open("reportEditor");
   }
 
+  doRemove(report: ReportModel) {
+    this.reportService.deleteReport(report.id).subscribe(res => {
+      this.loadReports();
+    });
+  }
+
   onModalClose(event: ModalCloseEvent) {
     if (event.reason == "background") {
       event.preventDefault();

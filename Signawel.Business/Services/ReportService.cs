@@ -61,15 +61,17 @@ namespace Signawel.Business.Services
         public async Task<DataResult> DeleteReportAsync(string reportId)
         {
 
-            if (!string.IsNullOrEmpty(reportId))
+            if (string.IsNullOrEmpty(reportId))
                 return DataResult.WithError(ErrorCodes.ReportDeletionError, "The id of the report is empty.");
 
             var report = await _context.Reports.FindAsync(reportId);
 
-            if (report != null)
+            if (report == null)
                 return DataResult.WithError(ErrorCodes.ReportDeletionError, "There was no report linked to the given id in the database.");
 
             _context.Remove(report);
+            _context.Images.RemoveRange(_context.ReportImages.Where(reportImage => reportImage.ReportId == reportId).Select(e => e.Image).ToList());
+            _context.ReportImages.RemoveRange(_context.ReportImages.Where(reportImage => reportImage.ReportId == reportId));
 
             await _context.SaveChangesAsync();
 
