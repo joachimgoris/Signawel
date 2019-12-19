@@ -10,43 +10,51 @@
 
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Spacing="20" 
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <ActivityIndicator IsRunning="{Binding Loading}" Grid.Row="0"/>
+                <StackLayout Spacing="20" 
                      Padding="10"
                      BackgroundColor="White"
-                     BindableLayout.ItemsSource="{Binding Schemas}">
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Padding="16" Margin="10" HeightRequest="200" BackgroundColor="Accent" 
+                     BindableLayout.ItemsSource="{Binding Schemas}"
+                     Grid.Row="0"
+                     IsVisible="{Binding IsVisible}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Padding="16" Margin="10" HeightRequest="200" BackgroundColor="Accent" 
                                    FlexLayout.Basis="{OnIdiom Phone='50%', Tablet='33%'}" 
                                    FlexLayout.AlignSelf="Start" >
 
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding BindingContext.SelectRoadworkSchemaCommand, Source={x:Reference roadworkschemalistPage}}"
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.SelectRoadworkSchemaCommand, Source={x:Reference roadworkschemalistPage}}"
                                                       CommandParameter="{Binding Schema}" />
-                            </Frame.GestureRecognizers>
+                                </Frame.GestureRecognizers>
 
-                            <Grid>
+                                <Grid>
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="5*"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="5*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
 
-                                <Image Grid.Row="0"
+                                    <Image Grid.Row="0"
                                        Margin="-16,-16,-16,0" 
                                        Aspect="AspectFill"
                                        Source="{Binding ImageSource}"/>
-                                
-                                <Label Grid.Row="1"
+
+                                    <Label Grid.Row="1"
                                            Text="{Binding Schema.Name}"
                                            FontSize="Title"
                                            TextColor="{StaticResource LightTitle}"/>
-                            </Grid>
-                        </Frame>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </StackLayout>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </Grid>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

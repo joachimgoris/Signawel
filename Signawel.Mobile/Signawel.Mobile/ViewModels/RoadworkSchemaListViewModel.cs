@@ -21,6 +21,9 @@ namespace Signawel.Mobile.ViewModels
 
         public ObservableCollection<RoadworkSchemaListItem> Schemas { get; set; }
 
+        public bool Loading { get; set; }
+        public bool IsVisible {get;set;}
+
         public ICommand SelectRoadworkSchemaCommand => new AsyncCommand<RoadworkSchemaResponseDto>(OnSelectRoadworkSchemaCommand);
 
         public RoadworkSchemaListViewModel(IRoadworkSchemaService roadworkSchemaService, INavigationService navigationService, IHttpService httpService)
@@ -44,7 +47,10 @@ namespace Signawel.Mobile.ViewModels
                 throw new ArgumentException("argument data should be of type 'RoadworkCategory'");
             }
 
+            Loading = true;
             var schemas = await _roadworkSchemaService.GetRoadworkSchemaByCategory(category);
+            Loading = false;
+            IsVisible = true;
 
             foreach(var schema in schemas)
             {

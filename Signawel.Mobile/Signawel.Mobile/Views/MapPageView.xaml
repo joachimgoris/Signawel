@@ -43,7 +43,7 @@
                                    Text="{Binding SearchbarText, Mode=TwoWay}"/>
             </Frame>
                 <Frame Padding="0" OutlineColor="DarkGray" Opacity="0.9" HasShadow="True" HorizontalOptions="FillAndExpand"  VerticalOptions="Center" Grid.Column="1" Grid.Row="0" Margin="0,8,5,0">
-                <Picker SelectedIndex="{Binding SliderValue}" BackgroundColor="White" Focused="Picker_Focused" Unfocused="Picker_Unfocused">
+                <Picker SelectedIndex="{Binding SliderValue}" BackgroundColor="White" Focused="Picker_Focused" Unfocused="Picker_Unfocused" FontSize="13">
                         <Picker.Items>
                             <x:String>1km</x:String>
                             <x:String>2km</x:String>

@@ -8453,26 +8453,26 @@ namespace Signawel.Mobile.Droid
 			// aapt resource value: 0x7f020055
 			public const int avd_hide_password = 2130837589;
 			
-			// aapt resource value: 0x7f02008e
-			public const int avd_hide_password_1 = 2130837646;
-			
 			// aapt resource value: 0x7f02008f
-			public const int avd_hide_password_2 = 2130837647;
+			public const int avd_hide_password_1 = 2130837647;
 			
 			// aapt resource value: 0x7f020090
-			public const int avd_hide_password_3 = 2130837648;
+			public const int avd_hide_password_2 = 2130837648;
+			
+			// aapt resource value: 0x7f020091
+			public const int avd_hide_password_3 = 2130837649;
 			
 			// aapt resource value: 0x7f020056
 			public const int avd_show_password = 2130837590;
 			
-			// aapt resource value: 0x7f020091
-			public const int avd_show_password_1 = 2130837649;
-			
 			// aapt resource value: 0x7f020092
-			public const int avd_show_password_2 = 2130837650;
+			public const int avd_show_password_1 = 2130837650;
 			
 			// aapt resource value: 0x7f020093
-			public const int avd_show_password_3 = 2130837651;
+			public const int avd_show_password_2 = 2130837651;
+			
+			// aapt resource value: 0x7f020094
+			public const int avd_show_password_3 = 2130837652;
 			
 			// aapt resource value: 0x7f020057
 			public const int common_full_open_on_phone = 2130837591;
@@ -8609,11 +8609,11 @@ namespace Signawel.Mobile.Droid
 			// aapt resource value: 0x7f020083
 			public const int notification_icon_background = 2130837635;
 			
-			// aapt resource value: 0x7f02008c
-			public const int notification_template_icon_bg = 2130837644;
-			
 			// aapt resource value: 0x7f02008d
-			public const int notification_template_icon_low_bg = 2130837645;
+			public const int notification_template_icon_bg = 2130837645;
+			
+			// aapt resource value: 0x7f02008e
+			public const int notification_template_icon_low_bg = 2130837646;
 			
 			// aapt resource value: 0x7f020084
 			public const int notification_tile_bg = 2130837636;
@@ -8634,10 +8634,13 @@ namespace Signawel.Mobile.Droid
 			public const int Signawel = 2130837641;
 			
 			// aapt resource value: 0x7f02008a
-			public const int tooltip_frame_dark = 2130837642;
+			public const int SplashScreen = 2130837642;
 			
 			// aapt resource value: 0x7f02008b
-			public const int tooltip_frame_light = 2130837643;
+			public const int tooltip_frame_dark = 2130837643;
+			
+			// aapt resource value: 0x7f02008c
+			public const int tooltip_frame_light = 2130837644;
 			
 			static Drawable()
 			{
@@ -9906,8 +9909,8 @@ namespace Signawel.Mobile.Droid
 			// aapt resource value: 0x7f0c016c
 			public const int Animation_Design_BottomSheetDialog = 2131493228;
 			
-			// aapt resource value: 0x7f0c0200
-			public const int AppCompatDialogStyle = 2131493376;
+			// aapt resource value: 0x7f0c0201
+			public const int AppCompatDialogStyle = 2131493377;
 			
 			// aapt resource value: 0x7f0c009c
 			public const int Base_AlertDialog_AppCompat = 2131493020;
@@ -10482,11 +10485,11 @@ namespace Signawel.Mobile.Droid
 			// aapt resource value: 0x7f0c000d
 			public const int CardView_Light = 2131492877;
 			
-			// aapt resource value: 0x7f0c01fe
-			public const int MainTheme = 2131493374;
-			
 			// aapt resource value: 0x7f0c01ff
-			public const int MainTheme_Base = 2131493375;
+			public const int MainTheme = 2131493375;
+			
+			// aapt resource value: 0x7f0c0200
+			public const int MainTheme_Base = 2131493376;
 			
 			// aapt resource value: 0x7f0c007d
 			public const int Platform_AppCompat = 2131492989;
@@ -10976,6 +10979,9 @@ namespace Signawel.Mobile.Droid
 			
 			// aapt resource value: 0x7f0c01bc
 			public const int Theme_MaterialComponents_NoActionBar_Bridge = 2131493308;
+			
+			// aapt resource value: 0x7f0c01fe
+			public const int Theme_Splash = 2131493374;
 			
 			// aapt resource value: 0x7f0c0111
 			public const int ThemeOverlay_AppCompat = 2131493137;

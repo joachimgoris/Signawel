@@ -18,6 +18,8 @@ namespace Signawel.Mobile.ViewModels
         public event EventHandler OnLoaded;
 
         public RoadworkSchemaResponseDto Schema { get; set; }
+        public bool Loading { get; set; }
+        public bool ScetchVisibility { get; set; }
 
         public byte[] ImageUrlBytes { get; set; }
 
@@ -39,8 +41,10 @@ namespace Signawel.Mobile.ViewModels
 
             if(data is string id)
             {
+                Loading = true;
                 Schema = await _determinationSchemaService.GetRoadworkSchema(id);
-                
+               
+
             } else if(data is RoadworkSchemaResponseDto dto)
             {
                 Schema = dto;
@@ -48,8 +52,10 @@ namespace Signawel.Mobile.ViewModels
             {
                 throw new ArgumentException("argument data should be instance of 'string' (id of roadworkschema) or 'RoadworkSchemaResponseDto'.");
             }
-
+            Loading = true;
             ImageUrlBytes = await RetrieveBitmap(Schema.ImageId);
+            Loading = false;
+            ScetchVisibility = true;
             OnLoaded?.Invoke(this, new EventArgs());
         }
 

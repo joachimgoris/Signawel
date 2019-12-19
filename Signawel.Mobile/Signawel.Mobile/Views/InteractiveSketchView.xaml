@@ -9,11 +9,19 @@
              Visual="Material">
     <ScrollView>
         <ScrollView.Content>
-            <forms:SKCanvasView x:Name="InteractiveSketchSkCanvasView"
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <ActivityIndicator IsRunning="{Binding Loading}" Grid.Row="0"/>
+                <forms:SKCanvasView x:Name="InteractiveSketchSkCanvasView"
                                 PaintSurface="InteractiveSketchViewCanvasView_OnPaintSurface"
                                 EnableTouchEvents="True"
-                                Touch="InteractiveSketchSkCanvasView_OnTouch">
-            </forms:SKCanvasView>
+                                Touch="InteractiveSketchSkCanvasView_OnTouch"
+                                Grid.Row="0"
+                                IsVisible="{Binding ScetchVisibility}">
+                </forms:SKCanvasView>
+            </Grid>
         </ScrollView.Content>
     </ScrollView>
 </ContentPage>
