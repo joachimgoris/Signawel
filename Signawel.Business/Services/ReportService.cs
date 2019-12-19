@@ -8,8 +8,6 @@ using Signawel.Dto.Reports;
 using System.Linq;
 using System.Threading.Tasks;
 using Signawel.Domain.Reports;
-using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace Signawel.Business.Services
 {

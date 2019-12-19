@@ -1,1 +1,30 @@
-<p>default-issues works!</p>
+<div class="spinner-container" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div *ngIf="!loading">
+  <div class="input-row">
+    <mat-form-field class="add-field">
+      <input matInput type="text" placeholder="nieuw standaard probleem" [(ngModel)]="newIssue.name">
+
+      <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="newIssue.name=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <button mat-icon-button class="add-button" aria-label="Standaard probleem toevoegen"
+      matTooltip="Standaard probleem toevoegen" matTooltipPosition="above" (click)="addDefaultIssue()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <mat-list>
+    <mat-list-item *ngFor="let issue of defaultIssues">
+      <h3 matLine>{{ issue.name }}</h3>
+      <button mat-icon-button class="remove-button" aria-label="Standaard probleem verwijderen"
+        [matTooltip]="issue.name + ' verwijderen'" matTooltipPosition="above" (click)="removeDefaultIssue(issue.id)">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </mat-list-item>
+  </mat-list>
+</div>

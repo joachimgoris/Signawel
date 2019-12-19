@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Signawel.Domain.Reports;
-using Signawel.Dto;
+using Signawel.Dto.DefaultIssue;
 
 namespace Signawel.Business.MapperProfiles
 {
@@ -9,6 +9,7 @@ namespace Signawel.Business.MapperProfiles
         public DefaultIssueProfile()
         {
             CreateMap<ReportDefaultIssue, DefaultIssueResponseDto>();
+            CreateMap<DefaultIssueRequestDto, ReportDefaultIssue>();
         }
     }
 }

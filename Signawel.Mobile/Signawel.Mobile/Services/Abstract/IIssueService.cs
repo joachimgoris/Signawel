@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Signawel.Dto;
+using Signawel.Dto.DefaultIssue;
 
 namespace Signawel.Mobile.Services.Abstract
 {

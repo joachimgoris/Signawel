@@ -87,5 +87,13 @@
         public const string InvalidFileFormat = "InvalidFileFormat";
 
         #endregion
+
+        #region DefaultIssue
+
+        public const string DefaultIssueCreationError = "Failed to create a default issue";
+
+        public const string DefaultIssueDeletionError = "Failed to delete a default issue";
+
+        #endregion DefaultIssue
     }
 }

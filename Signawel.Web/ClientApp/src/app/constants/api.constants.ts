@@ -11,8 +11,9 @@ export const CITIES = REPORT_GROUPS + "/cities";
 export const USERS = REPORT_GROUPS + "/users";
 export const PRIORITY_EMAILS = BASE_URL + "/priority-emails";
 export const BLACKLIST_EMAILS = BASE_URL + "/blacklist-emails";
+export const DEFAULT_ISSUES = BASE_URL + "/issues/default";
 export const REPORTS = BASE_URL + "/reports";
 
 // GIPOD
-export const GIPOD_BASE_URL = 'http://api.gipod.vlaanderen.be/ws/v1';
-export const ROADWORK_INFO = GIPOD_BASE_URL + '/WorkAssignment?Id=';
+export const GIPOD_BASE_URL = "http://api.gipod.vlaanderen.be/ws/v1";
+export const ROADWORK_INFO = GIPOD_BASE_URL + "/WorkAssignment?Id=";

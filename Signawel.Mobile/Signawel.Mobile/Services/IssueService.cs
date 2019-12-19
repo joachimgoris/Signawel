@@ -2,7 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Signawel.Dto;
+using Signawel.Dto.DefaultIssue;
 using Signawel.Mobile.Bootstrap.Abstract;
 using Signawel.Mobile.Constants;
 using Signawel.Mobile.Services.Abstract;
