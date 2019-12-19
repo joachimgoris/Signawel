@@ -11,6 +11,7 @@
              Title="Rapport"
              x:Name="ContentPage">
     <ContentPage.Content>
+
         <Grid Padding="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="7*"/>
@@ -24,6 +25,9 @@
                 <RowDefinition Height="0.8*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+
+            <ActivityIndicator IsRunning="{Binding Loading}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="5" />
+
             <controls:ValidationSearchBar PlaceHolder="Werk"
                                           EntryText="{Binding Roadwork.Description}"
                                           SearchButtonCommand="{Binding SearchRoadworkCommand}"

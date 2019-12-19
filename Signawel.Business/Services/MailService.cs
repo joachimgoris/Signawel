@@ -112,7 +112,7 @@ namespace Signawel.Business.Services
             StringBuilder mailBody = new StringBuilder("<h4>Probleem geraporteerd aan wegenwerk met GipodId: </h4>");
             mailBody.Append(report.RoadworkId);
             mailBody.Append("<br><br>");
-            mailBody.Append("<h4>Fout:</h4>" + report.Issue.Name);
+            mailBody.Append("<h4>Fout:</h4>" + report.IssueId);
             mailBody.Append("</ul><br><br>");
             mailBody.Append("<h4>Beschrijving probleem: </h4>" + report.Description + "<br>");
             mailBody.Append("------------------------------------------<br>");

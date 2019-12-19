@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
+using Signawel.Domain.Reports;
 using Signawel.Mobile.Validation.Controls;
 using Xamarin.Forms;
 
@@ -20,10 +20,10 @@ namespace Signawel.Mobile.Tests.Validation
         [Test]
         public void IsValid_ShouldBeTrue_WhenItemIsSelected()
         {
-            _sutPicker.ItemSource = new List<string>
+            _sutPicker.ItemSource = new List<ReportDefaultIssue>
             {
-                Guid.NewGuid().ToString(),
-                Guid.NewGuid().ToString()
+                new ReportDefaultIssue(),
+                new ReportDefaultIssue()
             };
 
             _sutPicker.PickerIndex = 1;

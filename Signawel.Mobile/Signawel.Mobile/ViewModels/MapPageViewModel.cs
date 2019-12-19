@@ -9,6 +9,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using System.Linq;
 using System.Windows.Input;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 using Signawel.Mobile.Bootstrap.Abstract;
 using Signawel.Mobile.Bootstrap;
 using Signawel.Mobile.Services.Abstract;
@@ -186,28 +188,43 @@ namespace Signawel.Mobile.ViewModels
         public async Task SetMyLocation()
         {
 
-                GeolocationRequest request;
-                Location location;
-                try
+            GeolocationRequest request;
+            Location location;
+            try
+            {
+                request = new GeolocationRequest(GeolocationAccuracy.Best);
+                location = await Geolocation.GetLocationAsync(request);
+            }
+            catch (PermissionException)
+            {
+
+                var status = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
+
+                if (status[Permission.Location] == PermissionStatus.Granted)
                 {
-                    request = new GeolocationRequest(GeolocationAccuracy.Best);
-                    location = await Geolocation.GetLocationAsync(request);
-                }
-                catch (PermissionException)
-                {
-                _messageService.ShowAlert("Geen toegang", "De app heeft toegang nodig tot u locatie om werken in u buurt te vinden");
-                    return;
+                    await SetMyLocation();
                 }
 
-                Latitude = location.Latitude;
-                Longitude = location.Longitude;
+                return;
+            }
+            catch (FeatureNotEnabledException)
+            {
+                _messageService.ShowAlert("Geen toegang tot locatie",
+                    "Zet uw locatie aan om gebruik te maken van \"Mijn locatie\"");
+                return;
+            }
+            catch (Exception)
+            {
+                return;
+            }
 
-
+            SearchbarText = "Mijn locatie";
+            Latitude = location.Latitude;
+            Longitude = location.Longitude;
         }
 
         private async Task MyLocationResults()
         {
-            SearchbarText = "Mijn locatie";
             await ShowRoadWorks("Mijn locatie");
         }
 

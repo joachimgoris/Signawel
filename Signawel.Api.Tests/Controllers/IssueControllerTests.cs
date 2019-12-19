@@ -7,6 +7,7 @@ using Signawel.Domain.Constants;
 using Signawel.Domain.DataResults;
 using Signawel.Dto.DefaultIssue;
 using System.Threading.Tasks;
+using Signawel.Dto;
 
 namespace Signawel.Api.Tests.Controllers
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Signawel.Domain.Reports;
 using Signawel.Mobile.Constants;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -10,18 +11,18 @@ namespace Signawel.Mobile.Validation.Controls
     public partial class ValidationPicker
     {
         public static readonly BindableProperty ItemSourceProperty = BindableProperty.Create(nameof(ItemSource),
-            typeof(List<string>), typeof(ValidationPicker), null, BindingMode.TwoWay);
-        public List<string> ItemSource
+            typeof(List<ReportDefaultIssue>), typeof(ValidationPicker));
+        public List<ReportDefaultIssue> ItemSource
         {
-            get => (List<string>)GetValue(ItemSourceProperty);
+            get => (List<ReportDefaultIssue>)GetValue(ItemSourceProperty);
             set => SetValue(ItemSourceProperty, value);
         }
 
         public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem),
-            typeof(string), typeof(ValidationPicker));
-        public string SelectedItem
+            typeof(ReportDefaultIssue), typeof(ValidationPicker), null, BindingMode.TwoWay);
+        public ReportDefaultIssue SelectedItem
         {
-            get => (string)GetValue(SelectedItemProperty);
+            get => (ReportDefaultIssue)GetValue(SelectedItemProperty);
             set => SetValue(SelectedItemProperty, value);
         }
 
@@ -55,7 +56,7 @@ namespace Signawel.Mobile.Validation.Controls
 
         public void ValidationPickerPickerOnSelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedItem = ValidationPickerPicker.SelectedItem as string;
+            SelectedItem = ValidationPickerPicker.SelectedItem as ReportDefaultIssue;
             ValidationPickerPicker.TextColor = TextColor;
             ValidationPickerLabel.IsVisible = false;
             IsValid = true;

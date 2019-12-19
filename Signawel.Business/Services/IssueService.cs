@@ -6,6 +6,7 @@ using Signawel.Data;
 using Signawel.Domain.Constants;
 using Signawel.Domain.DataResults;
 using Signawel.Domain.Reports;
+using Signawel.Dto;
 using Signawel.Dto.DefaultIssue;
 
 namespace Signawel.Business.Services

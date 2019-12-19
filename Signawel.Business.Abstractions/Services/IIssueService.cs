@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Signawel.Domain.DataResults;
+using Signawel.Dto;
 using Signawel.Dto.DefaultIssue;
 
 namespace Signawel.Business.Abstractions.Services

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Signawel.Dto.DefaultIssue;
+using Signawel.Domain.Reports;
+using Signawel.Dto;
 
 namespace Signawel.Mobile.Services.Abstract
 {
@@ -12,6 +13,6 @@ namespace Signawel.Mobile.Services.Abstract
         /// <returns>
         ///     An instance of <see cref="Task{TResult}"/> containing an instance of <see cref="IList{T}"/> containing instances of <see cref="DefaultIssueResponseDto"/>
         /// </returns>
-        Task<IList<DefaultIssueResponseDto>> GetAllDefaultIssues();
+        Task<IList<ReportDefaultIssue>> GetAllDefaultIssues();
     }
 }

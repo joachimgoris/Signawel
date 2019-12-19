@@ -2,7 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Signawel.Dto.DefaultIssue;
+using Signawel.Domain.Reports;
 using Signawel.Mobile.Bootstrap.Abstract;
 using Signawel.Mobile.Constants;
 using Signawel.Mobile.Services.Abstract;
@@ -19,14 +19,14 @@ namespace Signawel.Mobile.Services
             _httpService = httpService;
         }
 
-        public async Task<IList<DefaultIssueResponseDto>> GetAllDefaultIssues()
+        public async Task<IList<ReportDefaultIssue>> GetAllDefaultIssues()
         {
             var result = await _httpService.GetAsync(ApiConstants.GetDefaultIssues);
 
             if (result.StatusCode == HttpStatusCode.OK)
             {
                 var jsonString = await result.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<IList<DefaultIssueResponseDto>>(jsonString);
+                return JsonConvert.DeserializeObject<IList<ReportDefaultIssue>>(jsonString);
             }
 
             return null;

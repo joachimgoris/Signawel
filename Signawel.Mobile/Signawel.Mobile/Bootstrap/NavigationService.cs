@@ -80,9 +80,14 @@ namespace Signawel.Mobile.Bootstrap
 
                     if (viewModel is ReportViewModel reportViewModel)
                     {
-                        if (currentPage.GetType() == typeof(MapPageView))
+                        if (currentPage.GetType() == typeof(MapPageView) || currentPage.GetType() == typeof(ListViewRoadWorksPageView))
                         {
                             await navigationPage.PopAsync();
+                            if (currentPage.GetType() == typeof(ListViewRoadWorksPageView))
+                            {
+                                await navigationPage.PopAsync();
+                            }
+
                             await (navigationPage.CurrentPage.BindingContext as ViewModelBase).InitializeAsync(parameter);
                             return;
                         }

@@ -1,10 +1,10 @@
-﻿using Signawel.Mobile.Models;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
+﻿using Signawel.Mobile.Bootstrap;
 using Signawel.Mobile.Bootstrap.Abstract;
-using Xamarin.Forms;
+using Signawel.Mobile.Models;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Signawel.Mobile.Bootstrap;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Signawel.Mobile.ViewModels
 {
@@ -67,6 +67,12 @@ namespace Signawel.Mobile.ViewModels
             {
                 MenuText = "Register",
                 ViewModelType = typeof(RegisterViewModel)
+            });
+
+            MenuItems.Add(new MainMenuItem
+            {
+                MenuText = "Report",
+                ViewModelType = typeof(ReportViewModel)
             });
         }
 

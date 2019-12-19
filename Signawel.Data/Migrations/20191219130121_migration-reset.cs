@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Signawel.Data.Migrations
 {
-    public partial class MigrationReset : Migration
+    public partial class migrationreset : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,17 +50,15 @@ namespace Signawel.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "categories",
+                name: "blacklist_emails",
                 columns: table => new
                 {
                     id = table.Column<string>(nullable: false),
-                    order_id = table.Column<int>(nullable: false),
-                    name = table.Column<string>(nullable: false),
-                    image_path = table.Column<string>(nullable: false)
+                    email = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_categories", x => x.id);
+                    table.PrimaryKey("PK_blacklist_emails", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -148,6 +146,23 @@ namespace Signawel.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_reportgroups", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "reports",
+                columns: table => new
+                {
+                    id = table.Column<string>(nullable: false),
+                    creation_time = table.Column<DateTime>(nullable: false),
+                    sender_email = table.Column<string>(nullable: false),
+                    description = table.Column<string>(nullable: true),
+                    roadwork_id = table.Column<string>(nullable: false),
+                    issue_id = table.Column<string>(nullable: true),
+                    cities = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_reports", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -350,7 +365,8 @@ namespace Signawel.Data.Migrations
                 {
                     schema_id = table.Column<string>(nullable: false),
                     name = table.Column<string>(nullable: true),
-                    image_id = table.Column<string>(nullable: true)
+                    image_id = table.Column<string>(nullable: true),
+                    category = table.Column<byte>(nullable: false, defaultValue: (byte)0)
                 },
                 constraints: table =>
                 {
@@ -361,28 +377,6 @@ namespace Signawel.Data.Migrations
                         principalTable: "images",
                         principalColumn: "image_id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "reports",
-                columns: table => new
-                {
-                    id = table.Column<string>(nullable: false),
-                    CreationTime = table.Column<DateTime>(nullable: false),
-                    sender_email = table.Column<string>(nullable: false),
-                    description = table.Column<string>(nullable: false),
-                    roadwork_id = table.Column<string>(nullable: false),
-                    IssueId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_reports", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_reports_report_default_issues_IssueId",
-                        column: x => x.IssueId,
-                        principalTable: "report_default_issues",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -434,25 +428,6 @@ namespace Signawel.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "bboxes",
-                columns: table => new
-                {
-                    bbox_id = table.Column<string>(nullable: false),
-                    name = table.Column<string>(nullable: true),
-                    schema_id = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_bboxes", x => x.bbox_id);
-                    table.ForeignKey(
-                        name: "FK_bboxes_roadwork_schemas_schema_id",
-                        column: x => x.schema_id,
-                        principalTable: "roadwork_schemas",
-                        principalColumn: "schema_id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "report_images",
                 columns: table => new
                 {
@@ -475,6 +450,25 @@ namespace Signawel.Data.Migrations
                         principalTable: "reports",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "bboxes",
+                columns: table => new
+                {
+                    bbox_id = table.Column<string>(nullable: false),
+                    name = table.Column<string>(nullable: true),
+                    schema_id = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_bboxes", x => x.bbox_id);
+                    table.ForeignKey(
+                        name: "FK_bboxes_roadwork_schemas_schema_id",
+                        column: x => x.schema_id,
+                        principalTable: "roadwork_schemas",
+                        principalColumn: "schema_id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -503,48 +497,48 @@ namespace Signawel.Data.Migrations
                 columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { "829cef46-3a6e-4fe9-b531-f82cc488f908", "Alken" },
-                    { "70d6ea53-9218-4ea5-acab-7b97443d7f69", "Kortessem" },
-                    { "9dc1f7e2-bc2a-4c7a-a28e-b542aa06e0c2", "Lanaken" },
-                    { "5aab5ebe-d390-4bf5-bb2d-ef696c34a741", "Leopoldsburg" },
-                    { "1874c3c5-0e4f-4565-a4d3-e179b77e993e", "Lommel" },
-                    { "1c98ca9a-02ac-4f6a-b41f-0eee6cb6627e", "Lummen" },
-                    { "b96d0451-e8c7-4bf8-ad34-4be2d27120c4", "Maaseik" },
-                    { "729764fb-a0fa-4a86-845c-2c57e1fc0fae", "Maasmechelen" },
-                    { "d7b2f2cb-13b7-462b-8036-682dff1f1583", "Nieuwerkerken" },
-                    { "30217cff-55e0-480b-819e-f6ea724c2f16", "Oudsbergen" },
-                    { "f284f8ad-e758-4171-a30d-6e49bfbafc36", "Peer" },
-                    { "99de3e3b-f8fa-4bbd-b1bb-c365d6bd83dc", "Pelt" },
-                    { "af72dfea-3872-4902-93f8-c5fe25506859", "Riemst" },
-                    { "5e1df4df-66e1-44b4-a9d6-57c16abf0fc8", "Sint-Truiden" },
-                    { "4ba0fa02-d22e-4191-8a0f-7abb80066b3c", "Tessenderlo" },
-                    { "80451bee-07af-4820-b567-173e47e6a6b3", "Tongeren" },
-                    { "74f22229-da71-4c41-9424-8ca12f239f6b", "Voeren" },
-                    { "0fe26c29-7fee-488e-8fbf-39c36249fcdb", "Wellen" },
-                    { "f98eb09c-02c1-4da9-82ac-431f9481651a", "Kinrooi" },
-                    { "29c54b7d-762c-4102-bfd9-fb652b322a69", "Houthalen-Helchteren" },
-                    { "a956e3fb-eeac-42e4-befd-220075c52ee0", "Hoeselt" },
-                    { "dc0432f1-72c2-4cb2-9c52-b28be52c6a71", "Heusden-Zolder" },
-                    { "0adb2933-3ff8-48d8-9058-6f6398e1cdde", "As" },
-                    { "dbdfc118-65cf-4175-b1cb-7c83917246cb", "Beringen" },
-                    { "fbd9b409-9e54-4025-aa72-b9f92c767607", "Bilzen" },
-                    { "ffb77b12-f2d7-4c4a-bc0b-8bd3e6c7a2be", "Bocholt" },
-                    { "705af8bc-c5b0-4ca8-8e68-078239ca8676", "Borgloon" },
-                    { "0bc39bbf-d02f-4837-8895-1bbb255539d3", "Bree" },
-                    { "b950becf-150b-4f74-bbf5-b0a6b7fbed44", "Diepenbeek" },
-                    { "6fd3c011-73b9-46ef-aacf-27f7c174477f", "Dilsen-Stokkem" },
-                    { "97d1185e-7db0-4cb5-bb4b-694396479283", "Zonhoven" },
-                    { "17a1922d-5b05-432c-9f97-9c0a279ecaf8", "Genk" },
-                    { "c73dab2d-8bdf-417c-9bc8-936ee7106146", "Halen" },
-                    { "c7fb8ef5-f3e3-4fe7-a164-d2a9b8a3fb06", "Ham" },
-                    { "9c2efdf8-d514-4c75-b9ab-472bc9f9827f", "Hamont-Achel" },
-                    { "5de99735-8b0c-4c70-876a-df6837196787", "Hasselt" },
-                    { "c28f5a5e-4249-40b3-ab84-62810ea39445", "Hechelt-Eksel" },
-                    { "1f889685-5360-4cf8-8745-0be139625427", "Heers" },
-                    { "7943928f-b2dd-4617-9bb2-05d9d33939bc", "Herk-de-Stad" },
-                    { "217d9c61-4a81-4116-a24f-4390ab456d69", "Herstappe" },
-                    { "c12aac6d-5513-4b68-b331-0a403f8950b4", "Gingelom" },
-                    { "9c814573-1fcb-4be9-b1b9-5810656d3f0c", "Zutendaal" }
+                    { "a1c5d266-4f21-4e8c-8f54-34cc63464fae", "Alken" },
+                    { "760d0d43-09f6-4657-a9ae-15ccc4085a4f", "Kortessem" },
+                    { "049b0b27-e8a1-4a18-bed7-5a509829367c", "Lanaken" },
+                    { "566d13d6-ac9f-4b67-8e29-0b35b1d1c358", "Leopoldsburg" },
+                    { "8f0c65e1-dd03-482e-9896-6d4b69b9a090", "Lommel" },
+                    { "ce9d5530-82dc-41cb-ab8a-d1a65a003b03", "Lummen" },
+                    { "02f38c68-7378-49fb-acb0-b8dd327a937e", "Maaseik" },
+                    { "420ba5d3-a4b8-4f06-982c-941aa9714312", "Maasmechelen" },
+                    { "77175dc4-2738-4292-85eb-4d002a1efaa6", "Nieuwerkerken" },
+                    { "87226eec-8b9c-412f-8372-0d24d8655ce5", "Oudsbergen" },
+                    { "18d48b43-b028-47fb-a285-ae0547d5ce7f", "Peer" },
+                    { "b95320ba-c674-42d1-b5f9-40f44ea50bd7", "Pelt" },
+                    { "ec4c91b4-19a1-42de-b798-1d838e376c8e", "Riemst" },
+                    { "cb46e81e-872f-4cfd-b583-bbfa347d4408", "Sint-Truiden" },
+                    { "a16c75c5-1f41-4aa5-9d42-0fc65b2b9b01", "Tessenderlo" },
+                    { "20c5c2fd-448c-4d20-a6c1-a700a624eff5", "Tongeren" },
+                    { "32139788-73db-415a-8148-3526f2e0f8e1", "Voeren" },
+                    { "bdd7e114-bcc8-48b8-8c93-db43cae1d66d", "Wellen" },
+                    { "ce229f20-0558-4d5a-aacf-ca113b73fddd", "Kinrooi" },
+                    { "ae68cd26-3773-4ac2-9e36-4b2ae9f7f784", "Houthalen-Helchteren" },
+                    { "ffa781da-2607-4ba3-a866-7a2f116cf357", "Hoeselt" },
+                    { "a8519f51-2d62-4d28-9ba2-080dbe98add4", "Heusden-Zolder" },
+                    { "c3ae6f57-5915-4013-9fc7-030e3ffd31c0", "As" },
+                    { "8afd1cb8-de3b-4f5a-ba0f-1a4513286754", "Beringen" },
+                    { "a803b0e8-e84e-41dd-84b7-bd6e42a2603c", "Bilzen" },
+                    { "e1ea5cba-3e09-4aea-bf2b-66db5a42571b", "Bocholt" },
+                    { "0e397f19-e638-4c41-a6d7-3e5ca75dcf12", "Borgloon" },
+                    { "f40edad9-3b57-457a-81ce-77aaa9046af9", "Bree" },
+                    { "fdd394b3-1823-4ec2-879c-8907f3464f80", "Diepenbeek" },
+                    { "da0d624d-bf04-4ecf-b1fd-a0f419daa7fd", "Dilsen-Stokkem" },
+                    { "91dac0d7-a73c-45c4-a6f5-3ab0b09df448", "Zonhoven" },
+                    { "11890129-10a8-4181-8bcc-da9ae74a176e", "Genk" },
+                    { "0a42157d-1dd7-450b-a671-c503fd8420b6", "Halen" },
+                    { "e6c3aa4f-aff1-470b-a712-19228095b505", "Ham" },
+                    { "72b999b4-cfb6-4c8a-be18-c264a2f52800", "Hamont-Achel" },
+                    { "848b1b72-6e86-4718-aa88-c6c12de67935", "Hasselt" },
+                    { "421f17bf-9ba8-436f-8ae5-afa3949876a5", "Hechelt-Eksel" },
+                    { "c10bd937-f45d-44d9-b52f-9e0a37284cbb", "Heers" },
+                    { "d660ab8a-cb33-4b24-87aa-a0a235542cc9", "Herk-de-Stad" },
+                    { "fb00d460-00a4-4694-9cc5-29dfc03243b0", "Herstappe" },
+                    { "39723310-9a1c-4034-ba1a-ba2751c7fa30", "Gingelom" },
+                    { "5e7b1e29-c4df-4c6f-972d-c1b3366ec779", "Zutendaal" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -646,11 +640,6 @@ namespace Signawel.Data.Migrations
                 column: "report_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_reports_IssueId",
-                table: "reports",
-                column: "IssueId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_roadwork_schemas_image_id",
                 table: "roadwork_schemas",
                 column: "image_id");
@@ -677,7 +666,7 @@ namespace Signawel.Data.Migrations
                 name: "bbox_points");
 
             migrationBuilder.DropTable(
-                name: "categories");
+                name: "blacklist_emails");
 
             migrationBuilder.DropTable(
                 name: "city_report_group");
@@ -699,6 +688,9 @@ namespace Signawel.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "refresh_tokens");
+
+            migrationBuilder.DropTable(
+                name: "report_default_issues");
 
             migrationBuilder.DropTable(
                 name: "report_images");
@@ -729,9 +721,6 @@ namespace Signawel.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "roadwork_schemas");
-
-            migrationBuilder.DropTable(
-                name: "report_default_issues");
 
             migrationBuilder.DropTable(
                 name: "images");

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -29,10 +30,10 @@ namespace Signawel.Mobile.Services
 
             var result = await _httpService.PostAsync(ApiConstants.PostReport, content);
 
-            if (result != null)
+            if (result.IsSuccessStatusCode)
             {
                 var jsonString = await result.Content.ReadAsStringAsync();
-                var errors = JsonConvert.DeserializeObject<List<ErrorResponseDto>>(jsonString);
+                var errors = JsonConvert.DeserializeObject<IList<ErrorResponseDto>>(jsonString);
                 return errors;
             }
 
@@ -56,7 +57,18 @@ namespace Signawel.Mobile.Services
             {
                 StreamImageSource streamImageSource = (StreamImageSource)reportDataImage.Source;
                 Stream imageSourceStream = await streamImageSource.Stream(CancellationToken.None);
-                multipartFormDataContent.Add(new StreamContent(imageSourceStream), "file");
+
+                byte[] bytes;
+                using (var ms = new MemoryStream())
+                {
+                    await imageSourceStream.CopyToAsync(ms);
+                    bytes = ms.ToArray();
+                }
+
+                var byteContent = new ByteArrayContent(bytes);
+                byteContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+
+                multipartFormDataContent.Add(byteContent, "files", reportDataImage.Source.Id.ToString());
             }
 
             multipartFormDataContent.Add(new StringContent(JsonConvert.SerializeObject(reportData.Report)), "value");

@@ -8,7 +8,6 @@ using Signawel.Business.Abstractions.Services;
 using Signawel.Domain;
 using Signawel.Domain.Configuration;
 using Signawel.Domain.Constants;
-using Signawel.Domain.Reports;
 using Signawel.Dto.Mail;
 using Signawel.Dto.Reports;
 
@@ -118,10 +117,7 @@ namespace Signawel.Business.Tests.Services
             var model = new ReportCreationRequestDto
             {
                 SenderEmail = "test@test.com",
-                Issue = new ReportDefaultIssue
-                {
-                    Name = "problem"
-                }
+                IssueId = "aaa12345sdf"
             };
 
             // Act

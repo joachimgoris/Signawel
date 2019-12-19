@@ -21,7 +21,6 @@ namespace Signawel.Data.Configurations
 
             builder.Property(e => e.Description)
                 .IsUnicode()
-                .IsRequired()
                 .HasColumnName("description");
 
             builder.Property(e => e.RoadworkId)
@@ -35,6 +34,12 @@ namespace Signawel.Data.Configurations
 
             builder.Property(e => e.Cities)
                 .HasColumnName("cities");
+
+            builder.Property(e => e.IssueId)
+                .HasColumnName("issue_id");
+
+            builder.Property(e => e.CreationTime)
+                .HasColumnName("creation_time");
         }
     }
 }

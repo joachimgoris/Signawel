@@ -8,6 +8,7 @@ using Signawel.Business.Services;
 using Signawel.Data;
 using Signawel.Domain.Constants;
 using Signawel.Domain.Reports;
+using Signawel.Dto;
 using Signawel.Dto.DefaultIssue;
 
 namespace Signawel.Business.Tests.Services

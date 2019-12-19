@@ -9,7 +9,8 @@
   <ContentView.Content>
       <StackLayout>
           <Picker x:Name="ValidationPickerPicker"
-                  BackgroundColor="Transparent"/>
+                  BackgroundColor="Transparent"
+                  ItemDisplayBinding="{Binding Name}"/>
           <Label x:Name="ValidationPickerLabel"
                  IsVisible="False"/>
         </StackLayout>

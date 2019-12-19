@@ -8,6 +8,7 @@ using Signawel.API.Attributes;
 using Signawel.Business.Abstractions.Services;
 using Signawel.Domain;
 using Signawel.Domain.Constants;
+using Signawel.Dto;
 using Signawel.Dto.DefaultIssue;
 using Swashbuckle.AspNetCore.Annotations;
 

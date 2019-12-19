@@ -2,6 +2,8 @@
 using Signawel.Mobile.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Signawel.Mobile.Bootstrap;
 
 namespace Signawel.Mobile.ViewModels
 {
@@ -9,19 +11,8 @@ namespace Signawel.Mobile.ViewModels
     {
 
         public List<RoadWork> RoadWorks { get; set; }
-        private RoadWork _SelectedRoadWork;
-        public RoadWork SelectedRoadWork
-        {
-            get
-            {
-                return _SelectedRoadWork;
-            }
-            set
-            {
-                _SelectedRoadWork = value;
-                _navigationService.NavigateToAsync<ReportViewModel>(SelectedRoadWork);
-            }
-        }
+
+        public ICommand SelectedCommand => new AsyncCommand<RoadWork>(async (r) => await _navigationService.NavigateToAsync<ReportViewModel>(r));
 
         private readonly INavigationService _navigationService;
 

@@ -3,12 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviours="clr-namespace:Signawel.Mobile.Behaviours;assembly=Signawel.Mobile"
              mc:Ignorable="d"
              x:Class="Signawel.Mobile.ListViewRoadWorksPageView">
     <ListView x:Name="RoadWorksListView"
-            ItemsSource="{Binding RoadWorks}"
-            SelectedItem="{Binding SelectedRoadWork, Mode=TwoWay}"
-            CachingStrategy="RecycleElement">
+            ItemsSource="{Binding RoadWorks}">
+
+        <ListView.Behaviors>
+            <behaviours:EventToCommandBehaviour EventName="ItemSelected" Command="{Binding SelectedCommand}" CommandParameter="{Binding Path=SelectedItem, Source={x:Reference RoadWorksListView}}" />
+        </ListView.Behaviors>
         
         <ListView.ItemTemplate>
             <DataTemplate>

@@ -11,7 +11,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Signawel.Domain.Constants;
+using Signawel.Domain.Reports;
 using Xamarin.Forms;
+using Report = Signawel.Mobile.Models.Report;
 
 namespace Signawel.Mobile.ViewModels
 {
@@ -23,8 +26,8 @@ namespace Signawel.Mobile.ViewModels
         private readonly IIssueService _issueService;
 
         public RoadWork Roadwork { get; set; }
-        public IList<string> IssueTypes { get; set; }
-        public string IssueType { get; set; }
+        public IList<ReportDefaultIssue> IssueTypes { get; set; }
+        public ReportDefaultIssue IssueType { get; set; }
         public string Email { get; set; }
         public string Description { get; set; }
         public ObservableCollection<Image> Images { get; set; }
@@ -32,6 +35,7 @@ namespace Signawel.Mobile.ViewModels
         public bool IsRoadworkValid { get; set; }
         public bool IsIssueSelected { get; set; }
         public bool Navigated { get; set; }
+        public bool Loading { get; set; }
 
         public ICommand AddImageCommand => new AsyncCommand(OnAddImage);
         public ICommand SendReportCommand => new AsyncCommand(OnSendReport);
@@ -54,11 +58,15 @@ namespace Signawel.Mobile.ViewModels
         {
             if (data != null)
             {
+                Navigated = true;
                 Roadwork = data as RoadWork;
+                OnPropertyChanged(nameof(Roadwork));
             }
-            
-            var issues = await _issueService.GetAllDefaultIssues();
-            IssueTypes = issues.Select(issue => issue.Name).ToList();
+
+            if (IssueTypes == null)
+            {
+                IssueTypes = await _issueService.GetAllDefaultIssues();
+            }
         }
 
         #region Images
@@ -69,7 +77,7 @@ namespace Signawel.Mobile.ViewModels
         {
             var action = await _messageBoxService
                     .ShowActionSheet(TextConstants.AddPictureTitle,
-                        TextConstants.CancelButton, null, new string[]
+                        TextConstants.CancelButton, null, new[]
                         {
                             TextConstants.LocalStorage,
                             TextConstants.Camera
@@ -90,11 +98,14 @@ namespace Signawel.Mobile.ViewModels
         // to an observable list used to display it in the app
         private async Task AddImageFromLocalStorage()
         {
-            var stream = await DependencyService.Get<IPhotoPickerService>().GetImageStreamAsync();
-
-            if (stream != null)
+            var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions
             {
-                var imageSource = ImageSource.FromStream(() => stream);
+                PhotoSize = PhotoSize.Small
+            });
+
+            if (file != null)
+            {
+                var imageSource = ImageSource.FromStream(() => file.GetStream());
                 Image image = new Image
                 {
                     Source = imageSource
@@ -149,10 +160,6 @@ namespace Signawel.Mobile.ViewModels
         }
         #endregion
 
-        #region Validation
-
-        #endregion
-
         private void OnRoadworkSearch()
         {
             _navigationService.NavigateToAsync<MapPageViewModel>();
@@ -163,12 +170,14 @@ namespace Signawel.Mobile.ViewModels
         {
             if (ValidateReport())
             {
+                Loading = true;
                 var report = ConvertValuesToReport();
                 var result = await _reportService.AddReport(report);
+                Loading = false;
 
                 if (result != null)
                 {
-                    if (result.Any(error => error.Code == "Failed to create a report."))
+                    if (result.Any(error => error.Code == ErrorCodes.ReportCreationError))
                     {
                         _messageBoxService.ShowAlert(TextConstants.CreateReportFailedTitle, TextConstants.CreateReportFailedMessage);
                     }
@@ -204,10 +213,10 @@ namespace Signawel.Mobile.ViewModels
                     Images = Images,
                     Report = new Report
                     {
-                        UserEmail = Email,
-                        Description = Description,
+                        SenderEmail = Email,
+                        Description = Description ?? string.Empty,
                         RoadworkId = Roadwork.GipodId,
-                        IssueType = IssueType,
+                        IssueId = IssueType.Id,
                         CreationTime = DateTime.Now,
                         Cities = string.Join(",", Roadwork.Cities)
                     }
@@ -224,6 +233,8 @@ namespace Signawel.Mobile.ViewModels
             Roadwork = null;
             Email = null;
             Description = null;
+            IssueType = null;
+            IssueTypes = null;
             Navigated = false;
             Images = new ObservableCollection<Image>();
         }
