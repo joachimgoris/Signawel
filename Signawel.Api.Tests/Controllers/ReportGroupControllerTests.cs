@@ -5,6 +5,7 @@ using Signawel.API.Controllers;
 using Signawel.Business.Abstractions.Services;
 using Signawel.Domain.Constants;
 using Signawel.Domain.DataResults;
+using Signawel.Dto.Authentication;
 using Signawel.Dto.ReportGroup;
 using System;
 using System.Collections.Generic;

@@ -2,6 +2,7 @@
 using Signawel.Data;
 using Signawel.Domain;
 using Signawel.Domain.ReportGroups;
+using Signawel.Dto.Authentication;
 using Signawel.Dto.ReportGroup;
 using System.Collections.Generic;
 using System.Linq;

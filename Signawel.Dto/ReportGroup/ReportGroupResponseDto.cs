@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Signawel.Dto.Authentication;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Signawel.Dto.ReportGroup

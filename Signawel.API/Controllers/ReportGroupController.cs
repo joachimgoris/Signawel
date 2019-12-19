@@ -8,6 +8,7 @@ using Signawel.Business.Abstractions.Services;
 using Signawel.Domain;
 using Signawel.Domain.Constants;
 using Signawel.Domain.DataResults;
+using Signawel.Dto.Authentication;
 using Signawel.Dto.ReportGroup;
 using Swashbuckle.AspNetCore.Annotations;
 

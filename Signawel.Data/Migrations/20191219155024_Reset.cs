@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Signawel.Data.Migrations
 {
-    public partial class migrationreset : Migration
+    public partial class Reset : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -428,6 +428,30 @@ namespace Signawel.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "user_report_group",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    ReportGroupId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user_report_group", x => new { x.UserId, x.ReportGroupId });
+                    table.ForeignKey(
+                        name: "FK_user_report_group_reportgroups_ReportGroupId",
+                        column: x => x.ReportGroupId,
+                        principalTable: "reportgroups",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_user_report_group_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "report_images",
                 columns: table => new
                 {
@@ -497,48 +521,48 @@ namespace Signawel.Data.Migrations
                 columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { "a1c5d266-4f21-4e8c-8f54-34cc63464fae", "Alken" },
-                    { "760d0d43-09f6-4657-a9ae-15ccc4085a4f", "Kortessem" },
-                    { "049b0b27-e8a1-4a18-bed7-5a509829367c", "Lanaken" },
-                    { "566d13d6-ac9f-4b67-8e29-0b35b1d1c358", "Leopoldsburg" },
-                    { "8f0c65e1-dd03-482e-9896-6d4b69b9a090", "Lommel" },
-                    { "ce9d5530-82dc-41cb-ab8a-d1a65a003b03", "Lummen" },
-                    { "02f38c68-7378-49fb-acb0-b8dd327a937e", "Maaseik" },
-                    { "420ba5d3-a4b8-4f06-982c-941aa9714312", "Maasmechelen" },
-                    { "77175dc4-2738-4292-85eb-4d002a1efaa6", "Nieuwerkerken" },
-                    { "87226eec-8b9c-412f-8372-0d24d8655ce5", "Oudsbergen" },
-                    { "18d48b43-b028-47fb-a285-ae0547d5ce7f", "Peer" },
-                    { "b95320ba-c674-42d1-b5f9-40f44ea50bd7", "Pelt" },
-                    { "ec4c91b4-19a1-42de-b798-1d838e376c8e", "Riemst" },
-                    { "cb46e81e-872f-4cfd-b583-bbfa347d4408", "Sint-Truiden" },
-                    { "a16c75c5-1f41-4aa5-9d42-0fc65b2b9b01", "Tessenderlo" },
-                    { "20c5c2fd-448c-4d20-a6c1-a700a624eff5", "Tongeren" },
-                    { "32139788-73db-415a-8148-3526f2e0f8e1", "Voeren" },
-                    { "bdd7e114-bcc8-48b8-8c93-db43cae1d66d", "Wellen" },
-                    { "ce229f20-0558-4d5a-aacf-ca113b73fddd", "Kinrooi" },
-                    { "ae68cd26-3773-4ac2-9e36-4b2ae9f7f784", "Houthalen-Helchteren" },
-                    { "ffa781da-2607-4ba3-a866-7a2f116cf357", "Hoeselt" },
-                    { "a8519f51-2d62-4d28-9ba2-080dbe98add4", "Heusden-Zolder" },
-                    { "c3ae6f57-5915-4013-9fc7-030e3ffd31c0", "As" },
-                    { "8afd1cb8-de3b-4f5a-ba0f-1a4513286754", "Beringen" },
-                    { "a803b0e8-e84e-41dd-84b7-bd6e42a2603c", "Bilzen" },
-                    { "e1ea5cba-3e09-4aea-bf2b-66db5a42571b", "Bocholt" },
-                    { "0e397f19-e638-4c41-a6d7-3e5ca75dcf12", "Borgloon" },
-                    { "f40edad9-3b57-457a-81ce-77aaa9046af9", "Bree" },
-                    { "fdd394b3-1823-4ec2-879c-8907f3464f80", "Diepenbeek" },
-                    { "da0d624d-bf04-4ecf-b1fd-a0f419daa7fd", "Dilsen-Stokkem" },
-                    { "91dac0d7-a73c-45c4-a6f5-3ab0b09df448", "Zonhoven" },
-                    { "11890129-10a8-4181-8bcc-da9ae74a176e", "Genk" },
-                    { "0a42157d-1dd7-450b-a671-c503fd8420b6", "Halen" },
-                    { "e6c3aa4f-aff1-470b-a712-19228095b505", "Ham" },
-                    { "72b999b4-cfb6-4c8a-be18-c264a2f52800", "Hamont-Achel" },
-                    { "848b1b72-6e86-4718-aa88-c6c12de67935", "Hasselt" },
-                    { "421f17bf-9ba8-436f-8ae5-afa3949876a5", "Hechelt-Eksel" },
-                    { "c10bd937-f45d-44d9-b52f-9e0a37284cbb", "Heers" },
-                    { "d660ab8a-cb33-4b24-87aa-a0a235542cc9", "Herk-de-Stad" },
-                    { "fb00d460-00a4-4694-9cc5-29dfc03243b0", "Herstappe" },
-                    { "39723310-9a1c-4034-ba1a-ba2751c7fa30", "Gingelom" },
-                    { "5e7b1e29-c4df-4c6f-972d-c1b3366ec779", "Zutendaal" }
+                    { "2735068b-489a-4d38-b230-fd5ec64927ad", "Alken" },
+                    { "1fe2d341-cae5-45a5-83ef-95973181d9c9", "Kortessem" },
+                    { "68331754-2d45-462a-9b81-dde18171b2e4", "Lanaken" },
+                    { "4f7ad1e6-4f2b-4ef1-8612-1e8c8130150e", "Leopoldsburg" },
+                    { "2febf7ad-d17f-4cd7-bb05-178320fe71e0", "Lommel" },
+                    { "f5e56030-6f4c-47e6-b9d0-3a0158e907c9", "Lummen" },
+                    { "c4e1ce21-511d-4899-a272-b42a86bc83f3", "Maaseik" },
+                    { "5f1d8cf7-f4a3-4fc9-b528-c7c2e2df02d6", "Maasmechelen" },
+                    { "0d5d3a55-683f-4df1-90c9-2ee5631969ca", "Nieuwerkerken" },
+                    { "16aa0467-578b-47f1-9767-02649ffe5b1d", "Oudsbergen" },
+                    { "cf61cd1b-e046-4a67-a672-e6b3d38b184b", "Peer" },
+                    { "beb93851-316c-4c57-8e48-6e266b3cf4d4", "Pelt" },
+                    { "94f89cd9-d7d5-413f-a7be-0a7b6206558d", "Riemst" },
+                    { "54ac6b50-a8a9-4a47-8525-aa843780a250", "Sint-Truiden" },
+                    { "476b4e4d-7f85-4ae1-932c-e5fa91d3c12d", "Tessenderlo" },
+                    { "fa08a293-12b3-4ca5-ba8b-974069b0e49c", "Tongeren" },
+                    { "3c03d2d6-12c2-424e-a2a8-7b67fb01ddcc", "Voeren" },
+                    { "01f2e731-27e0-4227-a9a2-18f3d4cc5d43", "Wellen" },
+                    { "b3ab31f0-e8c2-482d-8e1e-5dfe12d106b8", "Kinrooi" },
+                    { "8e25a60a-a2a4-4b09-9704-8c4696dfddf7", "Houthalen-Helchteren" },
+                    { "625ec8f0-819a-4c0d-8d37-723c1925d3ca", "Hoeselt" },
+                    { "5c127af3-a149-4a49-8266-bcbf384328e7", "Heusden-Zolder" },
+                    { "99c0ac0f-7be5-4c60-bd57-e0eecd59b452", "As" },
+                    { "c1244480-a7e3-4af9-9ab6-299d3afc0263", "Beringen" },
+                    { "53b25c5b-910e-4d30-9815-e5968e9c3deb", "Bilzen" },
+                    { "faada534-9f0b-4828-8f7c-f203567d3361", "Bocholt" },
+                    { "dfac2550-6b9d-4a06-bce5-ee1e5461426c", "Borgloon" },
+                    { "feaa681a-a73d-4d42-82f3-17c65ad5be72", "Bree" },
+                    { "dea9bc46-edd6-4109-8c52-7e197916a813", "Diepenbeek" },
+                    { "35e06a67-a5b1-4b94-a0a9-3fbe3a9bf6ec", "Dilsen-Stokkem" },
+                    { "6b7cf017-96f1-4f35-b604-48f01612c4dd", "Zonhoven" },
+                    { "8510c90e-ce28-4050-8bab-273bd9de969d", "Genk" },
+                    { "ea247f6f-49b9-4ad2-bdfa-0b309f6f46d7", "Halen" },
+                    { "2749a7c6-a712-4363-a7ab-3c9d9edc1caf", "Ham" },
+                    { "f220fe5d-a3b7-4d09-96b4-596ed3bac4fd", "Hamont-Achel" },
+                    { "eb74dab7-b30c-432b-bee8-f425db1bb38d", "Hasselt" },
+                    { "2ebdb9d1-462f-4ea6-85b9-7f1f1a07271f", "Hechelt-Eksel" },
+                    { "a143fcdf-89e7-4800-8e7c-82c8f29d9278", "Heers" },
+                    { "ac83c963-e9dc-4e20-9e6a-d57aa0311c7f", "Herk-de-Stad" },
+                    { "93a36e78-24eb-436e-980f-45f73e7e2f68", "Herstappe" },
+                    { "aa189d35-8208-453d-9bbc-f13051697088", "Gingelom" },
+                    { "068868c5-24cf-4653-b17e-ed4cf9f37911", "Zutendaal" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -643,6 +667,11 @@ namespace Signawel.Data.Migrations
                 name: "IX_roadwork_schemas_image_id",
                 table: "roadwork_schemas",
                 column: "image_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_report_group_ReportGroupId",
+                table: "user_report_group",
+                column: "ReportGroupId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -696,6 +725,9 @@ namespace Signawel.Data.Migrations
                 name: "report_images");
 
             migrationBuilder.DropTable(
+                name: "user_report_group");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -711,13 +743,13 @@ namespace Signawel.Data.Migrations
                 name: "emails_reportgroups");
 
             migrationBuilder.DropTable(
+                name: "reports");
+
+            migrationBuilder.DropTable(
                 name: "reportgroups");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "reports");
 
             migrationBuilder.DropTable(
                 name: "roadwork_schemas");
