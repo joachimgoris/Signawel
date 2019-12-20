@@ -1,5 +1,4 @@
-﻿using Signawel.Domain.Reports;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Signawel.Dto.Reports
@@ -18,7 +17,7 @@ namespace Signawel.Dto.Reports
 
         public ICollection<ReportImageResponseDto> Images { get; set; }
 
-        public ReportDefaultIssue Issue { get; set; }
+        public DefaultIssueResponseDto Issue { get; set; }
 
         public string Cities { get; set; }
     }

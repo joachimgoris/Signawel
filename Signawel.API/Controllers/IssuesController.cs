@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Signawel.API.Attributes;
 using Signawel.Business.Abstractions.Services;
 using Signawel.Domain;
@@ -32,8 +31,7 @@ namespace Signawel.API.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "List of default issues", typeof(IList<DefaultIssueResponseDto>))]
         public async Task<ActionResult> GetDefaultIssues()
         {
-            var data = _issueService.GetDefaultIssues();
-            var list = await data.ToListAsync();
+            var list = await _issueService.GetDefaultIssues();
             return Ok(list);
         }
 

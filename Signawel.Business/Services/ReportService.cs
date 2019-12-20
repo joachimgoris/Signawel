@@ -8,20 +8,25 @@ using Signawel.Dto.Reports;
 using System.Linq;
 using System.Threading.Tasks;
 using Signawel.Domain.Reports;
+using System.Collections.Generic;
+using Signawel.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Signawel.Business.Services
 {
     public class ReportService : IReportService
     {
         private readonly IMapper _mapper;
+        private readonly IReportGroupService _reportGroupService;
         private readonly SignawelDbContext _context;
         private readonly ILogger<ReportService> _logger;
 
-        public ReportService(SignawelDbContext context, ILogger<ReportService> logger, IMapper mapper)
+        public ReportService(SignawelDbContext context, ILogger<ReportService> logger, IMapper mapper, IReportGroupService reportGroupService)
         {
             _context = context;
             _logger = logger;
             _mapper = mapper;
+            _reportGroupService = reportGroupService;
         }
 
         #region AddReport
@@ -83,10 +88,49 @@ namespace Signawel.Business.Services
 
         #region GetAllReports
 
-        /// <inheritdoc cref="IReportService.GetAllReports"/>
-        public IQueryable<ReportResponseDto> GetAllReports()
+        /// <inheritdoc cref="IReportService.GetAllReports(string, int, int, string, IList{string})"/>
+        public async Task<ReportGetPaginationResponseDto> GetAllReports(string search, int page, int limit, string username, IList<string> userRoles)
         {
-            return _mapper.ProjectTo<ReportResponseDto>(_context.Reports);
+            var reportsQuery = _context.Reports.AsQueryable();
+
+            if(!userRoles.Contains(Role.Constants.Admin))
+            {
+                var reportGroups = await _reportGroupService.GetReportGroupsAsync("null", "null", username);
+                
+                if(!reportGroups.Succeeded)
+                {
+                    return new ReportGetPaginationResponseDto();
+                }
+
+                var cities = reportGroups.Entity.SelectMany(e => e.CityReportGroups).Select(crd => crd.Name).ToList();
+                reportsQuery = reportsQuery.Where(r => r.Cities.Split(',').Any(c => cities.Contains(c)));
+            }
+
+            var result = new ReportGetPaginationResponseDto()
+            {
+                Total = reportsQuery.Count()
+            };
+
+            if (page < 0)
+            {
+                page = 0;
+            }
+
+            var reportResult = reportsQuery.Skip(page * (limit <= 0 ? 0 : limit));
+
+            if (limit > 0)
+                reportResult = reportResult.Take(limit);
+
+            if (!string.IsNullOrEmpty(search))
+                reportResult = reportResult.Where(x => x.SenderEmail.Contains(search) ||
+                                                       x.Cities.Contains(search) || 
+                                                       x.CreationTime.ToString().Contains(search));
+
+            var reports = await reportResult.Include(r => r.Images).ToListAsync();
+
+            result.Reports = _mapper.Map<IList<ReportResponseDto>>(reports);
+
+            return result;
         }
 
         #endregion

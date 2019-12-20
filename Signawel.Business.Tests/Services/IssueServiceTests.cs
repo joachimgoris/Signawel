@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Moq;
@@ -29,21 +28,6 @@ namespace Signawel.Business.Tests.Services
                 _mapperMock.Object);
         }
 
-        [Test]
-        public void GetDefaultIssues_ShouldReturnAListOfQueryableDefaultIssueResponseDtos()
-        {
-            _mapperMock.Setup(mapper =>
-                mapper.ProjectTo<DefaultIssueResponseDto>(
-                    It.IsAny<IQueryable<ReportDefaultIssue>>(),
-                    null,
-                    null))
-                .Returns(Enumerable.Empty<DefaultIssueResponseDto>().AsQueryable);
-
-            var result = _sutIssueService.GetDefaultIssues();
-
-            Assert.That(result, Is.Not.Null);
-            Assert.IsInstanceOf<IQueryable<DefaultIssueResponseDto>>(result);
-        }
 
         #region AddDefaultIsueAsync
 

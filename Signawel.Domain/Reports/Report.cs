@@ -5,7 +5,7 @@ namespace Signawel.Domain.Reports
 {
     public class Report : Entity
     {
-        public DateTime CreationTime { get; set; }
+        public DateTime CreationTime { get; set; } = DateTime.Now;
 
         public string SenderEmail { get; set; }
 

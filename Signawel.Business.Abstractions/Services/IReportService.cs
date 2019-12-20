@@ -1,6 +1,6 @@
 ﻿using Signawel.Domain.DataResults;
 using Signawel.Dto.Reports;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Signawel.Business.Abstractions.Services
@@ -41,7 +41,7 @@ namespace Signawel.Business.Abstractions.Services
         /// <returns>
         ///     A list of all the reports in the database.
         /// </returns>
-        IQueryable<ReportResponseDto> GetAllReports();
+        Task<ReportGetPaginationResponseDto> GetAllReports(string search, int page, int limit, string username, IList<string> userRoles);
 
         #endregion
 

@@ -17,7 +17,6 @@ namespace Signawel.Business.MapperProfiles
             new ReportProfile();
             new PriorityEmailProfile();
             new BlacklistEmailProfile();
-            new ReportProfile();
             new DefaultIssueProfile();
         }
     }

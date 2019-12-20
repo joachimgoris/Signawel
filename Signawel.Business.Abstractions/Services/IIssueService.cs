@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Signawel.Domain.DataResults;
 using Signawel.Dto;
@@ -12,9 +12,20 @@ namespace Signawel.Business.Abstractions.Services
         ///     Requests all default issues from the database.
         /// </summary>
         /// <returns>
-        ///     An instance of <see cref="IQueryable{T}"/> containing instances of <see cref="DefaultIssueResponseDto"/>. 
+        ///     An instance of <see cref="IList{T}"/> containing instances of <see cref="DefaultIssueResponseDto"/>. 
         /// </returns>
-        IQueryable<DefaultIssueResponseDto> GetDefaultIssues();
+        Task<IList<DefaultIssueResponseDto>> GetDefaultIssues();
+
+        /// <summary>
+        ///     Get a default issue from the database
+        /// </summary>
+        /// <param name="id">
+        ///     Id of the issue to get
+        /// </param>
+        /// <returns>
+        ///     An instance of <see cref="DataResult{TEntity}"/> containing details about the operation.
+        /// </returns>
+        Task<DataResult<DefaultIssueResponseDto>> GetDefaultIssue(string id);
 
         /// <summary>
         ///     Add a new default issue.

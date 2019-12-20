@@ -17,7 +17,6 @@ using Signawel.Dto;
 using Signawel.Dto.Reports;
 using Microsoft.AspNetCore.Identity;
 using Signawel.Domain;
-using Signawel.Dto.ReportGroup;
 
 namespace Signawel.Api.Tests.Controllers
 {
@@ -28,7 +27,6 @@ namespace Signawel.Api.Tests.Controllers
         private Mock<IReportService> _reportServiceMock;
         private Mock<IImageService> _imageServiceMock;
         private Mock<IMailService> _mailServiceMock;
-        private Mock<IReportGroupService> _reportGroupServiceMock;
         private Mock<UserManager<User>> _userManager;
 
         [SetUp]
@@ -37,21 +35,24 @@ namespace Signawel.Api.Tests.Controllers
             _reportServiceMock = new Mock<IReportService>();
             _imageServiceMock = new Mock<IImageService>();
             _mailServiceMock = new Mock<IMailService>();
-            _reportGroupServiceMock = new Mock<IReportGroupService>();
             _userManager = new Mock<UserManager<User>>(new Mock<IUserStore<User>>().Object, null, null, null, null, null, null, null, null);
 
-            _reportController = new ReportController(_reportServiceMock.Object, _imageServiceMock.Object, _mailServiceMock.Object,_reportGroupServiceMock.Object, _userManager.Object);
+            _reportController = new ReportController(_reportServiceMock.Object, _imageServiceMock.Object, _mailServiceMock.Object, _userManager.Object);
         }
 
         [Test]
         public async Task GetAllReportsShouldReturnListOfLimitedReports_WhenTheUserIsAInstance()
         {
             // Arrange
-            var report1 = new ReportResponseDto();
-            report1.Cities = "Hasselt";
+            var report1 = new ReportResponseDto
+            {
+                Cities = "Hasselt"
+            };
 
-            var report2 = new ReportResponseDto();
-            report2.Cities = "Beringen";
+            var report2 = new ReportResponseDto
+            {
+                Cities = "Beringen"
+            };
 
             var reports = new List<ReportResponseDto>()
             {
@@ -65,40 +66,29 @@ namespace Signawel.Api.Tests.Controllers
                 Total = reports.Count
             };
 
-            var user = new User();
-            user.UserName = "John";
+            var user = new User
+            {
+                UserName = "Tibo"
+            };
 
-            var reportGroups = new List<ReportGroupResponseDto>();
-            var reportGroup = new ReportGroupResponseDto();
-            reportGroup.CityReportGroups = new List<CityResponseDto>();
-            var city = new CityResponseDto();
-            city.Name = "Hasselt";
-            reportGroup.CityReportGroups.Add(city);
-            reportGroups.Add(reportGroup);
+            _reportServiceMock
+                .Setup(service => service.GetAllReports(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IList<string>>()))
+                .ReturnsAsync(paginationResult);
 
-            _userManager.Setup(manager => manager.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(user);
-
-            _reportServiceMock.Setup(service => service.GetAllReports()).Returns(reports.AsQueryable);
-
-            _userManager.Setup(manager => manager.IsInRoleAsync(It.IsAny<User>(), Role.Constants.Instance)).ReturnsAsync(true);
-
-            _reportGroupServiceMock.Setup(service=>service.GetReportGroupsAsync("null", "null", user.UserName)).ReturnsAsync(DataResult<List<ReportGroupResponseDto>>.Success(reportGroups));
-
+            _userManager
+                .Setup(_ => _.FindByNameAsync(It.IsAny<string>()))
+                .ReturnsAsync(user);
 
             // Act
             var result = await _reportController.GetReportsAsync() as OkObjectResult;
 
             // Assert
-            var shouldbe = new List<ReportResponseDto>();
-            shouldbe.Add(report1);
             Assert.That(result, Is.Not.Null);
 
             var reportGetPaginationResult = result.Value as ReportGetPaginationResponseDto;
             Assert.That(reportGetPaginationResult, Is.Not.Null);
-            Assert.That(reportGetPaginationResult.Total, Is.EqualTo(1));
-            Assert.That(reportGetPaginationResult.Reports, Is.EqualTo(shouldbe));
 
-            _reportServiceMock.Verify(service => service.GetAllReports(), Times.Once);
+            _reportServiceMock.Verify(service => service.GetAllReports(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IList<string>>()), Times.Once);
         }
 
         [Test]
@@ -128,11 +118,9 @@ namespace Signawel.Api.Tests.Controllers
 
             _userManager.Setup(manager => manager.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(user);
 
-            _reportServiceMock.Setup(service => service.GetAllReports()).Returns(reports.AsQueryable);
-
-            _userManager.Setup(manager => manager.IsInRoleAsync(It.IsAny<User>(), Role.Constants.Instance)).ReturnsAsync(false);
-            _userManager.Setup(manager => manager.IsInRoleAsync(It.IsAny<User>(), Role.Constants.Admin)).ReturnsAsync(true);
-
+            _reportServiceMock
+                .Setup(service => service.GetAllReports(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IList<string>>()))
+                .ReturnsAsync(paginationResult);
 
             // Act
             var result = await _reportController.GetReportsAsync() as OkObjectResult;
@@ -145,7 +133,7 @@ namespace Signawel.Api.Tests.Controllers
             Assert.That(reportGetPaginationResult.Total, Is.EqualTo(2));
             Assert.That(reportGetPaginationResult.Reports, Is.EqualTo(reports));
 
-            _reportServiceMock.Verify(service => service.GetAllReports(), Times.Once);
+            _reportServiceMock.Verify(service => service.GetAllReports(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IList<string>>()), Times.Once);
         }
 
         [Test]
@@ -172,15 +160,26 @@ namespace Signawel.Api.Tests.Controllers
                 Total = reports.Count
             };
 
-            var user = new User();
-            user.UserName = "John";
+            var user = new User
+            {
+                UserName = "John"
+            };
 
-            _userManager.Setup(manager => manager.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(user);
+            _userManager
+                .Setup(manager => manager.FindByNameAsync(It.IsAny<string>()))
+                .ReturnsAsync(user);
 
-            _reportServiceMock.Setup(service => service.GetAllReports()).Returns(reports.AsQueryable);
+            _reportServiceMock
+                .Setup(service => service.GetAllReports(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IList<string>>()))
+                .ReturnsAsync(paginationResult);
 
-            _userManager.Setup(manager => manager.IsInRoleAsync(It.IsAny<User>(), Role.Constants.Instance)).ReturnsAsync(false);
-            _userManager.Setup(manager => manager.IsInRoleAsync(It.IsAny<User>(), Role.Constants.Admin)).ReturnsAsync(true);
+            _userManager
+                .Setup(manager => manager.IsInRoleAsync(It.IsAny<User>(), Role.Constants.Instance))
+                .ReturnsAsync(false);
+
+            _userManager
+                .Setup(manager => manager.IsInRoleAsync(It.IsAny<User>(), Role.Constants.Admin))
+                .ReturnsAsync(true);
 
 
             // Act
@@ -193,7 +192,7 @@ namespace Signawel.Api.Tests.Controllers
             Assert.That(reportGetPaginationResult, Is.Not.Null);
             Assert.That(reportGetPaginationResult.Total, Is.EqualTo(limit));
 
-            _reportServiceMock.Verify(service => service.GetAllReports(), Times.Once);
+            _reportServiceMock.Verify(service => service.GetAllReports(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IList<string>>()), Times.Once);
         }
 
 

@@ -20,97 +20,35 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Signawel.API.Controllers
 {
     [ApiController]
-    [JwtTokenAuthorize]
+    [JwtTokenAuthorize(Roles = Role.Constants.Admin + "," + Role.Constants.Instance)]
     [Route("api/reports")]
     public class ReportController : BaseController
     {
         private readonly IReportService _reportService;
         private readonly IImageService _imageService;
         private readonly IMailService _mailService;
-        private readonly IReportGroupService _reportGroupService;
         private readonly UserManager<User> _userManager;
 
-        public ReportController(IReportService reportService,
-            IImageService imageService,
-            IMailService mailService,
-            IReportGroupService reportGroupService,
-            UserManager<User> userManager)
+        public ReportController(IReportService reportService, IImageService imageService, IMailService mailService, UserManager<User> userManager)
         {
             _reportService = reportService;
             _imageService = imageService;
             _mailService = mailService;
-            _reportGroupService = reportGroupService;
             _userManager = userManager;
         }
 
         #region GetReports
 
         [HttpGet]
-        [JwtTokenAuthorize(Roles = Role.Constants.Admin + "," + Role.Constants.Instance)]
         [SwaggerOperation("getReports")]
         [SwaggerResponse(StatusCodes.Status200OK, "Reports overview", typeof(DataResult<ReportResponseDto>))]
         public async Task<IActionResult> GetReportsAsync([FromQuery] string search = null, [FromQuery] int page = 0, [FromQuery] int limit = 20)
         {
             var userId = _userManager.GetUserId(User);
             var user = await _userManager.FindByNameAsync(userId);
-            
+            var roles = await _userManager.GetRolesAsync(user);
 
-            var allReports = _reportService.GetAllReports();
-            var reports = new List<ReportResponseDto>();
-
-            if (await _userManager.IsInRoleAsync(user, Role.Constants.Instance))
-            { 
-                var reportGroups = await _reportGroupService.GetReportGroupsAsync("null", "null",user.UserName);
-                var cities = new List<string>();
-                foreach(var report in reportGroups.Entity)
-                {
-                    foreach(var city in report.CityReportGroups.Select(crg => crg.Name))
-                    {
-                        cities.Add(city);
-                    }
-                }
-
-                foreach(var report in allReports)
-                {
-                    var duplicates = report.Cities.Split(',').Intersect(cities);
-                    if (duplicates.Count() > 0)
-                    {
-                        reports.Add(report);
-                    }
-                }
-                
-            }
-
-            if (await _userManager.IsInRoleAsync(user, Role.Constants.Admin))
-            {
-                reports = allReports.ToList();
-            }
-
-
-
-
-                var result = new ReportGetPaginationResponseDto()
-            {
-                Total = reports.Count()
-            };
-
-            if (page < 0)
-            {
-                page = 0;
-            }
-
-            var reportResult = reports.Skip(page * (limit <= 0 ? 0 : limit));
-
-            if (limit > 0)
-                reportResult = reportResult.Take(limit);
-
-            if (!string.IsNullOrEmpty(search))
-                reportResult = reportResult.Where(x => x.SenderEmail.Contains(search) ||
-                                                       x.Description.Contains(search) ||
-                                                       x.CreationTime.ToString().Contains(search));
-
-            result.Reports = reportResult.ToList();
-
+            var result = await _reportService.GetAllReports(search, page, limit, user.UserName, roles);
             return Ok(result);
         }
 
@@ -119,7 +57,6 @@ namespace Signawel.API.Controllers
         #region GetReport
 
         [HttpGet("{id}")]
-        [JwtTokenAuthorize(Roles = Role.Constants.Instance)]
         [SwaggerOperation("getReport")]
         [SwaggerResponse(StatusCodes.Status200OK, "Report found.", typeof(DataResult<ReportResponseDto>))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Report not found.", typeof(IList<DataError>))]

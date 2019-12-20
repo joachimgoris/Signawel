@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Signawel.Domain.Constants;
 using Signawel.Dto.Reports;
 using Signawel.Domain.Reports;
+using Signawel.Business.Abstractions.Services;
 
 namespace Signawel.Business.Tests.Services
 {
@@ -18,6 +19,7 @@ namespace Signawel.Business.Tests.Services
         private SignawelDbContext _context;
         private Mock<IMapper> _mockMapper;
         private Mock<ILogger<ReportService>> _mockLogger;
+        private Mock<IReportGroupService> _mockReportGroupService;
 
         [SetUp]
         public void Setup()
@@ -25,8 +27,9 @@ namespace Signawel.Business.Tests.Services
             _mockMapper = new Mock<IMapper>();
             _context = SignawelDbContextBuilder.GetDatabaseContext();
             _mockLogger = new Mock<ILogger<ReportService>>();
+            _mockReportGroupService = new Mock<IReportGroupService>();
 
-            _service = new ReportService(_context, _mockLogger.Object, _mockMapper.Object);
+            _service = new ReportService(_context, _mockLogger.Object, _mockMapper.Object, _mockReportGroupService.Object);
         }
 
         #region AddReport

@@ -119,7 +119,7 @@ namespace Signawel.Mobile.Views
             return new SKPaint
             {
                 Style = SKPaintStyle.Stroke,
-                Color = new SKColor(255, 0, 0),
+                Color = new SKColor(255, 0, 0, 0),
                 StrokeWidth = 5,
                 StrokeCap = SKStrokeCap.Round
             };

@@ -1,6 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Signawel.Business.Abstractions.Services;
 using Signawel.Data;
 using Signawel.Domain.Constants;
@@ -23,9 +24,10 @@ namespace Signawel.Business.Services
             _mapper = mapper;
         }
 
-        public IQueryable<DefaultIssueResponseDto> GetDefaultIssues()
+        public async Task<IList<DefaultIssueResponseDto>> GetDefaultIssues()
         {
-            return _mapper.ProjectTo<DefaultIssueResponseDto>(_context.DefaultIssues);
+            var list = await _context.DefaultIssues.ToListAsync();
+            return _mapper.Map<IList<DefaultIssueResponseDto>>(list);
         }
         
         public async Task<DataResult<DefaultIssueResponseDto>> AddDefaultIsueAsync(DefaultIssueRequestDto dto)
@@ -60,6 +62,18 @@ namespace Signawel.Business.Services
             {
                 return DataResult.WithError(ErrorCodes.DefaultIssueDeletionError, "Failed to delete default issue");
             }
+        }
+
+        public async Task<DataResult<DefaultIssueResponseDto>> GetDefaultIssue(string id)
+        {
+            var result = await _context.DefaultIssues.FindAsync(id);
+
+            if (result == null)
+            {
+                return DataResult<DefaultIssueResponseDto>.WithPublicError(ErrorCodes.NotFoundError, $"No default issue found with id '{id}'");
+            }
+            
+            return DataResult<DefaultIssueResponseDto>.Success(_mapper.Map<DefaultIssueResponseDto>(result));
         }
     }
 }

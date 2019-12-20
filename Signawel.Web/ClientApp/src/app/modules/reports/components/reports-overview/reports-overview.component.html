@@ -15,8 +15,8 @@
     <mat-cell *matCellDef="let element">{{ element.senderEmail }}</mat-cell>
   </ng-container>
 
-   <!-- Probleem Column -->
-   <ng-container matColumnDef="issue">
+  <!-- Probleem Column -->
+  <ng-container matColumnDef="issue">
     <mat-header-cell *matHeaderCellDef>Probleem</mat-header-cell>
     <mat-cell *matCellDef="let element">{{ element.issue.name }}</mat-cell>
   </ng-container>
@@ -28,15 +28,15 @@
   </ng-container>
 
   <!-- Description Column -->
-  <ng-container matColumnDef="description">
-      <mat-header-cell *matHeaderCellDef>Omschrijving</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.description | slice:0:100}}..</mat-cell>
-  </ng-container> 
+  <ng-container matColumnDef="cities">
+    <mat-header-cell *matHeaderCellDef>Cities</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.cities | slice:0:60}}</mat-cell>
+  </ng-container>
 
   <!-- Actions Column -->
   <ng-container matColumnDef="actions" stickyEnd>
     <mat-header-cell *matHeaderCellDef>
-        Acties
+      Acties
     </mat-header-cell>
     <mat-cell *matCellDef="let element">
       <button mat-icon-button (click)="doShow(element)">
@@ -54,8 +54,7 @@
 
 <mat-paginator [length]="listData.total" [pageSize]="15" [pageSizeOptions]="[5, 10, 15]"></mat-paginator>
 
-<blade-modal id="reportEditor" modalTitle="Melding details" [closeButton]="true"
-  (modalClose)="onModalClose($event)">
+<blade-modal id="reportEditor" modalTitle="Melding details">
   <report-detail [report]="selectedReport" *ngIf="selectedReport">
-    </report-detail>
+  </report-detail>
 </blade-modal>
